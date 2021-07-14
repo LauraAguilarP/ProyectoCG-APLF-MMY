@@ -6,7 +6,6 @@ Integrantes:
 Aguilar Plascencia Laura Fabiola
 Martínez Martínez Yanni
 */
-
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
