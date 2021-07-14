@@ -1,6 +1,9 @@
 /*
 Semestre 2021-2
-Práctica 6: Iluminación
+Proyecto Final ---- CGeIHC-FI-UNAM
+
+Integrantes:
+Aguilar Plascencia Laura Fabiola
 Martínez Martínez Yanni
 */
 //para cargar imagen
