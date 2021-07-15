@@ -1,0 +1,51 @@
+# MTL written from D:\PROJECT 3D Asset Store\Electronic\Speaker\Speaker.obj
+newmtl AirOut
+Kd 0.0302839 0.0302839 0.0302839
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+newmtl Box
+Kd 0.00252366 0.00252366 0.00252366
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+newmtl KAsa
+Kd 1 1 1
+Ns 256
+d 0
+illum 2
+Ka 0 0 0
+Ks 0 0 0
+map_Kd D:\PROJECT 3D Asset Store\Electronic\Speaker\Kasa Speaker.tif
+newmtl Kabel
+Kd 0.0328076 0.0328076 0.0328076
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+newmtl RCA
+Kd 0.232177 0 0
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+newmtl RCA_Connector
+Kd 0.0328076 0.0328076 0.0328076
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.18612 0.125107 0.0109175
+newmtl Speaker
+Kd 0.0328076 0.0328076 0.0328076
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0.2 0.2 0.2

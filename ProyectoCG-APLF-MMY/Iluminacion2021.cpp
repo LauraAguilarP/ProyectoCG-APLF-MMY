@@ -59,6 +59,14 @@ Model Kitt_M;
 Model Llanta_M;
 Model Blackhawk_M;
 Model cine;
+//************Objetos propuestos
+Model cocacola;
+Model bocina;
+Model sofa;
+Model lampara;
+Model piso;
+Model desk;
+Model basurero;
 
 Skybox skybox;
 
@@ -325,14 +333,29 @@ int main()
 	Tagave = Texture("Textures/Agave.tga");
 	Tagave.LoadTextureA();
 
-	Kitt_M = Model();
-	Kitt_M.LoadModel("Models/carritoCenter2.obj");
+
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
 	Blackhawk_M = Model();
 	Blackhawk_M.LoadModel("Models/uh60.obj");
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
+
+	cocacola = Model();
+	cocacola.LoadModel("Models/door.obj"); //Cuarto tiene un bug
+	bocina = Model();
+	bocina.LoadModel("Models/Speaker.obj");
+	sofa = Model();
+	sofa.LoadModel("Models/sofa.obj");
+	lampara = Model();
+	lampara.LoadModel("Models/Poly.obj");
+	piso = Model();
+	piso.LoadModel("Models/Floor.fbx");
+	desk = Model();
+	desk.LoadModel("Models/desk.obj");
+	basurero = Model();
+	basurero.LoadModel("Models/basurero.obj");
+
 
 
 	std::vector<std::string> skyboxFaces;
@@ -738,6 +761,49 @@ int main()
 		*/ 
 		//pPara que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
 		
+
+		/************************OBJETOS************************/
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cocacola.RenderModel();
+		//Bocina
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bocina.RenderModel();
+		//Sofa
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(15.5f, 0.5f, -15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		sofa.RenderModel();
+		//Lampara
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(25.5f, 0.5f, -15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		lampara.RenderModel();
+		//Piso
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piso.RenderModel();
+		//Desk
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		desk.RenderModel();
+		//Basurero
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(20.0f, 20.5f, 20.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		basurero.RenderModel();
 
 		glUseProgram(0);
 
