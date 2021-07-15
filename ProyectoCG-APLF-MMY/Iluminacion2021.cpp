@@ -59,7 +59,16 @@ Texture Tagave;
 Model Kitt_M;
 Model Llanta_M;
 Model Blackhawk_M;
+
+// ******* Cine 
+Model registradora;
+Model silla;
+Model bebidas;
+Model maquina_bebida;
+Model food;
+Model electronico;
 Model cine;
+
 
 Skybox skybox;
 
@@ -332,6 +341,20 @@ int main()
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
 	Blackhawk_M = Model();
 	Blackhawk_M.LoadModel("Models/uh60.obj");
+	
+	// *********** *********************************** C I N E ***********************************
+	registradora = Model();
+	registradora.LoadModel("Models/Register.obj");
+	silla = Model();
+	silla.LoadModel("Models/Armchair.obj");
+	bebidas = Model();
+	bebidas.LoadModel("Models/Blank.obj");
+	maquina_bebida = Model();
+	maquina_bebida.LoadModel("Models/maquina_bebida.obj");
+	food = Model();
+	food.LoadModel("Models/food.obj");
+	electronico = Model();
+	electronico.LoadModel("Models/ElectronicRack.obj");
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
 
@@ -709,12 +732,64 @@ int main()
 		glm::vec3 unitaryY(0.0f, -1.0f, 0.0f); //Un unitario que tenga dirección hacia el suelo.
 		spotLights[2].SetFlash(posblackhawk + desplazamiento, unitaryY);
 
+		///******************************************************** CINE ********************************
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		registradora.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		//model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bebidas.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 25.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		maquina_bebida.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		food.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.5f, 0.5f, 50.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		electronico.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-40.0f, 10.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(25.0f, 1.9f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cine.RenderModel();
+
+
+
 		/*Agave*/
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
@@ -738,6 +813,7 @@ int main()
 		COND2: Debemos considerar almenos 5 casos que se presenten
 		*/ 
 		//pPara que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
+		
 		
 
 		glUseProgram(0);
@@ -827,5 +903,6 @@ void inputKeyframes(bool* keys)
 			printf("Ya puedes modificar tu variable presionando la tecla 1\n");
 		}
 	}
+
 
 }
