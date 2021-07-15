@@ -735,8 +735,8 @@ int main()
 		COMPLEJA:
 		COND1: Animación basada en funciones, es decir, tomar una función de algun movimiento fisico real, ejemplo ecuaciones reales como caida libre o tiro parabólico
 		COND2: Debemos considerar almenos 5 casos que se presenten
-		*/
-		//Para que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
+		*/ 
+		//pPara que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
 		
 
 		glUseProgram(0);
