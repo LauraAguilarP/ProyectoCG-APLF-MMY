@@ -6,6 +6,7 @@ Integrantes:
 Aguilar Plascencia Laura Fabiola
 Martínez Martínez Yanni
 */
+
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -50,19 +51,24 @@ Camera camera;
 //Variable para keyFrames
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
 
-Texture brickTexture;
-Texture dirtTexture;
-Texture plainTexture;
-Texture dadoTexture;
+
+
 Texture pisoTexture;
 Texture Tagave;
 
 Model Kitt_M;
 Model Llanta_M;
-Model Camino_M;
 Model Blackhawk_M;
-Model Dado_M;
+
+// ******* Cine 
+Model registradora;
+Model silla;
+Model bebidas;
+Model maquina_bebida;
+Model food;
+Model electronico;
 Model cine;
+
 
 Skybox skybox;
 
@@ -196,78 +202,6 @@ void CreateObjects()
 
 }
 
-void CrearCubo()
-{
-	unsigned int cubo_indices[] = {
-		// front
-		0, 1, 2,
-		2, 3, 0,
-		// right
-		4, 5, 6,
-		6, 7, 4,
-		// back
-		8, 9, 10,
-		10, 11, 8,
-
-		// left
-		12, 13, 14,
-		14, 15, 12,
-		// bottom
-		16, 17, 18,
-		18, 19, 16,
-		// top
-		20, 21, 22,
-		22, 23, 20,
-	};
-
-
-	GLfloat cubo_vertices[] = {
-		// front
-		//x		y		z		S		T			NX		NY		NZ
-		-0.5f, -0.5f,  0.5f,	0.27f,  0.35f,		0.0f,	0.0f,	-1.0f,	//0
-		0.5f, -0.5f,  0.5f,		0.48f,	0.35f,		0.0f,	0.0f,	-1.0f,	//1
-		0.5f,  0.5f,  0.5f,		0.48f,	0.64f,		0.0f,	0.0f,	-1.0f,	//2
-		-0.5f,  0.5f,  0.5f,	0.27f,	0.64f,		0.0f,	0.0f,	-1.0f,	//3
-		// right
-		//x		y		z		S		T
-		0.5f, -0.5f,  0.5f,	    0.52f,  0.35f,		-1.0f,	0.0f,	0.0f,
-		0.5f, -0.5f,  -0.5f,	0.73f,	0.35f,		-1.0f,	0.0f,	0.0f,
-		0.5f,  0.5f,  -0.5f,	0.73f,	0.64f,		-1.0f,	0.0f,	0.0f,
-		0.5f,  0.5f,  0.5f,	    0.52f,	0.64f,		-1.0f,	0.0f,	0.0f,
-		// back
-		-0.5f, -0.5f, -0.5f,	0.77f,	0.35f,		0.0f,	0.0f,	1.0f,
-		0.5f, -0.5f, -0.5f,		0.98f,	0.35f,		0.0f,	0.0f,	1.0f,
-		0.5f,  0.5f, -0.5f,		0.98f,	0.64f,		0.0f,	0.0f,	1.0f,
-		-0.5f,  0.5f, -0.5f,	0.77f,	0.64f,		0.0f,	0.0f,	1.0f,
-
-		// left
-		//x		y		z		S		T
-		-0.5f, -0.5f,  -0.5f,	0.0f,	0.35f,		1.0f,	0.0f,	0.0f,
-		-0.5f, -0.5f,  0.5f,	0.23f,  0.35f,		1.0f,	0.0f,	0.0f,
-		-0.5f,  0.5f,  0.5f,	0.23f,	0.64f,		1.0f,	0.0f,	0.0f,
-		-0.5f,  0.5f,  -0.5f,	0.0f,	0.64f,		1.0f,	0.0f,	0.0f,
-
-		// bottom
-		//x		y		z		S		T
-		-0.5f, -0.5f,  0.5f,	0.27f,	0.02f,		0.0f,	1.0f,	0.0f,
-		0.5f,  -0.5f,  0.5f,	0.48f,  0.02f,		0.0f,	1.0f,	0.0f,
-		 0.5f,  -0.5f,  -0.5f,	0.48f,	0.31f,		0.0f,	1.0f,	0.0f,
-		-0.5f, -0.5f,  -0.5f,	0.27f,	0.31f,		0.0f,	1.0f,	0.0f,
-
-		//UP
-		 //x		y		z		S		T
-		 -0.5f, 0.5f,  0.5f,	0.27f,	0.68f,		0.0f,	-1.0f,	0.0f,
-		 0.5f,  0.5f,  0.5f,	0.48f,  0.68f,		0.0f,	-1.0f,	0.0f,
-		  0.5f, 0.5f,  -0.5f,	0.48f,	0.98f,		0.0f,	-1.0f,	0.0f,
-		 -0.5f, 0.5f,  -0.5f,	0.27f,	0.98f,		0.0f,	-1.0f,	0.0f,
-
-	};
-
-	Mesh *cubo = new Mesh();
-	cubo->CreateMesh(cubo_vertices, cubo_indices, 192, 36);
-	meshList.push_back(cubo);
-
-}
 
 
 
@@ -389,19 +323,13 @@ int main()
 	mainWindow.Initialise();
 
 	CreateObjects();
-	CrearCubo();
+	
 	CreateShaders();
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
-	brickTexture = Texture("Textures/brick.png");
-	brickTexture.LoadTextureA();
-	dirtTexture = Texture("Textures/dirt.png");
-	dirtTexture.LoadTextureA();
-	plainTexture = Texture("Textures/plain.png");
-	plainTexture.LoadTextureA();
-	dadoTexture = Texture("Textures/dado.tga");
-	dadoTexture.LoadTextureA();
+
+
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
 	Tagave = Texture("Textures/Agave.tga");
@@ -413,13 +341,23 @@ int main()
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
 	Blackhawk_M = Model();
 	Blackhawk_M.LoadModel("Models/uh60.obj");
-	Camino_M = Model();
-	Camino_M.LoadModel("Models/railroad track2.obj");
+	
+	// *********** *********************************** C I N E ***********************************
+	registradora = Model();
+	registradora.LoadModel("Models/Register.obj");
+	silla = Model();
+	silla.LoadModel("Models/Armchair.obj");
+	bebidas = Model();
+	bebidas.LoadModel("Models/Blank.obj");
+	maquina_bebida = Model();
+	maquina_bebida.LoadModel("Models/maquina_bebida.obj");
+	food = Model();
+	food.LoadModel("Models/food.obj");
+	electronico = Model();
+	electronico.LoadModel("Models/ElectronicRack.obj");
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
 
-	Dado_M = Model();
-	Dado_M.LoadModel("Models/dadoanimales.obj");
 
 	std::vector<std::string> skyboxFaces;
 	//Nuevo SKybox
@@ -794,24 +732,64 @@ int main()
 		glm::vec3 unitaryY(0.0f, -1.0f, 0.0f); //Un unitario que tenga dirección hacia el suelo.
 		spotLights[2].SetFlash(posblackhawk + desplazamiento, unitaryY);
 
+		///******************************************************** CINE ********************************
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.53f, 0.0f));
-		model = glm::scale(model, glm::vec3(25.0f, 1.9f, 1.0f));
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Camino_M.RenderModel();
+		registradora.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 5.0f, 0.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		//model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Dado_M.RenderModel();
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bebidas.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 25.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		maquina_bebida.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		food.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.5f, 0.5f, 50.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		electronico.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-40.0f, 10.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(25.0f, 1.9f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cine.RenderModel();
+
+
+
 		/*Agave*/
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
@@ -833,8 +811,9 @@ int main()
 		COMPLEJA:
 		COND1: Animación basada en funciones, es decir, tomar una función de algun movimiento fisico real, ejemplo ecuaciones reales como caida libre o tiro parabólico
 		COND2: Debemos considerar almenos 5 casos que se presenten
-		*/
-		//Para que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
+		*/ 
+		//pPara que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
+		
 		
 
 		glUseProgram(0);
@@ -924,5 +903,6 @@ void inputKeyframes(bool* keys)
 			printf("Ya puedes modificar tu variable presionando la tecla 1\n");
 		}
 	}
+
 
 }
