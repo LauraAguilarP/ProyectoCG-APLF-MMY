@@ -55,6 +55,8 @@ float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo
 
 Texture pisoTexture;
 Texture Tagave;
+Texture salaCine;
+Texture ma_bebidas;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -342,6 +344,12 @@ int main()
 	pisoTexture.LoadTextureA();
 	Tagave = Texture("Textures/Agave.tga");
 	Tagave.LoadTextureA();
+	
+	//Texturas cine
+	
+	salaCine = Texture("Textures/salaCine.tga");
+	salaCine.LoadTextureA();
+	ma_bebidas = Texture("Textures/bebidas.tga");
 
 
 	Llanta_M = Model();
@@ -357,7 +365,7 @@ int main()
 	bebidas = Model();
 	bebidas.LoadModel("Models/Blank.obj");
 	maquina_bebida = Model();
-	maquina_bebida.LoadModel("Models/maquina_bebida.obj");
+	maquina_bebida.LoadModel("Models/maquina_bebidas.obj");
 	food = Model();
 	food.LoadModel("Models/food.obj");
 	electronico = Model();
@@ -782,9 +790,9 @@ int main()
 		bebidas.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 25.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
 		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		maquina_bebida.RenderModel();
@@ -809,6 +817,7 @@ int main()
 		model = glm::translate(model, glm::vec3(-40.0f, 10.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(25.0f, 1.9f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 		cine.RenderModel();
 
 
