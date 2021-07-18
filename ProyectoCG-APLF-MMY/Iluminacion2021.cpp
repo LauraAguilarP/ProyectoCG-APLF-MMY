@@ -413,8 +413,8 @@ int main()
 	piso = Model();
 	piso.LoadModel("Models/floor.fbx");
 	desk = Model();
-	//desk.LoadModel("Models/desk.obj");
-	//basurero = Model();
+	desk.LoadModel("Models/desk.obj");
+	basurero = Model();
 	basurero.LoadModel("Models/basura.fbx");
 	botellaVidrio = Model();
 	botellaVidrio.LoadModel("Models/botella.fbx");
@@ -930,11 +930,11 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piso.RenderModel();
 		//Desk
-		/*model = glm::mat4(1.0);
+		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		desk.RenderModel();*/
+		desk.RenderModel();
 		//Basurero
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
