@@ -415,7 +415,7 @@ int main()
 	desk = Model();
 	desk.LoadModel("Models/desk.obj");
 	basurero = Model();
-	basurero.LoadModel("Models/basura.fbx");
+	basurero.LoadModel("Models/basura.obj");
 	botellaVidrio = Model();
 	botellaVidrio.LoadModel("Models/botella.fbx");
 	cuchara = Model();
@@ -813,7 +813,7 @@ int main()
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		//modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
 		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
 		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
