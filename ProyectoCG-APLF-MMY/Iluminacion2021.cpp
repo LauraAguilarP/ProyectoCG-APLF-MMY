@@ -55,6 +55,7 @@ float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo
 
 Texture pisoTexture;
 Texture Tagave;
+Texture Coca;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -85,6 +86,7 @@ Model monitor;
 Model planta;
 Model refrigerador;
 Model Sink;
+Model coca;
 
 Skybox skybox;
 
@@ -350,7 +352,8 @@ int main()
 	pisoTexture.LoadTextureA();
 	Tagave = Texture("Textures/Agave.tga");
 	Tagave.LoadTextureA();
-
+	Coca = Texture("Textures/comida.tga");
+	Coca.LoadTextureA();
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
@@ -373,6 +376,8 @@ int main()
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
 
+	coca = Model();
+	coca.LoadModel("Models/coca.fbx");
 	cocacola = Model();
 	cocacola.LoadModel("Models/door.obj"); //Cuarto tiene un bug
 	bocina = Model();
@@ -865,6 +870,12 @@ int main()
 		
 
 		/************************OBJETOS************************/
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		coca.RenderModel();
+		//Puerta
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
