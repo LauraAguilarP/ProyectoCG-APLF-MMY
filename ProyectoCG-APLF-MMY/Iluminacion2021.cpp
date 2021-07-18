@@ -416,10 +416,10 @@ int main()
 	desk.LoadModel("Models/desk.obj");
 	basurero = Model();
 	basurero.LoadModel("Models/basura.obj");
-	botellaVidrio = Model();
-	botellaVidrio.LoadModel("Models/botella.fbx");
+	//botellaVidrio = Model();
+	//botellaVidrio.LoadModel("Models/botella.fbx");
 	cuchara = Model();
-	//cuchara.LoadModel("Models/cuchara.obj");
+	cuchara.LoadModel("Models/cuchara.obj");
 	//escalera = Model();
 	//escalera.LoadModel("Models/scala.obj");
 	//extintor = Model();
@@ -941,20 +941,20 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		basurero.RenderModel();
-		//BotellaVidrio
-		model = glm::mat4(1.0);
+		//BotellaVidrio Omitida de momento por un bug
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		botellaVidrio.RenderModel();
+		botellaVidrio.RenderModel();*/
 		//Cuchara
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.5f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-5.5f, 0.0f, 0.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(2.0f, 1.5f, 1.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cuchara.RenderModel();
 		//Escaleras
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-150.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
