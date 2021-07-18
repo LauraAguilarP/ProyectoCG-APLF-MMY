@@ -351,8 +351,8 @@ int main()
 	CreateObjects();
 	
 	CreateShaders();
-
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	//Se cambió el penultimo valor para que la camara tenga  una velocidad normal
+	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
 
 
 
@@ -411,29 +411,29 @@ int main()
 	lampara = Model();
 	lampara.LoadModel("Models/Poly.obj");
 	piso = Model();
-	piso.LoadModel("Models/Floor.fbx");
+	piso.LoadModel("Models/floor.fbx");
 	desk = Model();
-	desk.LoadModel("Models/desk.obj");
-	basurero = Model();
+	//desk.LoadModel("Models/desk.obj");
+	//basurero = Model();
 	basurero.LoadModel("Models/basura.fbx");
 	botellaVidrio = Model();
 	botellaVidrio.LoadModel("Models/botella.fbx");
 	cuchara = Model();
-	cuchara.LoadModel("Models/cuchara.obj");
-	escalera = Model();
-	escalera.LoadModel("Models/scala.obj");
-	extintor = Model();
-	extintor.LoadModel("Models/extintor.obj");
-	lamparaPared = Model();
-	lamparaPared.LoadModel("Models/lampara.obj");
-	monitor = Model();
-	monitor.LoadModel("Models/monitor.fbx");
-	planta = Model();
-	planta.LoadModel("Models/flower.fbx");
-	refrigerador = Model();
-	refrigerador.LoadModel("Models/refrigerador.fbx");
-	Sink = Model();
-	Sink.LoadModel("Models/Sink.3DS");
+	//cuchara.LoadModel("Models/cuchara.obj");
+	//escalera = Model();
+	//escalera.LoadModel("Models/scala.obj");
+	//extintor = Model();
+	//extintor.LoadModel("Models/extintor.obj");
+	//lamparaPared = Model();
+	//lamparaPared.LoadModel("Models/lampara.obj");
+	//monitor = Model();
+	//monitor.LoadModel("Models/monitor.fbx");
+	//planta = Model();
+	//planta.LoadModel("Models/flower.fbx");
+	//refrigerador = Model();
+	//refrigerador.LoadModel("Models/refrigerador.fbx");
+	//Sink = Model();
+	//Sink.LoadModel("Models/Sink.3DS");
 
 	
 	std::vector<std::string> skyboxFaces;
@@ -838,7 +838,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 25.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		maquina_bebida.RenderModel();
@@ -906,11 +906,11 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cocacola.RenderModel();
 		//Bocina
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bocina.RenderModel();
+		bocina.RenderModel();*/
 		//Sofa
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(15.5f, 0.5f, -15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -926,15 +926,15 @@ int main()
 		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piso.RenderModel();
 		//Desk
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		desk.RenderModel();
+		desk.RenderModel();*/
 		//Basurero
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -944,11 +944,11 @@ int main()
 		//BotellaVidrio
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		botellaVidrio.RenderModel();
 		//Cuchara
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -988,7 +988,7 @@ int main()
 		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Sink.RenderModel();
+		Sink.RenderModel();*/
 
 		
 		glUseProgram(0);
