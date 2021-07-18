@@ -55,7 +55,15 @@ float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo
 
 Texture pisoTexture;
 Texture Tagave;
-Texture Coca;
+Texture Comida;
+Texture Bravo;
+Texture Madera;
+Texture Metales;
+Texture Mosaicos;
+Texture ReflejoLuces;
+Texture PielesTelas;
+Texture UtileriaExtra;
+Texture Metal;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -352,8 +360,24 @@ int main()
 	pisoTexture.LoadTextureA();
 	Tagave = Texture("Textures/Agave.tga");
 	Tagave.LoadTextureA();
-	Coca = Texture("Textures/comida.tga");
-	Coca.LoadTextureA();
+	Comida = Texture("Textures/comida.tga");
+	Comida.LoadTextureA();
+	Bravo = Texture("Textures/bravo.tga");
+	Bravo.LoadTextureA();
+	Madera = Texture("Textures/madera.tga");
+	Madera.LoadTextureA();
+	Metal = Texture("Textures/metal.tga");
+	Metal.LoadTextureA();
+	Metales = Texture("Textures/metales.tga");
+	Metales.LoadTextureA();
+	Mosaicos = Texture("Textures/mosaicos.tga");
+	Mosaicos.LoadTextureA();
+	ReflejoLuces = Texture("Textures/reflejoLuces.tga");
+	ReflejoLuces.LoadTextureA();
+	PielesTelas = Texture("Textures/TexturaPieles.tga");
+	PielesTelas.LoadTextureA();
+	UtileriaExtra = Texture("Textures/TexturasVarias.tga");
+	UtileriaExtra.LoadTextureA();
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
@@ -364,7 +388,7 @@ int main()
 	registradora = Model();
 	registradora.LoadModel("Models/Register.obj");
 	silla = Model();
-	silla.LoadModel("Models/Armchair.obj");
+	silla.LoadModel("Models/silla.fbx"); //Se actualizó por un objeto texturizado
 	bebidas = Model();
 	bebidas.LoadModel("Models/Blank.obj");
 	maquina_bebida = Model();
@@ -391,9 +415,9 @@ int main()
 	desk = Model();
 	desk.LoadModel("Models/desk.obj");
 	basurero = Model();
-	basurero.LoadModel("Models/basurero.obj");
+	basurero.LoadModel("Models/basura.fbx");
 	botellaVidrio = Model();
-	botellaVidrio.LoadModel("Models/botellaVidrio.fbx");
+	botellaVidrio.LoadModel("Models/botella.fbx");
 	cuchara = Model();
 	cuchara.LoadModel("Models/cuchara.obj");
 	escalera = Model();
