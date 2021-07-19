@@ -64,6 +64,7 @@ Texture ReflejoLuces;
 Texture PielesTelas;
 Texture UtileriaExtra;
 Texture Metal;
+Texture Refri;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -378,6 +379,8 @@ int main()
 	PielesTelas.LoadTextureA();
 	UtileriaExtra = Texture("Textures/TexturasVarias.tga");
 	UtileriaExtra.LoadTextureA();
+	Refri = Texture("Textures/refri.tga");
+	Refri.LoadTextureA();
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
@@ -430,8 +433,8 @@ int main()
 	//monitor.LoadModel("Models/monitor.fbx");
 	//planta = Model();
 	//planta.LoadModel("Models/flower.fbx");
-	//refrigerador = Model();
-	//refrigerador.LoadModel("Models/refrigerador.fbx");
+	refrigerador = Model();
+	refrigerador.LoadModel("Models/refri.fbx");
 	//Sink = Model();
 	//Sink.LoadModel("Models/Sink.3DS");
 
@@ -927,7 +930,7 @@ int main()
 		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piso.RenderModel();
 		//Desk
@@ -977,15 +980,17 @@ int main()
 		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 70.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		monitor.RenderModel();
+		monitor.RenderModel();*/
 		//refrigerador
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		refrigerador.RenderModel();
 		//Tarja
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
