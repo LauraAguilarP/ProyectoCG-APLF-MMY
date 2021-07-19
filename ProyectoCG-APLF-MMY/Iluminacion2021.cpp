@@ -4,7 +4,7 @@ Proyecto Final ---- CGeIHC-FI-UNAM
 
 Integrantes:
 Aguilar Plascencia Laura Fabiola
-MartÌnez MartÌnez Yanni
+Mart√≠nez Mart√≠nez Yanni
 */
 
 //para cargar imagen
@@ -35,7 +35,7 @@ MartÌnez MartÌnez Yanni
 #include "Skybox.h"
 
 
-//para iluminaciÛn
+//para iluminaci√≥n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -55,16 +55,9 @@ float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo
 
 Texture pisoTexture;
 Texture Tagave;
-Texture Comida;
-Texture Bravo;
-Texture Madera;
-Texture Metales;
-Texture Mosaicos;
-Texture ReflejoLuces;
-Texture PielesTelas;
-Texture UtileriaExtra;
-Texture Metal;
-Texture Refri;
+Texture salaCine;
+Texture ma_bebidas;
+
 
 Model Kitt_M;
 Model Llanta_M;
@@ -109,8 +102,8 @@ Material Material_opaco;
 DirectionalLight mainLight; //Luz direccional, es una luz que ilumina todos los objetos, son como el sol
 //la luz direccional siempre debe ponerse, sino puede verse mal
 //para declarar varias luces de tipo pointlight
-PointLight pointLights[MAX_POINT_LIGHTS]; //Luz puntual, es una luz que ilumina sÛlo en su radio como esfera
-SpotLight spotLights[MAX_SPOT_LIGHTS]; //Luz spotlight, sÛlo ilumina en una sola direccion.
+PointLight pointLights[MAX_POINT_LIGHTS]; //Luz puntual, es una luz que ilumina s√≥lo en su radio como esfera
+SpotLight spotLights[MAX_SPOT_LIGHTS]; //Luz spotlight, s√≥lo ilumina en una sola direccion.
 
 
 //Sphere cabeza = Sphere(0.5, 20, 20);
@@ -128,7 +121,7 @@ static const char* vShader = "shaders/shader_light.vert";
 static const char* fShader = "shaders/shader_light.frag";
 
 
-//c·lculo del promedio de las normales para sombreado de Phong
+//c√°lculo del promedio de las normales para sombreado de Phong
 void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount,
 	unsigned int vLength, unsigned int normalOffset)
 {
@@ -352,7 +345,7 @@ int main()
 	CreateObjects();
 	
 	CreateShaders();
-	//Se cambiÛ el penultimo valor para que la camara tenga  una velocidad normal
+	//Se cambi√≥ el penultimo valor para que la camara tenga  una velocidad normal
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
 
 
@@ -361,26 +354,13 @@ int main()
 	pisoTexture.LoadTextureA();
 	Tagave = Texture("Textures/Agave.tga");
 	Tagave.LoadTextureA();
-	Comida = Texture("Textures/comida.tga");
-	Comida.LoadTextureA();
-	Bravo = Texture("Textures/bravo.tga");
-	Bravo.LoadTextureA();
-	Madera = Texture("Textures/madera.tga");
-	Madera.LoadTextureA();
-	Metal = Texture("Textures/metal.tga");
-	Metal.LoadTextureA();
-	Metales = Texture("Textures/metales.tga");
-	Metales.LoadTextureA();
-	Mosaicos = Texture("Textures/mosaicos.tga");
-	Mosaicos.LoadTextureA();
-	ReflejoLuces = Texture("Textures/reflejoLuces.tga");
-	ReflejoLuces.LoadTextureA();
-	PielesTelas = Texture("Textures/TexturaPieles.tga");
-	PielesTelas.LoadTextureA();
-	UtileriaExtra = Texture("Textures/TexturasVarias.tga");
-	UtileriaExtra.LoadTextureA();
-	Refri = Texture("Textures/refri.tga");
-	Refri.LoadTextureA();
+
+	//Texturas cine
+	
+	salaCine = Texture("Textures/salaCine.tga");
+	salaCine.LoadTextureA();
+	ma_bebidas = Texture("Textures/bebidas.tga");
+
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
@@ -391,11 +371,11 @@ int main()
 	registradora = Model();
 	registradora.LoadModel("Models/Register.obj");
 	silla = Model();
-	silla.LoadModel("Models/silla.fbx"); //Se actualizÛ por un objeto texturizado
+	silla.LoadModel("Models/silla.fbx"); //Se actualiz√≥ por un objeto texturizado
 	bebidas = Model();
 	bebidas.LoadModel("Models/Blank.obj");
 	maquina_bebida = Model();
-	maquina_bebida.LoadModel("Models/maquina_bebida.obj");
+	maquina_bebida.LoadModel("Models/maquina_bebidas.obj");
 	food = Model();
 	food.LoadModel("Models/food.obj");
 	electronico = Model();
@@ -451,9 +431,9 @@ int main()
 	skybox = Skybox(skyboxFaces);
 
 	Material_brillante = Material(4.0f, 256); //Variable especular y brillo son los argumentos. Brillo muy grande
-	Material_opaco = Material(0.3f, 4); //Radio pequeÒo y brillo pequeÒo
+	Material_opaco = Material(0.3f, 4); //Radio peque√±o y brillo peque√±o
 
-	//Variables para la animaciÛn
+	//Variables para la animaci√≥n
 	float offset = 0.0f;
 	float posYavion = 0.0f;
 	float posXavion = 0.0f;
@@ -467,34 +447,34 @@ int main()
 	bool banderaCurva = true;
 	bool banderaCarro = false;
 
-	//posiciÛn inicial del helicÛptero
+	//posici√≥n inicial del helic√≥ptero
 	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
 	glm::vec3 desplazamiento = glm:: vec3(0.0f, 0.0f, 0.0f);
 	//Posicion inicial Carro
 	glm::vec3 posKitt = glm::vec3(0.0f, 0.5f, -1.5f);
 	glm::vec3 desplazamientoKitt = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
-	//luz direccional, sÛlo 1 y siempre debe de existir
+	//luz direccional, s√≥lo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
 		0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
 		0.0f, 0.0f, -1.0f); //Vector de direccion
 	//contador de luces puntuales 
 	unsigned int pointLightCount = 0;
-	//DeclaraciÛn de primer luz puntual
+	//Declaraci√≥n de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f, //Valores de color
 		0.0f, 1.0f, //Coeficiente ambiental y difuso
 		2.0f, 1.5f, 1.5f, //Poisicion
-		0.3f, 0.2f, 0.1f); //Valores de una ecuaciÛn de segundo grado que sirven para una atenuaciÛn
+		0.3f, 0.2f, 0.1f); //Valores de una ecuaci√≥n de segundo grado que sirven para una atenuaci√≥n
 	pointLightCount++;
 
 	unsigned int spotLightCount = 0;
 	//linterna
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f, //Luz ligada a la camara, en este caso tiene color blanco
 		0.0f, 2.0f, //Coef ambiental y difusa
-		0.0f, 0.0f, 0.0f, //Vecto de posiciÛn
+		0.0f, 0.0f, 0.0f, //Vecto de posici√≥n
 		0.0f, -1.0f, 0.0f, //Vector de direccion
 		1.0f, 0.0f, 0.0f,
-		5.0f); //TamaÒo de la circunferencia del cono, mientras m·s grande m·s grande ser· la circunferencia nuestra luz
+		5.0f); //Tama√±o de la circunferencia del cono, mientras m√°s grande m√°s grande ser√° la circunferencia nuestra luz
 	spotLightCount++;
 
 	//luz fija
@@ -509,19 +489,19 @@ int main()
 	//luz de faro
 	spotLights[1] = SpotLight(0.8f, 0.0f, 0.5f, //Aqui va el color
 		1.0f, 2.0f, 
-		-1.5f, -1.5f, -3.7f, //Vector de posiciÛn, aproximadamente donde da origen la luz, este lo coloquÈ cerca del faro derecho
-		-1.0f, -0.0f, 0.0f, //Vector de direcciÛn, en este caso un vector unitario que apunta a donde ve el auto
+		-1.5f, -1.5f, -3.7f, //Vector de posici√≥n, aproximadamente donde da origen la luz, este lo coloqu√© cerca del faro derecho
+		-1.0f, -0.0f, 0.0f, //Vector de direcci√≥n, en este caso un vector unitario que apunta a donde ve el auto
 		1.0f, 0.0f, 0.0f, 
-		15.0f); //TamaÒo del diametro
+		15.0f); //Tama√±o del diametro
 	spotLightCount++; 
 
-	//luz de helicÛptero
+	//luz de helic√≥ptero
 	spotLights[2] = SpotLight(1.0f, 0.0f, 0.0f, //Aqui va el color
 		1.0f, 2.0f,
-		-30.0f, 14.0f, -1.0f, //Vector de posiciÛn, aproximadamente donde da origen la luz, este lo coloquÈ cerca del faro derecho
-		0.0f, -1.0f, 0.0f, //Vector de direcciÛn, en este caso un vector unitario que apunta a donde ve el auto
+		-30.0f, 14.0f, -1.0f, //Vector de posici√≥n, aproximadamente donde da origen la luz, este lo coloqu√© cerca del faro derecho
+		0.0f, -1.0f, 0.0f, //Vector de direcci√≥n, en este caso un vector unitario que apunta a donde ve el auto
 		1.0f, 0.0f, 0.0f,
-		15.0f); //TamaÒo del diametro
+		15.0f); //Tama√±o del diametro
 	spotLightCount++;
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
@@ -624,7 +604,7 @@ int main()
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 
-		//informaciÛn en el shader de intensidad especular y brillo
+		//informaci√≥n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
@@ -632,12 +612,12 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-		//luz ligada a la c·mara de tipo flash 
+		//luz ligada a la c√°mara de tipo flash 
 		glm::vec3 lowerLight = camera.getCameraPosition();
 		lowerLight.y -= 0.3f;
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection()); //Le manda la direccion a donde apunta nuestra camara
-		//spotLights[0].setPos(); Solo recibe un vector para modoficar la posiciÛn sin moddificar el cono
-		//informaciÛn al shader de fuentes de iluminaciÛn
+		//spotLights[0].setPos(); Solo recibe un vector para modoficar la posici√≥n sin moddificar el cono
+		//informaci√≥n al shader de fuentes de iluminaci√≥n
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -670,8 +650,8 @@ int main()
 		//Llanta izquierda adelante:
 		//model = glm::mat4(1.0);
 		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(-3.5f, -0.5f, 2.7f));  //Ajustando la posiciÛn de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaÒo de la llanta
+		model = glm::translate(model, glm::vec3(-3.5f, -0.5f, 2.7f));  //Ajustando la posici√≥n de la llanta
+		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tama√±o de la llanta
 		model = glm::rotate(model, -180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f)); //Movimineto de llantas
 		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Permite ver que giran la llanta
@@ -682,20 +662,20 @@ int main()
 		//Llanta derecha adelante:
 		//model = glm::mat4(1.0);
 		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(-3.5f, -0.5f, -3.0f));  //Ajustando la posiciÛn de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaÒo de la llanta
+		model = glm::translate(model, glm::vec3(-3.5f, -0.5f, -3.0f));  //Ajustando la posici√≥n de la llanta
+		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tama√±o de la llanta
 		model = glm::rotate(model, 360 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::rotate(model, -360 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));  //Permite ver que giran la llanta
-		//Falta girar la llanta para que se vea al revÈs
+		//Falta girar la llanta para que se vea al rev√©s
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Llanta_M.RenderModel();
 		
 		//Llanta izquierda atras:
 		//model = glm::mat4(1.0);
 		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(5.1f, -0.5f, 2.7f));  //Ajustando la posiciÛn de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaÒo de la llanta
+		model = glm::translate(model, glm::vec3(5.1f, -0.5f, 2.7f));  //Ajustando la posici√≥n de la llanta
+		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tama√±o de la llanta
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));  //Permite ver que giran la llanta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -704,8 +684,8 @@ int main()
 		//Llanta derecha atras:
 		//model = glm::mat4(1.0);
 		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(5.1f, -0.5f, -3.0f));  //Ajustando la posiciÛn de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaÒo de la llanta
+		model = glm::translate(model, glm::vec3(5.1f, -0.5f, -3.0f));  //Ajustando la posici√≥n de la llanta
+		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tama√±o de la llanta
 		model = glm::rotate(model, 360 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));  //Permite ver que giran la llanta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -715,13 +695,13 @@ int main()
 		
 		
 		/*Ejercicio 1:
-		El helicÛptero se desplaza en forma senoidal, llegue a un punto al avanzar, de la vuelta sobre su centro y regrese.esto de forma cÌclica infinita.
+		El helic√≥ptero se desplaza en forma senoidal, llegue a un punto al avanzar, de la vuelta sobre su centro y regrese.esto de forma c√≠clica infinita.
 			Ejercicio 2 :
 
-			El coche avance y retrocede sin girar sobre su eje, el spotlight ilumine hacia la direcciÛn donde el coche se est· desplazand.o*/
+			El coche avance y retrocede sin girar sobre su eje, el spotlight ilumine hacia la direcci√≥n donde el coche se est√° desplazand.o*/
 
 		/***************** H E L I C O P T E R O ************/
-		offset += 0.1; //Controlar· la velocidad en la que sube y baja el avion.
+		offset += 0.1; //Controlar√° la velocidad en la que sube y baja el avion.
 		/*if (posXavion > -20.0f) {
 			
 			posXavion -= 0.01 * deltaTime; //Permite desplazar hacia enfrente de forma constante. Se recomienda multiplicar por deltaTime
@@ -743,14 +723,14 @@ int main()
 			bandera = true;
 		}
 
-		if (posXavion >= 25.0f) { //Es el punto en donde comenzar· a dar la curva el helicoptero
+		if (posXavion >= 25.0f) { //Es el punto en donde comenzar√° a dar la curva el helicoptero
 			banderaCurva = true; //Toma el giro derecho
 		}
-		if (posXavion <= -25.0f) { //Es el punto en donde comenzar· a dar la curva el helicoptero
+		if (posXavion <= -25.0f) { //Es el punto en donde comenzar√° a dar la curva el helicoptero
 			banderaCurva = false; //Toma el giro izquierdo
 		}
 		if (posXavion >= -25.0f && posXavion < 25.0f) { //Reinciando el angulo del helicoptero
-			anguloAvion = 0.0f; //Reinicia el ·ngulo cuando el trayecto es recto
+			anguloAvion = 0.0f; //Reinicia el √°ngulo cuando el trayecto es recto
 		}
 
 		desplazamiento = glm:: vec3 (posXavion , posYavion, posZavion);		//agregar incremento en X con teclado
@@ -771,11 +751,11 @@ int main()
 			model = glm::rotate(model, -90 +anguloAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 			anguloAvion -= 0.1f;
 		}
-		if (bandera == false) { //Ir· en negativo  <---
+		if (bandera == false) { //Ir√° en negativo  <---
 			posXavion -= 0.1 * deltaTime;
 			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f)); //270
-			/*No modifica la rotaciÛn del helicoptero cuando est· dando la curva, si no se incluye
-			hace un movimiento muy raro, es decir, le suma m·s grados al giro*/
+			/*No modifica la rotaci√≥n del helicoptero cuando est√° dando la curva, si no se incluye
+			hace un movimiento muy raro, es decir, le suma m√°s grados al giro*/
 			if (posXavion <= 25 && banderaCurva != false) { 
 				model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 			}
@@ -785,8 +765,8 @@ int main()
 			posXavion += 0.1 * deltaTime;
 			//posZavion += 0.1 * deltaTime;
 			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f)); 
-			/*No modifica la rotaciÛn del helicoptero cuando est· dando la curva, si no se incluye
-			hace un movimiento muy raro, es decir, le suma m·s grados al giro*/
+			/*No modifica la rotaci√≥n del helicoptero cuando est√° dando la curva, si no se incluye
+			hace un movimiento muy raro, es decir, le suma m√°s grados al giro*/
 			if (posXavion >= -25 && banderaCurva != true) {
 				model = glm::rotate(model, 270 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 			}
@@ -795,10 +775,10 @@ int main()
 		
 		//model = glm::rotate(model, rotarAvion * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//agregar material al helicÛptero
+		//agregar material al helic√≥ptero
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		Blackhawk_M.RenderModel();
-		//øCÛmo ligas la luz al helicÛptero?
+		//¬øC√≥mo ligas la luz al helic√≥ptero?
 
 		//********	LUZ DEL HELICOPTERO	***************
 		//Defino un vector con posiciones del helicoptero
@@ -809,7 +789,7 @@ int main()
 		//			posblackhawk.z);
 
 		//A diferentes velocidades horizontales
-		glm::vec3 unitaryY(0.0f, -1.0f, 0.0f); //Un unitario que tenga direcciÛn hacia el suelo.
+		glm::vec3 unitaryY(0.0f, -1.0f, 0.0f); //Un unitario que tenga direcci√≥n hacia el suelo.
 		spotLights[2].SetFlash(posblackhawk + desplazamiento, unitaryY);
 
 		///******************************************************** CINE ********************************
@@ -839,7 +819,7 @@ int main()
 		bebidas.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 25.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -866,6 +846,7 @@ int main()
 		model = glm::translate(model, glm::vec3(-40.0f, 10.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(25.0f, 1.9f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 		cine.RenderModel();
 
 
@@ -876,23 +857,23 @@ int main()
 		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//Blending trasnparencia o traslucidez
-		glEnable(GL_BLEND);									//Si no habilitamos este blending cuando no tenemos fondo esto se ver· negro
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  //Si no habilitamos este blending cuando no tenemos fondo esto se ver· negro
+		glEnable(GL_BLEND);									//Si no habilitamos este blending cuando no tenemos fondo esto se ver√° negro
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  //Si no habilitamos este blending cuando no tenemos fondo esto se ver√° negro
 		Tagave.UseTexture();
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[3]->RenderMesh();
-		glDisable(GL_BLEND);								//Si no habilitamos este blending cuando no tenemos fondo esto se ver· negro
+		glDisable(GL_BLEND);								//Si no habilitamos este blending cuando no tenemos fondo esto se ver√° negro
 
-		//La animaciÛn nos sirve para mostrarle al usuario que no est· viendo una foto, se pueden ejecutar mediante Triggers por medio de banderas.
-		/*			ANIMACI”N:
+		//La animaci√≥n nos sirve para mostrarle al usuario que no est√° viendo una foto, se pueden ejecutar mediante Triggers por medio de banderas.
+		/*			ANIMACI√ìN:
 		COND1: Debe tener 2 tipos de transformaciones.
-		COND2: Si estoy hablando de 1 bandera o 2 banderas, que solo sea ciclica que no esten condicioonadas por banderas estoy hablando de animaciÛn b·sica.
+		COND2: Si estoy hablando de 1 bandera o 2 banderas, que solo sea ciclica que no esten condicioonadas por banderas estoy hablando de animaci√≥n b√°sica.
 		
 		COMPLEJA:
-		COND1: AnimaciÛn basada en funciones, es decir, tomar una funciÛn de algun movimiento fisico real, ejemplo ecuaciones reales como caida libre o tiro parabÛlico
+		COND1: Animaci√≥n basada en funciones, es decir, tomar una funci√≥n de algun movimiento fisico real, ejemplo ecuaciones reales como caida libre o tiro parab√≥lico
 		COND2: Debemos considerar almenos 5 casos que se presenten
 		*/ 
-		//pPara que se considere animaciÛn b·sica no debe tener sÛlo traslaciÛn rotacion o escalaciÛn, tiene que ser por lo menos una trasformacion de 2 cosas
+		//pPara que se considere animaci√≥n b√°sica no debe tener s√≥lo traslaci√≥n rotacion o escalaci√≥n, tiene que ser por lo menos una trasformacion de 2 cosas
 		
 		
 
@@ -906,7 +887,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 55.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posiciÛn de la puerta
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posici√≥n de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puerta.RenderModel();
 		//Bocina
