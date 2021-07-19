@@ -78,7 +78,7 @@ Model food;
 Model electronico;
 Model cine;
 //************Objetos propuestos
-Model cocacola;
+Model puerta;
 Model bocina;
 Model sofa;
 Model lampara;
@@ -402,8 +402,8 @@ int main()
 
 	coca = Model();
 	coca.LoadModel("Models/coca.fbx");
-	cocacola = Model();
-	cocacola.LoadModel("Models/door.obj"); //Cuarto tiene un bug
+	puerta = Model();
+	puerta.LoadModel("Models/puerta1.obj"); //Cuarto tiene un bug
 	bocina = Model();
 	bocina.LoadModel("Models/Speaker.obj");
 	sofa = Model();
@@ -901,10 +901,11 @@ int main()
 		coca.RenderModel();
 		//Puerta
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 55.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cocacola.RenderModel();
+		puerta.RenderModel();
 		//Bocina
 		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
