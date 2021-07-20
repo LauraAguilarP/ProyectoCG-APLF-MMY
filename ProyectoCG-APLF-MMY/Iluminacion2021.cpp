@@ -57,6 +57,8 @@ Texture pisoTexture;
 Texture Tagave;
 Texture salaCine;
 Texture ma_bebidas;
+Texture mesaT;
+Texture regis;
 
 
 Model Kitt_M;
@@ -64,6 +66,7 @@ Model Llanta_M;
 Model Blackhawk_M;
 
 // ******* Cine 
+
 Model registradora;
 Model silla;
 Model bebidas;
@@ -71,6 +74,8 @@ Model maquina_bebida;
 Model food;
 Model electronico;
 Model cine;
+Model mesa;
+
 //************Objetos propuestos
 Model puerta;
 Model bocina;
@@ -360,6 +365,11 @@ int main()
 	salaCine = Texture("Textures/salaCine.tga");
 	salaCine.LoadTextureA();
 	ma_bebidas = Texture("Textures/bebidas.tga");
+	ma_bebidas.LoadTextureA();
+	mesaT = Texture("Textures/mesa.tga");
+	mesaT.LoadTextureA();
+	regis = Texture("Textures/Registradora.tga");
+	regis.LoadTextureA();
 
 
 	Llanta_M = Model();
@@ -368,8 +378,7 @@ int main()
 	Blackhawk_M.LoadModel("Models/uh60.obj");
 	
 	// *********** *********************************** C I N E ***********************************
-	registradora = Model();
-	registradora.LoadModel("Models/Register.obj");
+	
 	silla = Model();
 	silla.LoadModel("Models/silla.fbx"); //Se actualizó por un objeto texturizado
 	bebidas = Model();
@@ -382,6 +391,10 @@ int main()
 	electronico.LoadModel("Models/ElectronicRack.obj");
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
+	registradora = Model();
+	registradora.LoadModel("Models/Register.obj");
+	mesa = Model();
+	mesa.LoadModel("Models/mesa.obj");
 
 	coca = Model();
 	coca.LoadModel("Models/coca.fbx");
@@ -794,6 +807,11 @@ int main()
 
 		///******************************************************** CINE ********************************
 
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f)); 
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		//modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
@@ -807,48 +825,56 @@ int main()
 		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
 		model = glm::scale(model, glm::vec3(0.02f, 0.02f, 0.02f));
 		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f)); 
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		bebidas.RenderModel();
 
 		model = glm::mat4(1.0);
+
+		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f)); 
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+
 		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		maquina_bebida.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); 
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		food.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(10.5f, 0.5f, 50.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::translate(model, glm::vec3(10.5f, 0.5f, 50.5f)); 
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		electronico.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-40.0f, 10.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(25.0f, 1.9f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-
 		cine.RenderModel();
 
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 5.0f, 60.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mesa.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.5f, -10.5f, 80.5f));
+		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		registradora.RenderModel();
 
 
 		/*Agave*/
