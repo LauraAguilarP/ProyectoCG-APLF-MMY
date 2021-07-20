@@ -470,8 +470,8 @@ int main()
 	//extintor.LoadModel("Models/extintor.obj");
 	//lamparaPared = Model();
 	//lamparaPared.LoadModel("Models/lampara.obj");
-	//monitor = Model();
-	//monitor.LoadModel("Models/monitor.fbx");
+	monitor = Model();
+	monitor.LoadModel("Models/monitor1.obj");
 	//planta = Model();
 	//planta.LoadModel("Models/flower.fbx");
 	refrigerador = Model();
@@ -1031,13 +1031,13 @@ int main()
 		model = glm::translate(model, glm::vec3(-120.5f, 0.0f, 70.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		lamparaPared.RenderModel();
+		lamparaPared.RenderModel();*/
 		//monitor
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 70.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, -70.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		monitor.RenderModel();*/
+		monitor.RenderModel();
 		//refrigerador
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
