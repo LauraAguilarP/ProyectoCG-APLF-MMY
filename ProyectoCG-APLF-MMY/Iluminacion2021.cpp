@@ -60,6 +60,18 @@ Texture ma_bebidas;
 Texture mesaT;
 Texture regis;
 
+Texture pisoTexture;
+Texture Tagave;
+Texture Comida;
+Texture Bravo;
+Texture Madera;
+Texture Metales;
+Texture Mosaicos;
+Texture ReflejoLuces;
+Texture PielesTelas;
+Texture UtileriaExtra;
+Texture Metal;
+Texture Refri;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -371,6 +383,31 @@ int main()
 	regis = Texture("Textures/Registradora.tga");
 	regis.LoadTextureA();
 
+	//====================================
+	pisoTexture = Texture("Textures/piso.tga");
+	pisoTexture.LoadTextureA();
+	Tagave = Texture("Textures/Agave.tga");
+	Tagave.LoadTextureA();
+	Comida = Texture("Textures/comida.tga");
+	Comida.LoadTextureA();
+	Bravo = Texture("Textures/bravo.tga");
+	Bravo.LoadTextureA();
+	Madera = Texture("Textures/madera.tga");
+	Madera.LoadTextureA();
+	Metal = Texture("Textures/metal.tga");
+	Metal.LoadTextureA();
+	Metales = Texture("Textures/metales.tga");
+	Metales.LoadTextureA();
+	Mosaicos = Texture("Textures/mosaicos.tga");
+	Mosaicos.LoadTextureA();
+	ReflejoLuces = Texture("Textures/reflejoLuces.tga");
+	ReflejoLuces.LoadTextureA();
+	PielesTelas = Texture("Textures/TexturaPieles.tga");
+	PielesTelas.LoadTextureA();
+	UtileriaExtra = Texture("Textures/TexturasVarias.tga");
+	UtileriaExtra.LoadTextureA();
+	Refri = Texture("Textures/refri.tga");
+	Refri.LoadTextureA();
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
