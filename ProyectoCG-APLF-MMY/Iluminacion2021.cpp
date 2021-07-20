@@ -59,8 +59,9 @@ Texture salaCine;
 Texture ma_bebidas;
 Texture mesaT;
 Texture regis;
+Texture vasoJ;
+Texture mostradorT;
 
-//=====
 Texture Comida;
 Texture Bravo;
 Texture Madera;
@@ -87,6 +88,8 @@ Model food;
 Model electronico;
 Model cine;
 Model mesa;
+Model vaso;
+Model mostrador;
 
 //************Objetos propuestos
 Model puerta;
@@ -383,12 +386,13 @@ int main()
 	mesaT.LoadTextureA();
 	regis = Texture("Textures/Registradora.tga");
 	regis.LoadTextureA();
+	vasoJ = Texture("Textures/vaso.tga");
+	vasoJ.LoadTextureA();
+	mostradorT = Texture("Textures/mostrador.tga");
+	mostradorT.LoadTextureA();
 
 	//====================================
-	pisoTexture = Texture("Textures/piso.tga");
-	pisoTexture.LoadTextureA();
-	Tagave = Texture("Textures/Agave.tga");
-	Tagave.LoadTextureA();
+	
 	Comida = Texture("Textures/comida.tga");
 	Comida.LoadTextureA();
 	Bravo = Texture("Textures/bravo.tga");
@@ -435,6 +439,10 @@ int main()
 	registradora.LoadModel("Models/Register.obj");
 	mesa = Model();
 	mesa.LoadModel("Models/mesa.obj");
+	vaso = Model();
+	vaso.LoadModel("Models/vasoJ.obj");
+	mostrador = Model();
+	mostrador.LoadModel("Models/mostrador.obj");
 
 	coca = Model();
 	coca.LoadModel("Models/coca.fbx");
@@ -447,7 +455,7 @@ int main()
 	lampara = Model();
 	lampara.LoadModel("Models/lampara.obj");
 	piso = Model();
-	piso.LoadModel("Models/floor.fbx");
+	piso.LoadModel("Models/piso.obj");
 	desk = Model();
 	desk.LoadModel("Models/desk.obj");
 	basurero = Model();
@@ -645,7 +653,7 @@ int main()
 		glfwPollEvents();
 		camera.keyControl(mainWindow.getsKeys(), deltaTime);
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
-		
+
 		inputKeyframes(mainWindow.getsKeys());
 		animate();
 
@@ -690,15 +698,15 @@ int main()
 		meshList[2]->RenderMesh();
 
 		/*****************************C A R R O  *************************/
-		
-		desplazamientoKitt = glm::vec3(movAvion_x, movAvion_y,  movAvion_z);
+
+		desplazamientoKitt = glm::vec3(movAvion_x, movAvion_y, movAvion_z);
 		//agregar su coche y ponerle material
 		model = glm::mat4(1.0);
 		model = glm::translate(model, posKitt + desplazamientoKitt); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, 80 +giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		
+		model = glm::rotate(model, 80 + giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Kitt_M.RenderModel();
 		giro += 30;
@@ -712,8 +720,8 @@ int main()
 		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Permite ver que giran la llanta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Llanta_M.RenderModel();
-		 
-		
+
+
 		//Llanta derecha adelante:
 		//model = glm::mat4(1.0);
 		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
@@ -725,7 +733,7 @@ int main()
 		//Falta girar la llanta para que se vea al revés
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Llanta_M.RenderModel();
-		
+
 		//Llanta izquierda atras:
 		//model = glm::mat4(1.0);
 		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
@@ -746,24 +754,24 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Llanta_M.RenderModel();
 
-		
-		
-		
+
+
+
 		/*Ejercicio 1:
 		El helicóptero se desplaza en forma senoidal, llegue a un punto al avanzar, de la vuelta sobre su centro y regrese.esto de forma cíclica infinita.
 			Ejercicio 2 :
 
 			El coche avance y retrocede sin girar sobre su eje, el spotlight ilumine hacia la dirección donde el coche se está desplazand.o*/
 
-		/***************** H E L I C O P T E R O ************/
+			/***************** H E L I C O P T E R O ************/
 		offset += 0.1; //Controlará la velocidad en la que sube y baja el avion.
 		/*if (posXavion > -20.0f) {
-			
+
 			posXavion -= 0.01 * deltaTime; //Permite desplazar hacia enfrente de forma constante. Se recomienda multiplicar por deltaTime
 			//printf("%f",&posXavion);
 		}*/
-		posYavion = sin(10*offset *toRadians);
-		
+		posYavion = sin(10 * offset *toRadians);
+
 
 		/************************
 		************************MOVIMIENTO DE GIRO DEL HELICOPTERO
@@ -788,12 +796,12 @@ int main()
 			anguloAvion = 0.0f; //Reinicia el ángulo cuando el trayecto es recto
 		}
 
-		desplazamiento = glm:: vec3 (posXavion , posYavion, posZavion);		//agregar incremento en X con teclado
+		desplazamiento = glm::vec3(posXavion, posYavion, posZavion);		//agregar incremento en X con teclado
 		//desplazamiento = glm::vec3(mainWindow.getmuevex(), posYavion, 0.0f);		//agregar incremento en X con teclado
 		//desplazamiento = glm::vec3(posXavion, posYavion, 0.0f);		//Se deplaza en forma diagonal
 
 		model = glm::mat4(1.0);
-		model = glm:: translate(model, posblackhawk + desplazamiento);
+		model = glm::translate(model, posblackhawk + desplazamiento);
 		//model = glm::translate(model, glm::vec3(-20.0f + mainWindow.getmuevex(), 8.0 + mainWindow.getmuevey(), -1.0)); //Moviendo el helicoptero en los X,Y
 		model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
 		if (banderaCurva == false && posXavion <= -25) {
@@ -803,7 +811,7 @@ int main()
 		}
 		if (banderaCurva == true && posXavion >= 25) {
 			posZavion += 0.1 * deltaTime;
-			model = glm::rotate(model, -90 +anguloAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, -90 + anguloAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 			anguloAvion -= 0.1f;
 		}
 		if (bandera == false) { //Irá en negativo  <---
@@ -811,23 +819,23 @@ int main()
 			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f)); //270
 			/*No modifica la rotación del helicoptero cuando está dando la curva, si no se incluye
 			hace un movimiento muy raro, es decir, le suma más grados al giro*/
-			if (posXavion <= 25 && banderaCurva != false) { 
+			if (posXavion <= 25 && banderaCurva != false) {
 				model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 			}
-			
+
 		}
 		if (bandera == true) {
 			posXavion += 0.1 * deltaTime;
 			//posZavion += 0.1 * deltaTime;
-			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f)); 
+			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 			/*No modifica la rotación del helicoptero cuando está dando la curva, si no se incluye
 			hace un movimiento muy raro, es decir, le suma más grados al giro*/
 			if (posXavion >= -25 && banderaCurva != true) {
 				model = glm::rotate(model, 270 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 			}
-			
+
 		}
-		
+
 		//model = glm::rotate(model, rotarAvion * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//agregar material al helicóptero
@@ -838,7 +846,7 @@ int main()
 		//********	LUZ DEL HELICOPTERO	***************
 		//Defino un vector con posiciones del helicoptero
 		//A la misma velocidad que el Vehiculo
-		
+
 		//glm::vec3 helicopter(posblackhawk.x + mainWindow.getmuevex(), 
 		//				posblackhawk.y + mainWindow.getmuevey(), 
 		//			posblackhawk.z);
@@ -851,44 +859,44 @@ int main()
 
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f)); 
+		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		//modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
-		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f));
 		model = glm::scale(model, glm::vec3(0.02f, 0.02f, 0.02f));
-		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f)); 
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		bebidas.RenderModel();
 
 		model = glm::mat4(1.0);
-
-		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f)); 
-		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-
-		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
+		model = glm::translate(model, glm::vec3(20.5f, 0.5f, 40.5f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		//model = glm::rotate(model, 0* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		maquina_bebida.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 70.5f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vaso.RenderModel();
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-40.5f, 0.5f, 70.5f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mostrador.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); 
