@@ -60,8 +60,7 @@ Texture ma_bebidas;
 Texture mesaT;
 Texture regis;
 
-Texture pisoTexture;
-Texture Tagave;
+//=====
 Texture Comida;
 Texture Bravo;
 Texture Madera;
@@ -72,6 +71,7 @@ Texture PielesTelas;
 Texture UtileriaExtra;
 Texture Metal;
 Texture Refri;
+Texture popcorn;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -106,6 +106,7 @@ Model planta;
 Model refrigerador;
 Model Sink;
 Model coca;
+Model palomitas;
 
 Skybox skybox;
 
@@ -408,6 +409,8 @@ int main()
 	UtileriaExtra.LoadTextureA();
 	Refri = Texture("Textures/refri.tga");
 	Refri.LoadTextureA();
+	popcorn = Texture("Textures/popcorn.tga");
+	popcorn.LoadTextureA();
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
@@ -442,7 +445,7 @@ int main()
 	sofa = Model();
 	sofa.LoadModel("Models/sofa.obj");
 	lampara = Model();
-	lampara.LoadModel("Models/Poly.obj");
+	lampara.LoadModel("Models/lampara.obj");
 	piso = Model();
 	piso.LoadModel("Models/floor.fbx");
 	desk = Model();
@@ -467,6 +470,8 @@ int main()
 	refrigerador.LoadModel("Models/refri.fbx");
 	//Sink = Model();
 	//Sink.LoadModel("Models/Sink.3DS");
+	palomitas = Model();
+	palomitas.LoadModel("Models/palomitas.obj");
 
 	
 	std::vector<std::string> skyboxFaces;
@@ -1039,6 +1044,14 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Sink.RenderModel();*/
+		//Palomitas
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitas.RenderModel();
 
 		
 		glUseProgram(0);
