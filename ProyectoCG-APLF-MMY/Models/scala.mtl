@@ -1,0 +1,44 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl carpet
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 2.400000 d:\\material\\carpet\\Fabric_Carpet_rluh2mp0_2K_surface_ms\\rluh2mp_2K_Normal.jpg
+map_Kd d:\\material\\carpet\\Fabric_Carpet_rluh2mp0_2K_surface_ms\\rluh2mp_2K_Albedo.jpg
+map_Ks d:\\material\\carpet\\Fabric_Carpet_rluh2mp0_2K_surface_ms\\rluh2mp_2K_Specular.jpg
+map_Ns d:\\material\\carpet\\Fabric_Carpet_rluh2mp0_2K_surface_ms\\rluh2mp_2K_Roughness.jpg
+
+newmtl legno_gradini
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 2.700000 d:\\material\\lengo\\pld indian wood\\tfhofbfc_2K_Normal.jpg
+map_Kd d:\\material\\lengo\\pld indian wood\\tfhofbfc_2K_Albedo.jpg
+map_Ks d:\\material\\lengo\\pld indian wood\\tfhofbfc_2K_Specular.jpg
+map_Ns d:\\material\\lengo\\pld indian wood\\tfhofbfc_2K_Roughness.jpg
+
+newmtl plater
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 1.400000 d:\\material\\plaster\\Wall_Stucco_tmtnaibg_2K_surface_ms\\tmtnaibg_2K_Normal.jpg
+map_Kd d:\\material\\plaster\\Wall_Stucco_tmtnaibg_2K_surface_ms\\tmtnaibg_2K_Albedo.jpg
+map_Ks d:\\material\\plaster\\Wall_Stucco_tmtnaibg_2K_surface_ms\\tmtnaibg_2K_Specular.jpg
+map_Ns d:\\material\\plaster\\Wall_Stucco_tmtnaibg_2K_surface_ms\\tmtnaibg_2K_Roughness.jpg
