@@ -860,7 +860,7 @@ int main()
 
 		///******************************************************** CINE ********************************
 
-		//sala de proyección 
+		//	***********************			Sala de proyección 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.8f, 0.8f, 1.0f));
@@ -875,7 +875,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puerta.RenderModel();
 
-		//Dulceria 
+		// ***********************			Dulceria 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-69.2f, 0.3f, 15.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 1.3f, 1.0f));
@@ -897,10 +897,64 @@ int main()
 		maquina_bebida.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::scale(model, glm::vec3(0.08f, 0.08f, 0.08f));
+		model = glm::translate(model, glm::vec3(-69.2f, 1.8f, 18.0f));
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vaso.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 0.3f, 14.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 1.3f, 1.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mostrador.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 10.0f));
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 22.0f));
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitas.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-54.5f, 1.8f,22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		coca.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 25.0f));
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		registradora.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 14.0f)); 
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitas.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-54.4f, 1.8f, 14.2f));
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vaso.RenderModel();
+
+		// *********************		zona de comida
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-30.2f, -2.3f, 14.0f));
+		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mesa.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f));
@@ -909,24 +963,11 @@ int main()
 		silla.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 50.5f));
+		model = glm::translate(model, glm::vec3(0.5f, 0.4f, 50.5f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		bebidas.RenderModel();
-
-		
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.5f, 70.5f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vaso.RenderModel();
-		
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-40.5f, 0.5f, 70.5f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		mostrador.RenderModel();
+						
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); 
@@ -941,10 +982,7 @@ int main()
 		electronico.RenderModel();
 
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		mesa.RenderModel();
+		
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(20.5f, -10.5f, 80.5f));
@@ -980,11 +1018,22 @@ int main()
 		
 
 		/************************OBJETOS************************/
+
+		
+		//Puerta
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 55.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puerta.RenderModel();
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		coca.RenderModel();
+
 		//Bocina
 		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1064,6 +1113,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Sink.RenderModel();*/
+
 		//Palomitas
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1105,6 +1155,7 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
+
 		
 		glUseProgram(0);
 
