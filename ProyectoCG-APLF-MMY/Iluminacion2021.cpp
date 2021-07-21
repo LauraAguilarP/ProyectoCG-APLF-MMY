@@ -110,6 +110,7 @@ Model refrigerador;
 Model Sink;
 Model coca;
 Model palomitas;
+Model pared;
 
 Skybox skybox;
 
@@ -393,28 +394,28 @@ int main()
 
 	//====================================
 	
-	Comida = Texture("Textures/comida.tga");
-	Comida.LoadTextureA();
-	Bravo = Texture("Textures/bravo.tga");
-	Bravo.LoadTextureA();
+	//Comida = Texture("Textures/comida.tga");
+	//Comida.LoadTextureA();
+	//Bravo = Texture("Textures/bravo.tga");
+	//Bravo.LoadTextureA();
 	Madera = Texture("Textures/madera.tga");
 	Madera.LoadTextureA();
-	Metal = Texture("Textures/metal.tga");
-	Metal.LoadTextureA();
-	Metales = Texture("Textures/metales.tga");
-	Metales.LoadTextureA();
-	Mosaicos = Texture("Textures/mosaicos.tga");
-	Mosaicos.LoadTextureA();
-	ReflejoLuces = Texture("Textures/reflejoLuces.tga");
-	ReflejoLuces.LoadTextureA();
-	PielesTelas = Texture("Textures/TexturaPieles.tga");
-	PielesTelas.LoadTextureA();
-	UtileriaExtra = Texture("Textures/TexturasVarias.tga");
-	UtileriaExtra.LoadTextureA();
-	Refri = Texture("Textures/refri.tga");
-	Refri.LoadTextureA();
-	popcorn = Texture("Textures/popcorn.tga");
-	popcorn.LoadTextureA();
+	//Metal = Texture("Textures/metal.tga");
+	//Metal.LoadTextureA();
+	//Metales = Texture("Textures/metales.tga");
+	//Metales.LoadTextureA();
+	//Mosaicos = Texture("Textures/mosaicos.tga");
+	//Mosaicos.LoadTextureA();
+	//ReflejoLuces = Texture("Textures/reflejoLuces.tga");
+	//ReflejoLuces.LoadTextureA();
+	//PielesTelas = Texture("Textures/TexturaPieles.tga");
+	//PielesTelas.LoadTextureA();
+	//UtileriaExtra = Texture("Textures/TexturasVarias.tga");
+	//UtileriaExtra.LoadTextureA();
+	//Refri = Texture("Textures/refri.tga");
+	//Refri.LoadTextureA();
+	//popcorn = Texture("Textures/popcorn.tga");
+	//popcorn.LoadTextureA();
 
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
@@ -480,6 +481,8 @@ int main()
 	//Sink.LoadModel("Models/Sink.3DS");
 	palomitas = Model();
 	palomitas.LoadModel("Models/palomitas.obj");
+	pared = Model();
+	pared.LoadModel("Models/pared.obj");
 
 	
 	std::vector<std::string> skyboxFaces;
@@ -982,13 +985,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		coca.RenderModel();
-		//Puerta
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 55.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puerta.RenderModel();
 		//Bocina
 		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1074,7 +1070,41 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		palomitas.RenderModel();
-
+		//Pared
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 15.0f, -26.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(7.6f, 4.95f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+		//Pared2 
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 15.0f, 33.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(7.6f, 4.95f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+		//Pared Entrada
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(62.5f, 16.5f, 3.6f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.5f, 4.6f, 2.9f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+		//Puerta Principal
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(62, -2.0f, 5.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.2f, 0.1f, 0.1f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puerta.RenderModel();
+		//Techo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-41.0f, 35.5f, 0.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(10.2f, 0.1f, 8.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
 		
 		glUseProgram(0);
 
