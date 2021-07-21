@@ -951,16 +951,38 @@ int main()
 		// *********************		zona de comida
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-30.2f, -2.3f, 14.0f));
-		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		model = glm::translate(model, glm::vec3(-31.2f, -1.8f, 19.0f));
+		model = glm::scale(model, glm::vec3(0.05f, 0.06f, 0.05f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(100.5f, 0.5f, 0.5f));
-		model = glm::scale(model, glm::vec3(0.02f, 0.02f, 0.02f));
+		model = glm::translate(model, glm::vec3(-33.5f, -1.8f, 21.5f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+		model = glm::rotate(model, 30 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-26.5f, -1.8f, 4.0f));
+		model = glm::scale(model, glm::vec3(0.05f, 0.06f, 0.05f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mesa.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-20.2f, -1.8f, 13.0f));
+		model = glm::scale(model, glm::vec3(0.05f, 0.06f, 0.05f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mesa.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.2f, -2.3f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 3.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		sofa.RenderModel();
+
+		
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.4f, 50.5f));
@@ -1040,12 +1062,8 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		bocina.RenderModel();*/
-		//Sofa
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(15.5f, 0.5f, -15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		sofa.RenderModel();
+		
+		
 		//Lampara
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.5f, 0.5f, -15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1114,12 +1132,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Sink.RenderModel();*/
 
-		//Palomitas
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		palomitas.RenderModel();
 		//Pared
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-15.0f, 15.0f, -26.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
