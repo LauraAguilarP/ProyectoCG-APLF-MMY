@@ -80,37 +80,65 @@ Model Blackhawk_M;
 
 // ******* Cine 
 
-Model registradora;
-Model silla;
-Model bebidas;
-Model maquina_bebida;
-Model food;
-Model electronico;
+//Muebles
 Model cine;
 Model mesa;
-Model vaso;
 Model mostrador;
-
-//************Objetos propuestos
-Model puerta;
-Model bocina;
+Model silla;
 Model sofa;
-Model lampara;
-Model piso;
 Model desk;
+Model puerta;
+
+//Alimentos y bebidas
+Model food;
+Model vaso;
+Model bebidas;
+Model coca;
+Model palomitas;
+
+//electronicos
+Model registradora;
+Model maquina_bebida;
+Model electronico;
+Model lampara;
+Model monitor;
+Model monitor2;
+Model refrigerador;
+
+Model bocina;
+
+//otros elementos
 Model basurero;
+Model piso;
+Model pared;
+
 Model botellaVidrio;
 Model cuchara;
 Model escalera;
 Model extintor;
 Model lamparaPared;
-Model monitor;
+
 Model planta;
-Model refrigerador;
+
 Model Sink;
-Model coca;
-Model palomitas;
-Model pared;
+
+//Cuadros
+Model cuadro1;
+Model cuadro2;
+Model cuadro3;
+Model cuadro4;
+Model cuadro5;
+Model cuadro6;
+Model cuadro7;
+Model cuadro8;
+Model cuadro9;
+Model cuadro10;
+Model cuadro11;
+Model cuadro12;
+Model cuadro13;
+Model cuadro14;
+Model cuadro15;
+Model cuadro16;
 
 Skybox skybox;
 
@@ -423,44 +451,99 @@ int main()
 	Blackhawk_M.LoadModel("Models/uh60.obj");
 	
 	// *********** *********************************** C I N E ***********************************
-	
-	silla = Model();
-	silla.LoadModel("Models/silla.fbx"); //Se actualizó por un objeto texturizado
-	bebidas = Model();
-	bebidas.LoadModel("Models/Blank.obj");
-	maquina_bebida = Model();
-	maquina_bebida.LoadModel("Models/maquina_bebidas.obj");
-	food = Model();
-	food.LoadModel("Models/food.obj");
-	electronico = Model();
-	electronico.LoadModel("Models/ElectronicRack.obj");
+	//Muebles 
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
-	registradora = Model();
-	registradora.LoadModel("Models/Register.obj");
+	silla = Model();
+	silla.LoadModel("Models/silla.fbx"); //Se actualizó por un objeto texturizado
 	mesa = Model();
 	mesa.LoadModel("Models/mesa.obj");
-	vaso = Model();
-	vaso.LoadModel("Models/vasoJ.obj");
 	mostrador = Model();
 	mostrador.LoadModel("Models/mostrador.obj");
-
-	coca = Model();
-	coca.LoadModel("Models/coca.fbx");
 	puerta = Model();
 	puerta.LoadModel("Models/puerta1.obj"); //Cuarto tiene un bug
-	bocina = Model();
-	bocina.LoadModel("Models/Speaker.obj");
 	sofa = Model();
 	sofa.LoadModel("Models/sofa.obj");
-	lampara = Model();
-	lampara.LoadModel("Models/lampara.obj");
-	piso = Model();
-	piso.LoadModel("Models/piso.obj");
 	desk = Model();
 	desk.LoadModel("Models/desk.obj");
+
+	//Alimentos y bebidas
+	food = Model();
+	food.LoadModel("Models/food.obj");
+	coca = Model();
+	coca.LoadModel("Models/coca.fbx");
+	vaso = Model();
+	vaso.LoadModel("Models/vasoJ.obj");
+	palomitas = Model();
+	palomitas.LoadModel("Models/palomitas.obj");
+	bebidas = Model();
+	bebidas.LoadModel("Models/Blank.obj");
+
+	//Electronicos
+	electronico = Model();
+	electronico.LoadModel("Models/ElectronicRack.obj");
+	registradora = Model();
+	registradora.LoadModel("Models/Register.obj");
+	maquina_bebida = Model();
+	maquina_bebida.LoadModel("Models/maquina_bebidas.obj");
+	monitor = Model();
+	monitor.LoadModel("Models/monitor1.obj");
+	monitor2 = Model();
+	monitor2.LoadModel("Models/monitor3.obj");
+	refrigerador = Model();
+	refrigerador.LoadModel("Models/refri.fbx");
+	lampara = Model();
+	lampara.LoadModel("Models/lampara.obj");
+	
+	
+	//otros elementos
 	basurero = Model();
 	basurero.LoadModel("Models/basura.obj");
+	
+	piso = Model();
+	piso.LoadModel("Models/piso.obj");
+	pared = Model();
+	pared.LoadModel("Models/pared.obj");
+
+	bocina = Model();
+	bocina.LoadModel("Models/Speaker.obj");
+	
+	//Cuadros:
+	cuadro1 = Model();
+	cuadro1.LoadModel("Models/cuadro1.obj");
+	cuadro2 = Model();
+	cuadro2.LoadModel("Models/cuadro2.obj");
+	cuadro3 = Model();
+	cuadro3.LoadModel("Models/cuadro3.obj");
+	cuadro4 = Model();
+	cuadro4.LoadModel("Models/cuadro4.obj");
+	cuadro5 = Model();
+	cuadro5.LoadModel("Models/cuadro5.obj");
+	cuadro6 = Model();
+	cuadro6.LoadModel("Models/cuadro6.obj");
+	cuadro7 = Model();
+	cuadro7.LoadModel("Models/cuadro7.obj");
+	cuadro8 = Model();
+	cuadro8.LoadModel("Models/cuadro8.obj");
+	cuadro9 = Model();
+	cuadro9.LoadModel("Models/cuadro9.obj");
+	cuadro10 = Model();
+	cuadro10.LoadModel("Models/cuadro10.obj");
+	cuadro11 = Model();
+	cuadro11.LoadModel("Models/cuadro11.obj");
+	cuadro12 = Model();
+	cuadro12.LoadModel("Models/cuadro12.obj");
+	cuadro13 = Model();
+	cuadro13.LoadModel("Models/cuadro13.obj");
+	cuadro14 = Model();
+	cuadro14.LoadModel("Models/cuadro14.obj");
+	cuadro15 = Model();
+	cuadro15.LoadModel("Models/cuadro15.obj");
+	cuadro16 = Model();
+	cuadro16.LoadModel("Models/cuadro16.obj");
+	
+	
+	
 	//botellaVidrio = Model();
 	//botellaVidrio.LoadModel("Models/botella.fbx");
 	cuchara = Model();
@@ -471,19 +554,14 @@ int main()
 	//extintor.LoadModel("Models/extintor.obj");
 	//lamparaPared = Model();
 	//lamparaPared.LoadModel("Models/lampara.obj");
-	monitor = Model();
-	monitor.LoadModel("Models/monitor1.obj");
+	
 	//planta = Model();
 	//planta.LoadModel("Models/flower.fbx");
-	refrigerador = Model();
-	refrigerador.LoadModel("Models/refri.fbx");
+	
 	//Sink = Model();
 	//Sink.LoadModel("Models/Sink.3DS");
-	palomitas = Model();
-	palomitas.LoadModel("Models/palomitas.obj");
-	pared = Model();
-	pared.LoadModel("Models/pared.obj");
-
+	
+	
 	
 	std::vector<std::string> skyboxFaces;
 	//Nuevo SKybox
@@ -958,8 +1036,15 @@ int main()
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-33.5f, -1.8f, 21.5f));
-		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-		model = glm::rotate(model, 30 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.012f, 0.013f, 0.012f));
+		model = glm::rotate(model, 40 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-28.4f, -1.8f, 17.0f));
+		model = glm::scale(model, glm::vec3(0.012f, 0.013f, 0.012f));
+		model = glm::rotate(model, -140 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		silla.RenderModel();
 
@@ -970,19 +1055,108 @@ int main()
 		mesa.RenderModel();
 
 		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-28.8f, -1.8f, 1.5f));
+		model = glm::scale(model, glm::vec3(0.012f, 0.013f, 0.012f));
+		model = glm::rotate(model, -40 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-23.2f, -1.8f, 3.9f));
+		model = glm::scale(model, glm::vec3(0.012f, 0.013f, 0.012f));
+		model = glm::rotate(model, -190 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-26.5f, 1.38f, 4.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::rotate(model, 40 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		food.RenderModel();
+
+		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-20.2f, -1.8f, 13.0f));
 		model = glm::scale(model, glm::vec3(0.05f, 0.06f, 0.05f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-15.2f, -2.3f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 3.0f));
+		model = glm::translate(model, glm::vec3(-22.5f, -1.8f, 15.0f));
+		model = glm::scale(model, glm::vec3(0.012f, 0.013f, 0.012f));
+		model = glm::rotate(model, 50 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-17.8f, -1.8f, 10.65f));
+		model = glm::scale(model, glm::vec3(0.012f, 0.013f, 0.012f));
+		model = glm::rotate(model, -120 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		silla.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-19.2f, 1.35f, 12.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		coca.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-21.0f, 1.35f, 13.6f));
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vaso.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-4.2f, -2.2f, 19.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.5f, 4.1f, 2.5f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		sofa.RenderModel();
 
+		//Basurero
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-19.2f, -1.5f, -23.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		basurero.RenderModel();
+
+		// **********************			Taquilla 
+
+		//Desk
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(5.8f, -2.0f, -13.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.17f, 0.11f, 0.25f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		desk.RenderModel();
 		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		registradora.RenderModel();
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 130 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		monitor.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(6.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		monitor2.RenderModel();
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.5f, 3.7f, -11.3f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		lampara.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 0.4f, 50.5f));
@@ -990,27 +1164,14 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		bebidas.RenderModel();
 						
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(50.5f, 0.5f, 10.5f)); 
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		food.RenderModel();
-
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(10.5f, 0.5f, 50.5f)); 
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		electronico.RenderModel();
-
+			   	
 
 		
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(20.5f, -10.5f, 80.5f));
-		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		registradora.RenderModel();
 
 
 		/*Agave*/
@@ -1050,12 +1211,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puerta.RenderModel();
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		coca.RenderModel();
-
 		//Bocina
 		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1064,30 +1219,15 @@ int main()
 		bocina.RenderModel();*/
 		
 		
-		//Lampara
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.5f, 0.5f, -15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		lampara.RenderModel();
+		
 		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piso.RenderModel();
-		//Desk
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		desk.RenderModel();
-		//Basurero
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		basurero.RenderModel();
+		
+		
 		//BotellaVidrio Omitida de momento por un bug
 		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1118,12 +1258,7 @@ int main()
 		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		lamparaPared.RenderModel();*/
-		//monitor
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, -70.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		monitor.RenderModel();
+		
 	
 		//Tarja
 		/*model = glm::mat4(1.0);
@@ -1168,7 +1303,119 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
 
-		
+		//Cuadros
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro1.RenderModel();
+		//2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-5.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro2.RenderModel();
+		//3
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro3.RenderModel();
+		//4
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-25.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro4.RenderModel();
+		//5
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-35.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro5.RenderModel();
+		//6
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(25.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro6.RenderModel();
+		//7
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(35.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro7.RenderModel();
+		//8
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(45.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro8.RenderModel();
+		//9
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(55.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro9.RenderModel();
+		//10
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro10.RenderModel();
+		//11
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro11.RenderModel();
+		//12
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(30.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro12.RenderModel();
+		//13
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(40.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro13.RenderModel();
+		//14
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro14.RenderModel();
+		//15
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-10.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro15.RenderModel();
+		//16
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-30.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro16.RenderModel();
+
 		glUseProgram(0);
 
 		mainWindow.swapBuffers();
