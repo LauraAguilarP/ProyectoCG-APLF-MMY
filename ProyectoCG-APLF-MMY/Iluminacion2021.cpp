@@ -542,26 +542,15 @@ int main()
 	cuadro16 = Model();
 	cuadro16.LoadModel("Models/cuadro16.obj");
 	
-	
-	
-	//botellaVidrio = Model();
-	//botellaVidrio.LoadModel("Models/botella.fbx");
 	cuchara = Model();
 	cuchara.LoadModel("Models/cuchara.obj");
-	//escalera = Model();
-	//escalera.LoadModel("Models/scala.obj");
-	//extintor = Model();
-	//extintor.LoadModel("Models/extintor.obj");
+	extintor = Model();
+	extintor.LoadModel("Models/existor.obj");
 	//lamparaPared = Model();
 	//lamparaPared.LoadModel("Models/lampara.obj");
 	
 	//planta = Model();
 	//planta.LoadModel("Models/flower.fbx");
-	
-	//Sink = Model();
-	//Sink.LoadModel("Models/Sink.3DS");
-	
-	
 	
 	std::vector<std::string> skyboxFaces;
 	//Nuevo SKybox
@@ -607,7 +596,7 @@ int main()
 	//Declaración de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f, //Valores de color
 		0.0f, 1.0f, //Coeficiente ambiental y difuso
-		2.0f, 1.5f, 1.5f, //Poisicion
+		-77.0f, 2.5f, -20.0f, //Poisicion
 		0.3f, 0.2f, 0.1f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
@@ -642,7 +631,15 @@ int main()
 	//luz de helicóptero
 	spotLights[2] = SpotLight(1.0f, 0.0f, 0.0f, //Aqui va el color
 		1.0f, 2.0f,
-		-30.0f, 14.0f, -1.0f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
+		-74.0f, 3.0f, -20.0f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
+		0.0f, -1.0f, 0.0f, //Vector de dirección, en este caso un vector unitario que apunta a donde ve el auto
+		1.0f, 0.0f, 0.0f,
+		15.0f); //Tamaño del diametro
+	spotLightCount++;
+
+	spotLights[3] = SpotLight(0.0f, 1.0f, 0.0f, //Aqui va el color
+		1.0f, 2.0f,
+		-70.0f, 3.0f, -20.0f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
 		0.0f, -1.0f, 0.0f, //Vector de dirección, en este caso un vector unitario que apunta a donde ve el auto
 		1.0f, 0.0f, 0.0f,
 		15.0f); //Tamaño del diametro
@@ -778,163 +775,6 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		/*****************************C A R R O  *************************/
-
-		desplazamientoKitt = glm::vec3(movAvion_x, movAvion_y, movAvion_z);
-		//agregar su coche y ponerle material
-		model = glm::mat4(1.0);
-		model = glm::translate(model, posKitt + desplazamientoKitt); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		modelAux = model; //Con esto ya estamos dandole jerarquia a la llanta
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, 80 + giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Kitt_M.RenderModel();
-		giro += 30;
-		//Llanta izquierda adelante:
-		//model = glm::mat4(1.0);
-		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(-3.5f, -0.5f, 2.7f));  //Ajustando la posición de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaño de la llanta
-		model = glm::rotate(model, -180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f)); //Movimineto de llantas
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Permite ver que giran la llanta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Llanta_M.RenderModel();
-
-
-		//Llanta derecha adelante:
-		//model = glm::mat4(1.0);
-		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(-3.5f, -0.5f, -3.0f));  //Ajustando la posición de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaño de la llanta
-		model = glm::rotate(model, 360 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		//model = glm::rotate(model, -360 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));  //Permite ver que giran la llanta
-		//Falta girar la llanta para que se vea al revés
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Llanta_M.RenderModel();
-
-		//Llanta izquierda atras:
-		//model = glm::mat4(1.0);
-		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(5.1f, -0.5f, 2.7f));  //Ajustando la posición de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaño de la llanta
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));  //Permite ver que giran la llanta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Llanta_M.RenderModel();
-
-		//Llanta derecha atras:
-		//model = glm::mat4(1.0);
-		model = modelAux; //Envez de reiniciar la matriz le pasamos la info de model aux
-		model = glm::translate(model, glm::vec3(5.1f, -0.5f, -3.0f));  //Ajustando la posición de la llanta
-		model = glm::scale(model, glm::vec3(0.017f, 0.017f, 0.017f)); //Ajustando el tamaño de la llanta
-		model = glm::rotate(model, 360 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));  //Permite ver que giran la llanta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Llanta_M.RenderModel();
-
-
-
-
-		/*Ejercicio 1:
-		El helicóptero se desplaza en forma senoidal, llegue a un punto al avanzar, de la vuelta sobre su centro y regrese.esto de forma cíclica infinita.
-			Ejercicio 2 :
-
-			El coche avance y retrocede sin girar sobre su eje, el spotlight ilumine hacia la dirección donde el coche se está desplazand.o*/
-
-			/***************** H E L I C O P T E R O ************/
-		offset += 0.1; //Controlará la velocidad en la que sube y baja el avion.
-		/*if (posXavion > -20.0f) {
-
-			posXavion -= 0.01 * deltaTime; //Permite desplazar hacia enfrente de forma constante. Se recomienda multiplicar por deltaTime
-			//printf("%f",&posXavion);
-		}*/
-		posYavion = sin(10 * offset *toRadians);
-
-
-		/************************
-		************************MOVIMIENTO DE GIRO DEL HELICOPTERO
-		************************
-		*/
-
-		if (posXavion >= 50.0f) { //Limite derecho
-			bandera = false;
-		}
-
-		if (posXavion <= -50.0f) { //Limite izquierdo
-			bandera = true;
-		}
-
-		if (posXavion >= 25.0f) { //Es el punto en donde comenzará a dar la curva el helicoptero
-			banderaCurva = true; //Toma el giro derecho
-		}
-		if (posXavion <= -25.0f) { //Es el punto en donde comenzará a dar la curva el helicoptero
-			banderaCurva = false; //Toma el giro izquierdo
-		}
-		if (posXavion >= -25.0f && posXavion < 25.0f) { //Reinciando el angulo del helicoptero
-			anguloAvion = 0.0f; //Reinicia el ángulo cuando el trayecto es recto
-		}
-
-		desplazamiento = glm::vec3(posXavion, posYavion, posZavion);		//agregar incremento en X con teclado
-		//desplazamiento = glm::vec3(mainWindow.getmuevex(), posYavion, 0.0f);		//agregar incremento en X con teclado
-		//desplazamiento = glm::vec3(posXavion, posYavion, 0.0f);		//Se deplaza en forma diagonal
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, posblackhawk + desplazamiento);
-		//model = glm::translate(model, glm::vec3(-20.0f + mainWindow.getmuevex(), 8.0 + mainWindow.getmuevey(), -1.0)); //Moviendo el helicoptero en los X,Y
-		model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
-		if (banderaCurva == false && posXavion <= -25) {
-			posZavion -= 0.1 * deltaTime;
-			model = glm::rotate(model, -200 + anguloAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-			anguloAvion -= 0.1f;
-		}
-		if (banderaCurva == true && posXavion >= 25) {
-			posZavion += 0.1 * deltaTime;
-			model = glm::rotate(model, -90 + anguloAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-			anguloAvion -= 0.1f;
-		}
-		if (bandera == false) { //Irá en negativo  <---
-			posXavion -= 0.1 * deltaTime;
-			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f)); //270
-			/*No modifica la rotación del helicoptero cuando está dando la curva, si no se incluye
-			hace un movimiento muy raro, es decir, le suma más grados al giro*/
-			if (posXavion <= 25 && banderaCurva != false) {
-				model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-			}
-
-		}
-		if (bandera == true) {
-			posXavion += 0.1 * deltaTime;
-			//posZavion += 0.1 * deltaTime;
-			model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-			/*No modifica la rotación del helicoptero cuando está dando la curva, si no se incluye
-			hace un movimiento muy raro, es decir, le suma más grados al giro*/
-			if (posXavion >= -25 && banderaCurva != true) {
-				model = glm::rotate(model, 270 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-			}
-
-		}
-
-		//model = glm::rotate(model, rotarAvion * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//agregar material al helicóptero
-		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		Blackhawk_M.RenderModel();
-		//¿Cómo ligas la luz al helicóptero?
-
-		//********	LUZ DEL HELICOPTERO	***************
-		//Defino un vector con posiciones del helicoptero
-		//A la misma velocidad que el Vehiculo
-
-		//glm::vec3 helicopter(posblackhawk.x + mainWindow.getmuevex(), 
-		//				posblackhawk.y + mainWindow.getmuevey(), 
-		//			posblackhawk.z);
-
-		//A diferentes velocidades horizontales
-		glm::vec3 unitaryY(0.0f, -1.0f, 0.0f); //Un unitario que tenga dirección hacia el suelo.
-		spotLights[2].SetFlash(posblackhawk + desplazamiento, unitaryY);
 
 		///******************************************************** CINE ********************************
 
@@ -952,6 +792,22 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puerta.RenderModel();
+
+		//Exitintor
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.5f, 3.8f, 3.3f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		extintor.RenderModel();
+
+		//Exitintor
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, -23.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.5f,3.8f, 3.3f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		extintor.RenderModel();
 
 		// ***********************			Dulceria 
 		model = glm::mat4(1.0);
@@ -1121,6 +977,14 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		basurero.RenderModel();
+
+		//Exitintor
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-60.0f, 5.0f, -24.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.5f, 3.8f, 3.3f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		extintor.RenderModel();
 
 		// **********************			Taquilla 
 
