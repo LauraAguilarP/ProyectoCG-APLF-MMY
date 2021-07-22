@@ -122,6 +122,7 @@ Model planta;
 
 Model Sink;
 
+
 //Cuadros
 Model cuadro1;
 Model cuadro2;
@@ -139,6 +140,7 @@ Model cuadro13;
 Model cuadro14;
 Model cuadro15;
 Model cuadro16;
+
 
 Skybox skybox;
 
@@ -508,6 +510,7 @@ int main()
 	bocina = Model();
 	bocina.LoadModel("Models/Speaker.obj");
 	
+
 	//Cuadros:
 	cuadro1 = Model();
 	cuadro1.LoadModel("Models/cuadro1.obj");
@@ -541,6 +544,7 @@ int main()
 	cuadro15.LoadModel("Models/cuadro15.obj");
 	cuadro16 = Model();
 	cuadro16.LoadModel("Models/cuadro16.obj");
+
 	
 	cuchara = Model();
 	cuchara.LoadModel("Models/cuchara.obj");
@@ -994,6 +998,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.17f, 0.11f, 0.25f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		desk.RenderModel();
+
 		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
@@ -1017,6 +1022,31 @@ int main()
 		monitor2.RenderModel();
 		
 		model = glm::mat4(1.0);
+
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		registradora.RenderModel();
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 130 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		monitor.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(6.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		monitor2.RenderModel();
+		
+		model = glm::mat4(1.0);
+
 		model = glm::translate(model, glm::vec3(0.5f, 3.7f, -11.3f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
