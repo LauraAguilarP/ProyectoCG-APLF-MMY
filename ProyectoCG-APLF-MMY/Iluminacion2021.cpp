@@ -122,6 +122,26 @@ Model planta;
 
 Model Sink;
 
+
+//Cuadros
+Model cuadro1;
+Model cuadro2;
+Model cuadro3;
+Model cuadro4;
+Model cuadro5;
+Model cuadro6;
+Model cuadro7;
+Model cuadro8;
+Model cuadro9;
+Model cuadro10;
+Model cuadro11;
+Model cuadro12;
+Model cuadro13;
+Model cuadro14;
+Model cuadro15;
+Model cuadro16;
+
+
 Skybox skybox;
 
 //materiales
@@ -490,7 +510,41 @@ int main()
 	bocina = Model();
 	bocina.LoadModel("Models/Speaker.obj");
 	
-	
+
+	//Cuadros:
+	cuadro1 = Model();
+	cuadro1.LoadModel("Models/cuadro1.obj");
+	cuadro2 = Model();
+	cuadro2.LoadModel("Models/cuadro2.obj");
+	cuadro3 = Model();
+	cuadro3.LoadModel("Models/cuadro3.obj");
+	cuadro4 = Model();
+	cuadro4.LoadModel("Models/cuadro4.obj");
+	cuadro5 = Model();
+	cuadro5.LoadModel("Models/cuadro5.obj");
+	cuadro6 = Model();
+	cuadro6.LoadModel("Models/cuadro6.obj");
+	cuadro7 = Model();
+	cuadro7.LoadModel("Models/cuadro7.obj");
+	cuadro8 = Model();
+	cuadro8.LoadModel("Models/cuadro8.obj");
+	cuadro9 = Model();
+	cuadro9.LoadModel("Models/cuadro9.obj");
+	cuadro10 = Model();
+	cuadro10.LoadModel("Models/cuadro10.obj");
+	cuadro11 = Model();
+	cuadro11.LoadModel("Models/cuadro11.obj");
+	cuadro12 = Model();
+	cuadro12.LoadModel("Models/cuadro12.obj");
+	cuadro13 = Model();
+	cuadro13.LoadModel("Models/cuadro13.obj");
+	cuadro14 = Model();
+	cuadro14.LoadModel("Models/cuadro14.obj");
+	cuadro15 = Model();
+	cuadro15.LoadModel("Models/cuadro15.obj");
+	cuadro16 = Model();
+	cuadro16.LoadModel("Models/cuadro16.obj");
+
 	
 	
 	
@@ -1080,6 +1134,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.17f, 0.11f, 0.25f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		desk.RenderModel();
+
 		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
@@ -1103,6 +1158,31 @@ int main()
 		monitor2.RenderModel();
 		
 		model = glm::mat4(1.0);
+
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		registradora.RenderModel();
+		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 130 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		monitor.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(6.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		monitor2.RenderModel();
+		
+		model = glm::mat4(1.0);
+
 		model = glm::translate(model, glm::vec3(0.5f, 3.7f, -11.3f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -1253,7 +1333,119 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
 
-		
+		//Cuadros
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro1.RenderModel();
+		//2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-5.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro2.RenderModel();
+		//3
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro3.RenderModel();
+		//4
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-25.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro4.RenderModel();
+		//5
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-35.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro5.RenderModel();
+		//6
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(25.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro6.RenderModel();
+		//7
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(35.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro7.RenderModel();
+		//8
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(45.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro8.RenderModel();
+		//9
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(55.0f, 5.5f, -25.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro9.RenderModel();
+		//10
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro10.RenderModel();
+		//11
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(20.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro11.RenderModel();
+		//12
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(30.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro12.RenderModel();
+		//13
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(40.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro13.RenderModel();
+		//14
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro14.RenderModel();
+		//15
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-10.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro15.RenderModel();
+		//16
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-30.0f, 5.5f, 32.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuadro16.RenderModel();
+
 		glUseProgram(0);
 
 		mainWindow.swapBuffers();
