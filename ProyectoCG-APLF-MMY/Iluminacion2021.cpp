@@ -147,6 +147,8 @@ Model cuadro14;
 Model cuadro15;
 Model cuadro16;
 
+Model personal;
+
 
 Skybox skybox;
 
@@ -581,6 +583,12 @@ int main()
 	extintor = Model();
 	extintor.LoadModel("Models/existor.obj");
 
+
+	//Personajes
+	personal = Model();
+	personal.LoadModel("Models/personaje.obj");
+	//lamparaPared = Model();
+	//lamparaPared.LoadModel("Models/lampara.obj");
 	
 	//planta = Model();
 	//planta.LoadModel("Models/flower.fbx");
@@ -885,6 +893,13 @@ int main()
 		mostrador.RenderModel();
 
 		model = glm::mat4(1.0);
+
+		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f));
+		model = glm::scale(model, glm::vec3(0.3f, 0.35f, 0.3f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		personal.RenderModel();
+
 		model = glm::translate(model, glm::vec3(-70.7f, 7.3f, 8.0f));
 		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1111,6 +1126,12 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.0f, -1.0f, -17.3f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		personal.RenderModel();
 		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(11.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z

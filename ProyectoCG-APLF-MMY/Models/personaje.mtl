@@ -1,0 +1,109 @@
+# Blender MTL File: 'personaje.blend'
+# Material Count: 10
+
+newmtl Boy_eyeBallLft_plySG1
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.940000 0.940000 0.940000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
+
+newmtl Boy_eyeSpecLft_plySG1
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Boy_irisLft_plySG1
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.150000 0.210000 0.120000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Boy_retinaLft_plySG1
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.240000 0.270000 0.250000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
+
+newmtl Boy_tongue_plySG1
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.770000 0.190000 0.200000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl lambert2SG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
+
+newmtl lambert3SG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.170000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
+
+newmtl lambert4SG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.880000 0.660000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
+
+newmtl lambert5SG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 1.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
+
+newmtl phongE1SG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.330000 0.140000 0.010000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Yann\\Desktop\\Computación Grafica\\Texturas\\Sofas Sillas\\recepcion.tga
