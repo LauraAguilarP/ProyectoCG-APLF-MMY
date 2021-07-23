@@ -40,6 +40,11 @@ Martínez Martínez Yanni
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "Material.h"
+#include "include/irrKlang.h"
+#include <irrklang\irrKlang.h>
+
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -50,7 +55,6 @@ std::vector<Shader> shaderList;
 Camera camera;
 //Variable para keyFrames
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
-
 
 
 Texture pisoTexture;
@@ -408,9 +412,10 @@ void animate(void)
 
 int main()
 {
+	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
 	mainWindow.Initialise();
-
+	
 	CreateObjects();
 	
 	CreateShaders();
@@ -765,7 +770,8 @@ int main()
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
-	
+
+
 	//KEYFRAMES DECLARADOS INICIALES
 
 	KeyFrame[0].movBravo_x = 0.0f;
@@ -836,6 +842,7 @@ int main()
 		KeyFrame[11].giroBravo = 0;
 
 	float giro = 90.0f;
+	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
@@ -891,7 +898,7 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
-
+		SoundEngine->play2D("audio/breakout.mp3", true);
 
 		///******************************************************** CINE ********************************
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
