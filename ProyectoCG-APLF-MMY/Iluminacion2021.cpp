@@ -306,9 +306,9 @@ bool animacion = false;
 
 
 //NEW// Keyframes
-float posXavion = 2.0, posYavion = 2.0, posZavion = 0;
-float	movAvion_x = 0.0f, movAvion_y = 0.0f, movAvion_z=0.0f;
-float giroAvion = 0;
+float posXbravo = 40.0, posYbravo = -2.0, posZbravo = 0;
+float	movBravo_x = 0.0f, movBravo_y = 0.0f, movBravo_z = 0.0f;
+float giroBravo = 0;
 
 #define MAX_FRAMES 100
 int i_max_steps = 90;
@@ -316,14 +316,14 @@ int i_curr_steps = 6;
 typedef struct _frame
 {
 	//Variables para GUARDAR Key Frames
-	float movAvion_x;		//Variable para PosicionX
-	float movAvion_y;		//Variable para PosicionY
-	float movAvion_z;		//Variable para PosicionZ
-	float movAvion_xInc;		//Variable para IncrementoX
-	float movAvion_yInc;		//Variable para IncrementoY
-	float movAvion_zInc;		//Variable para IncrementoY
-	float giroAvion;
-	float giroAvionInc;
+	float movBravo_x;		//Variable para PosicionX
+	float movBravo_y;		//Variable para PosicionY
+	float movBravo_z;		//Variable para PosicionZ
+	float movBravo_xInc;		//Variable para IncrementoX
+	float movBravo_yInc;		//Variable para IncrementoY
+	float movBravo_zInc;		//Variable para IncrementoY
+	float giroBravo;
+	float giroBravoInc;
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
@@ -337,10 +337,10 @@ void saveFrame(void) //tecla L
 	printf("frameindex %d\n", FrameIndex);
 
 
-	KeyFrame[FrameIndex].movAvion_x = movAvion_x;
-	KeyFrame[FrameIndex].movAvion_y = movAvion_y;
-	KeyFrame[FrameIndex].movAvion_z = movAvion_z;
-	KeyFrame[FrameIndex].giroAvion;
+	KeyFrame[FrameIndex].movBravo_x = movBravo_x;
+	KeyFrame[FrameIndex].movBravo_y = movBravo_y;
+	KeyFrame[FrameIndex].movBravo_z = movBravo_z;
+	KeyFrame[FrameIndex].giroBravo;
 	//no volatil, agregar una forma de escribir a un archivo para guardar los frames
 	FrameIndex++;
 }
@@ -348,18 +348,18 @@ void saveFrame(void) //tecla L
 void resetElements(void) //Tecla 0
 {
 
-	movAvion_x = KeyFrame[0].movAvion_x;
-	movAvion_y = KeyFrame[0].movAvion_y;
-	movAvion_z = KeyFrame[0].movAvion_z;
-	giroAvion = KeyFrame[0].giroAvion;
+	movBravo_x = KeyFrame[0].movBravo_x;
+	movBravo_y = KeyFrame[0].movBravo_y;
+	movBravo_z = KeyFrame[0].movBravo_z;
+	giroBravo = KeyFrame[0].giroBravo;
 }
 
 void interpolation(void)
 {
-	KeyFrame[playIndex].movAvion_xInc = (KeyFrame[playIndex + 1].movAvion_x - KeyFrame[playIndex].movAvion_x) / i_max_steps;
-	KeyFrame[playIndex].movAvion_yInc = (KeyFrame[playIndex + 1].movAvion_y - KeyFrame[playIndex].movAvion_y) / i_max_steps;
-	KeyFrame[playIndex].movAvion_zInc = (KeyFrame[playIndex + 1].movAvion_z - KeyFrame[playIndex].movAvion_z) / i_max_steps;
-	KeyFrame[playIndex].giroAvionInc = (KeyFrame[playIndex + 1].giroAvion - KeyFrame[playIndex].giroAvion) / i_max_steps;
+	KeyFrame[playIndex].movBravo_xInc = (KeyFrame[playIndex + 1].movBravo_x - KeyFrame[playIndex].movBravo_x) / i_max_steps;
+	KeyFrame[playIndex].movBravo_yInc = (KeyFrame[playIndex + 1].movBravo_y - KeyFrame[playIndex].movBravo_y) / i_max_steps;
+	KeyFrame[playIndex].movBravo_zInc = (KeyFrame[playIndex + 1].movBravo_z - KeyFrame[playIndex].movBravo_z) / i_max_steps;
+	KeyFrame[playIndex].giroBravoInc = (KeyFrame[playIndex + 1].giroBravo - KeyFrame[playIndex].giroBravo) / i_max_steps;
 
 }
 
@@ -393,10 +393,10 @@ void animate(void)
 			//printf("se qued aqui\n");
 			//printf("max steps: %f", i_max_steps);
 			//Draw animation
-			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
-			movAvion_y += KeyFrame[playIndex].movAvion_yInc;
-			movAvion_z += KeyFrame[playIndex].movAvion_zInc;
-			giroAvion += KeyFrame[playIndex].giroAvionInc;
+			movBravo_x += KeyFrame[playIndex].movBravo_xInc;
+			movBravo_y += KeyFrame[playIndex].movBravo_yInc;
+			movBravo_z += KeyFrame[playIndex].movBravo_zInc;
+			giroBravo += KeyFrame[playIndex].giroBravoInc;
 			i_curr_steps++;
 		}
 
@@ -649,6 +649,9 @@ int main()
 	bool banderaCurva = true;
 	bool banderaCarro = false;
 
+	glm::vec3 posBravo = glm::vec3(40.0f, -2.0f, 0.0f);
+	glm::vec3 desplazamientoBravo = glm::vec3(0.0f, 0.0f, 0.0f);
+
 	//posición inicial del helicóptero
 	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
 	glm::vec3 desplazamiento = glm:: vec3(0.0f, 0.0f, 0.0f);
@@ -720,72 +723,72 @@ int main()
 	
 	//KEYFRAMES DECLARADOS INICIALES
 
-	KeyFrame[0].movAvion_x = 0.0f;
-	KeyFrame[0].movAvion_y = 0.0f;
-	KeyFrame[0].movAvion_z = 0.0f;
-	KeyFrame[0].giroAvion = 0;
+	KeyFrame[0].movBravo_x = 0.0f;
+	KeyFrame[0].movBravo_y = 0.0f;
+	KeyFrame[0].movBravo_z = 0.0f;
+	KeyFrame[0].giroBravo = 0;
 
 
-	KeyFrame[1].movAvion_x = -10.0f;
-	KeyFrame[1].movAvion_y = 0.0f;
-	KeyFrame[1].movAvion_z = 0.0f;
-	KeyFrame[1].giroAvion = 0;
+	KeyFrame[1].movBravo_x = 0.0f;
+	KeyFrame[1].movBravo_y = 0.0f;
+	KeyFrame[1].movBravo_z = 6.0f;
+	KeyFrame[1].giroBravo = 0;
 
 
-	KeyFrame[2].movAvion_x = -12.0f;
-	KeyFrame[2].movAvion_y = 5.0f;
-	KeyFrame[2].movAvion_z = 0.0f;
-	KeyFrame[2].giroAvion = 45;
+	KeyFrame[2].movBravo_x = -21.0f;
+	KeyFrame[2].movBravo_y = 0.0f;
+	KeyFrame[2].movBravo_z = 6.0f;
+	KeyFrame[2].giroBravo = 0; //Bien
 
 
-	KeyFrame[3].movAvion_x = -17.0f;
-	KeyFrame[3].movAvion_y = 0.0f;
-	KeyFrame[3].movAvion_z = 0.0f;
-	KeyFrame[3].giroAvion = 0;
+	KeyFrame[3].movBravo_x = -21.0f;
+	KeyFrame[3].movBravo_y = 0.0f;
+	KeyFrame[3].movBravo_z = -3.0f;
+	KeyFrame[3].giroBravo = 0;
 
-	/*	KeyFrame[4].movAvion_x = 3.0f;
-		KeyFrame[4].movAvion_y = -2.0f;
-		KeyFrame[4].giroAvion = 45.0f*/;
+	/*	KeyFrame[4].movBravo_x = 3.0f;
+		KeyFrame[4].movBravo_y = -2.0f;
+		KeyFrame[4].giroBravo = 45.0f*/;
 
-		KeyFrame[4].movAvion_x = -25.0f;
-		KeyFrame[4].movAvion_y = 0.0f;
-		KeyFrame[4].movAvion_z = 0.0f;
-		KeyFrame[4].giroAvion = 0.0f;
+		KeyFrame[4].movBravo_x = -40.0f;
+		KeyFrame[4].movBravo_y = 0.0f;
+		KeyFrame[4].movBravo_z = -3.0f;
+		KeyFrame[4].giroBravo = 0.0f;
 
-		KeyFrame[5].movAvion_x = -25.0f;
-		KeyFrame[5].movAvion_y = 0.0f;
-		KeyFrame[5].movAvion_z = 5.0f;
-		KeyFrame[5].giroAvion = 45.0f;
+		KeyFrame[5].movBravo_x = -40.0f;
+		KeyFrame[5].movBravo_y = 0.0f;
+		KeyFrame[5].movBravo_z = -7.0f;
+		KeyFrame[5].giroBravo = 0.0f;
 
-		KeyFrame[6].movAvion_x = -20.0f;
-		KeyFrame[6].movAvion_y = 0.0f;
-		KeyFrame[6].movAvion_z = 10.0f;
-		KeyFrame[6].giroAvion = 45.0f;
+		KeyFrame[6].movBravo_x = -35.0f;
+		KeyFrame[6].movBravo_y = 0.0f;
+		KeyFrame[6].movBravo_z = -7.0f;
+		KeyFrame[6].giroBravo = 0.0f;
 
-		KeyFrame[7].movAvion_x = -20.0f;
-		KeyFrame[7].movAvion_y = 0.0f;
-		KeyFrame[7].movAvion_z = 20.0f;
-		KeyFrame[7].giroAvion = 45.0f;
+		KeyFrame[7].movBravo_x = -75.0f;
+		KeyFrame[7].movBravo_y = 0.0f;
+		KeyFrame[7].movBravo_z = -7.0f;
+		KeyFrame[7].giroBravo = 0.0f;
 
-		KeyFrame[8].movAvion_x = -30.0f;
-		KeyFrame[8].movAvion_y = 0.0f;
-		KeyFrame[8].movAvion_z = 25.0f;
-		KeyFrame[8].giroAvion = 45.0f;
+		KeyFrame[8].movBravo_x = -75.0f;
+		KeyFrame[8].movBravo_y = 0.0f;
+		KeyFrame[8].movBravo_z = 4.0f;
+		KeyFrame[8].giroBravo = 0.0f;
 
-		KeyFrame[9].movAvion_x = -20.0f;
-		KeyFrame[9].movAvion_y = 0.0f;
-		KeyFrame[9].movAvion_z = 35.0f;
-		KeyFrame[9].giroAvion = 45.0f;
+		KeyFrame[9].movBravo_x = -83.0f;
+		KeyFrame[9].movBravo_y = 0.0f;
+		KeyFrame[9].movBravo_z = 4.0f;
+		KeyFrame[9].giroBravo = 0.0f;
 
-		KeyFrame[10].movAvion_x = -20.0f;
-		KeyFrame[10].movAvion_y = 0.0f;
-		KeyFrame[10].movAvion_z = 15.0f;
-		KeyFrame[10].giroAvion = 45.0f;
+		KeyFrame[10].movBravo_x = -83.0f;
+		KeyFrame[10].movBravo_y = 0.0f;
+		KeyFrame[10].movBravo_z = 20.0f;
+		KeyFrame[10].giroBravo = 0.0f;
 
-		KeyFrame[11].movAvion_x = 0.0f;
-		KeyFrame[11].movAvion_y = 0.0f;
-		KeyFrame[11].movAvion_z = 0.0f;
-		KeyFrame[11].giroAvion = 0;
+		KeyFrame[11].movBravo_x = 0.0f;
+		KeyFrame[11].movBravo_y = 5.0f;
+		KeyFrame[11].movBravo_z = 0.0f;
+		KeyFrame[11].giroBravo = 0;
 
 	float giro = 90.0f;
 	////Loop mientras no se cierra la ventana
@@ -846,9 +849,9 @@ int main()
 
 
 		///******************************************************** CINE ********************************
-
+		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(40.0f, -2.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(posBravo+desplazamientoBravo));
 		model = glm::scale(model, glm::vec3(5.5f, 5.5f, 5.4f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -1577,8 +1580,8 @@ void inputKeyframes(bool* keys)
 		if (guardoFrame < 1)
 		{
 			saveFrame();
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			//printf("movAvion_y es: %f\n", movAvion_y);
+			//printf("movBravo_x es: %f\n", movBravo_x);
+			//printf("movBravo_y es: %f\n", movBravo_y);
 			printf("presiona P para habilitar guardar otro frame'\n");
 			guardoFrame++;
 			reinicioFrame = 0;
@@ -1598,9 +1601,9 @@ void inputKeyframes(bool* keys)
 	{
 		if (ciclo < 1)
 		{
-			//printf("movAvion_x es: %f\n", movAvion_x);
-			movAvion_x += 1.0f;
-			printf("movAvion_x es: %f\n", movAvion_x);
+			//printf("movBravo_x es: %f\n", movBravo_x);
+			movBravo_x += 1.0f;
+			printf("movBravo_x es: %f\n", movBravo_x);
 			ciclo++;
 			ciclo2 = 0;
 			printf("Presiona la tecla 2 para poder habilitar la variable\n");
