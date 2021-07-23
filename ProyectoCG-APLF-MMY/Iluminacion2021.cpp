@@ -332,7 +332,7 @@ typedef struct _frame
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 12;			//introducir datos
+int FrameIndex = 30;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
@@ -833,13 +833,85 @@ int main()
 
 		KeyFrame[10].movBravo_x = -83.0f;
 		KeyFrame[10].movBravo_y = 0.0f;
-		KeyFrame[10].movBravo_z = 20.0f;
+		KeyFrame[10].movBravo_z = 24.0f;
 		KeyFrame[10].giroBravo = 0.0f;
 
-		KeyFrame[11].movBravo_x = 0.0f;
-		KeyFrame[11].movBravo_y = 5.0f;
-		KeyFrame[11].movBravo_z = 0.0f;
+		KeyFrame[11].movBravo_x = -91.0f;
+		KeyFrame[11].movBravo_y = 0.0f;
+		KeyFrame[11].movBravo_z = 24.0f;
 		KeyFrame[11].giroBravo = 0;
+
+		KeyFrame[12].movBravo_x = -91.0f;
+		KeyFrame[12].movBravo_y = 0.0f;
+		KeyFrame[12].movBravo_z = 14.0f;
+		KeyFrame[12].giroBravo = 0;
+
+		KeyFrame[13].movBravo_x = -91.0f;
+		KeyFrame[13].movBravo_y = 0.0f;
+		KeyFrame[13].movBravo_z = -18.0f;
+		KeyFrame[13].giroBravo = 0;
+
+		KeyFrame[14].movBravo_x = -175.0f;
+		KeyFrame[14].movBravo_y = 0.0f;
+		KeyFrame[14].movBravo_z = -18.0f;
+		KeyFrame[14].giroBravo = 0;
+
+		KeyFrame[15].movBravo_x = -175.0f;
+		KeyFrame[15].movBravo_y = 0.0f;
+		KeyFrame[15].movBravo_z = -8.0f;
+		KeyFrame[15].giroBravo = 0;
+
+		KeyFrame[16].movBravo_x = -160.0f;
+		KeyFrame[16].movBravo_y = 0.0f;
+		KeyFrame[16].movBravo_z = -8.0f;
+		KeyFrame[16].giroBravo = 0; //TOdo cool
+
+		//Empieza a subir las escaleras
+		KeyFrame[17].movBravo_x = -135.0f;
+		KeyFrame[17].movBravo_y = 10.0f;
+		KeyFrame[17].movBravo_z = -8.0f;
+		KeyFrame[17].giroBravo = 0;
+
+		KeyFrame[18].movBravo_x = -135.0f;
+		KeyFrame[18].movBravo_y = 10.0f;
+		KeyFrame[18].movBravo_z = 14.0f;
+		KeyFrame[18].giroBravo = 0;
+
+		KeyFrame[19].movBravo_x = -135.0f;
+		KeyFrame[19].movBravo_y = 7.0f;
+		KeyFrame[19].movBravo_z = 14.0f;
+		KeyFrame[19].giroBravo = 0;
+
+		KeyFrame[20].movBravo_x = -135.0f;
+		KeyFrame[20].movBravo_y = 10.0f;
+		KeyFrame[20].movBravo_z = 14.0f;
+		KeyFrame[20].giroBravo = 0;
+
+		KeyFrame[21].movBravo_x = -135.0f;
+		KeyFrame[21].movBravo_y = 10.0f;
+		KeyFrame[21].movBravo_z = -8.0f;
+		KeyFrame[21].giroBravo = 0;
+
+		KeyFrame[22].movBravo_x = -160.0f;
+		KeyFrame[22].movBravo_y = 0.0f;
+		KeyFrame[22].movBravo_z = -8.0f;
+		KeyFrame[22].giroBravo = 0;
+		//Aquí baja de las escaleras
+
+		KeyFrame[23].movBravo_x = -175.0f;
+		KeyFrame[23].movBravo_y = 0.0f;
+		KeyFrame[23].movBravo_z = -8.0f;
+		KeyFrame[23].giroBravo = 0;
+
+		KeyFrame[24].movBravo_x = -175.0f;
+		KeyFrame[24].movBravo_y = 0.0f;
+		KeyFrame[24].movBravo_z = 30.0f;
+		KeyFrame[24].giroBravo = 0;
+
+		KeyFrame[25].movBravo_x = 0.0f;
+		KeyFrame[25].movBravo_y = 5.0f;
+		KeyFrame[25].movBravo_z = 0.0f;
+		KeyFrame[25].giroBravo = 0;
 
 	float giro = 90.0f;
 	
