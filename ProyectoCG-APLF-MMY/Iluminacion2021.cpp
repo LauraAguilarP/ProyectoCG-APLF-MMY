@@ -161,6 +161,7 @@ Material Material_opaco;
 //luz direccional
 DirectionalLight mainLight; //Luz direccional, es una luz que ilumina todos los objetos, son como el sol
 //la luz direccional siempre debe ponerse, sino puede verse mal
+
 //para declarar varias luces de tipo pointlight
 PointLight pointLights[MAX_POINT_LIGHTS]; //Luz puntual, es una luz que ilumina sólo en su radio como esfera
 SpotLight spotLights[MAX_SPOT_LIGHTS]; //Luz spotlight, sólo ilumina en una sola direccion.
@@ -628,19 +629,53 @@ int main()
 	glm::vec3 posKitt = glm::vec3(0.0f, 0.5f, -1.5f);
 	glm::vec3 desplazamientoKitt = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
+	
 	//luz direccional, sólo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
 		0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
 		0.0f, 0.0f, -1.0f); //Vector de direccion
+	
 	//contador de luces puntuales 
+
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f, //Valores de color
+	pointLights[0] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
 		0.0f, 1.0f, //Coeficiente ambiental y difuso
-		-77.0f, 2.5f, -20.0f, //Poisicion
-		0.3f, 0.2f, 0.1f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+		-15.2f, 11.5f, -22.0f, //Poisicion
+		0.2f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
+	pointLights[1] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		7.5f, 11.5f, -22.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	pointLights[2] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		30.2f, 11.5f, -22.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	pointLights[3] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		-15.2f, 11.5f, 31.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	pointLights[4] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		7.5f, 11.5f, 30.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	pointLights[5] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		30.2f, 11.5f, 30.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	
 	unsigned int spotLightCount = 0;
 	//linterna
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f, //Luz ligada a la camara, en este caso tiene color blanco
@@ -654,13 +689,23 @@ int main()
 	//luz fija
 	spotLights[1] = SpotLight(0.0f, 0.0f, 1.0f,
 		1.0f, 2.0f,
-		5.0f, 10.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
+		30.2f, 11.5f, 30.0f,
+		0.0f, -2.0f, -2.0f,
+		0.3f, 0.3f, 0.3f,
 		15.0f);
 	spotLightCount++;
 
-	//luz de faro
+	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f, //Aqui va el color
+		1.0f, 2.0f,
+		-72.0f, 28.2f, 5.3f, 
+		-1.0f, -0.3f, 0.0f, //Vector de dirección, 
+		1.0f, 0.0f, 0.0f,
+		18.0f); //Tamaño del diametro
+	spotLightCount++;
+
+
+
+	/*/luz de faro
 	spotLights[1] = SpotLight(0.8f, 0.0f, 0.5f, //Aqui va el color
 		1.0f, 2.0f, 
 		-1.5f, -1.5f, -3.7f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
@@ -684,7 +729,7 @@ int main()
 		0.0f, -1.0f, 0.0f, //Vector de dirección, en este caso un vector unitario que apunta a donde ve el auto
 		1.0f, 0.0f, 0.0f,
 		15.0f); //Tamaño del diametro
-	spotLightCount++;
+	spotLightCount++; */
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
