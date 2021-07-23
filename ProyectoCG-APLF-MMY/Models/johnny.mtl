@@ -1,0 +1,20 @@
+# Material file for johnny.obj
+
+newmtl johnny
+	Ns 0
+	d 1
+	illum 2
+	Kd 0.8 0.8 0.8
+	Ks 0.0 0.0 0.0
+	Ka 0.2 0.2 0.2
+	map_Kd DOLPHIN.EXE_0xA33D4AC3.png
+
+newmtl mouth
+	Ns 0
+	d 1
+	illum 2
+	Kd 0.8 0.8 0.8
+	Ks 0.0 0.0 0.0
+	Ka 0.2 0.2 0.2
+	map_Kd DOLPHIN.EXE_0xEB96D8BB.png
+

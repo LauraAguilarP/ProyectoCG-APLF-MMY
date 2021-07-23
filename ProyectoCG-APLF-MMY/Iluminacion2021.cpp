@@ -80,6 +80,11 @@ Model Llanta_M;
 Model Blackhawk_M;
 
 // ******* Cine 
+Model johnny;
+Model val;
+Model dexter;
+Model mandy;
+Model eduardo;
 
 //Muebles
 Model cine;
@@ -149,6 +154,9 @@ Model cuadro16;
 
 Model personal;
 
+Model marcoPuerta;
+Model puertaI;
+Model puertaD;
 
 Skybox skybox;
 
@@ -462,6 +470,17 @@ int main()
 	Blackhawk_M.LoadModel("Models/uh60.obj");
 	
 	// *********** *********************************** C I N E ***********************************
+	//Personajes
+	johnny = Model();
+	johnny.LoadModel("Models/johnny.obj");
+	val = Model();
+	val.LoadModel("Models/val.obj");
+	dexter = Model();
+	dexter.LoadModel("Models/dexter.fbx");
+	mandy = Model();
+	mandy.LoadModel("Models/mandy.obj");
+	eduardo = Model();
+	eduardo.LoadModel("Models/eduardo.fbx");
 	//Muebles 
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
@@ -567,6 +586,13 @@ int main()
 	cuadro16 = Model();
 	cuadro16.LoadModel("Models/cuadro16.obj");
 
+	//Puerta para animación:
+	marcoPuerta = Model();
+	marcoPuerta.LoadModel("Models/marcoPuerta.obj");
+	puertaI = Model();
+	puertaI.LoadModel("Models/puertaI.obj");
+	puertaD = Model();
+	puertaD.LoadModel("Models/puertaD.obj");
 	
 
 	
@@ -819,6 +845,13 @@ int main()
 
 		///******************************************************** CINE ********************************
 
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(40.0f, -2.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(5.5f, 5.5f, 5.4f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		johnny.RenderModel();
+		
 		//	***********************			Sala de proyección 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, -1.0f, 0.0f));
@@ -834,6 +867,26 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puerta.RenderModel();
 
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.05f, 3.05f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		dexter.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-110.2f, 3.5f, 8.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(3.0f, 3.05f, 3.05f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mandy.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-115.2f, 1.5f, 0.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(2.0f, 2.05f, 2.05f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		eduardo.RenderModel();
 		//Exitintor
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1033,6 +1086,13 @@ int main()
 		model = glm::scale(model, glm::vec3(0.05f, 0.06f, 0.05f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-28.2f, -2.0f, 7.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.06f, 4.05f));
+		model = glm::rotate(model, -180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		val.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-28.8f, -1.8f, 1.5f));
