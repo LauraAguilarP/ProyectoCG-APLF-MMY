@@ -122,7 +122,7 @@ Model botellaVidrio;
 Model cuchara;
 Model escalera;
 Model extintor;
-
+Model separadores;
 
 Model planta;
 
@@ -496,6 +496,8 @@ int main()
 	sofa.LoadModel("Models/sofa.obj");
 	desk = Model();
 	desk.LoadModel("Models/desk.obj");
+	separadores = Model();
+	separadores.LoadModel("Models/separadores.obj");
 
 	//Alimentos y bebidas
 	food = Model();
@@ -1222,7 +1224,12 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		lampara.RenderModel();
 
-		
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(11.5f, -2.0f, -5.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 2.5f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		separadores.RenderModel();
 			   	
 		// lamparas izquierda		
 		model = glm::mat4(1.0);
