@@ -40,6 +40,11 @@ Martínez Martínez Yanni
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "Material.h"
+#include "include/irrKlang.h"
+#include <irrklang\irrKlang.h>
+
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -50,7 +55,6 @@ std::vector<Shader> shaderList;
 Camera camera;
 //Variable para keyFrames
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
-
 
 
 Texture pisoTexture;
@@ -408,9 +412,10 @@ void animate(void)
 
 int main()
 {
+	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
 	mainWindow.Initialise();
-
+	
 	CreateObjects();
 	
 	CreateShaders();
@@ -765,7 +770,8 @@ int main()
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
-	
+
+
 	//KEYFRAMES DECLARADOS INICIALES
 
 	KeyFrame[0].movBravo_x = 0.0f;
@@ -836,6 +842,7 @@ int main()
 		KeyFrame[11].giroBravo = 0;
 
 	float giro = 90.0f;
+	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
@@ -891,7 +898,7 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
-
+		SoundEngine->play2D("audio/breakout.mp3", true);
 
 		///******************************************************** CINE ********************************
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
@@ -996,13 +1003,13 @@ int main()
 		mostrador.RenderModel();
 
 		model = glm::mat4(1.0);
-
 		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.35f, 0.3f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 
+		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-70.7f, 7.3f, 8.0f));
 		model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1397,8 +1404,15 @@ int main()
 		pared.RenderModel();
 		//Pared2 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-15.0f, 15.1f, 33.2f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(7.3f, 4.95f, 0.5f));
+		model = glm::translate(model, glm::vec3(10.12f, 15.1f, 33.2f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(4.9f, 4.95f, 0.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-64.8f, 15.1f, 33.1f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.7f, 4.9f, 1.9f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
@@ -1423,6 +1437,63 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		techo.RenderModel();
+
+		//Pasillo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-144.6f, 16.5f, 45.6f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.55f, 4.6f, 1.3f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-40.0f, 16.5f, 46.6f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(0.55f, 4.6f, 1.3f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-90.8f, 15.1f, 59.1f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(5.3f, 4.95f, 1.5f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pared.RenderModel();
+
+		//Techo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-90.1f, 35.4f, 45.1f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(5.3f, 2.95f, 4.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		techo.RenderModel();
+
+		//lamparas izquierda
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-65.8f, 15.1f, 58.86f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(4.8f, 4.8f, 4.8f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		lamparaPared.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-100.8f, 15.1f, 58.86f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(4.8f, 4.8f, 4.8f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		lamparaPared.RenderModel();
+
+		//lamparas derecha
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-65.8f, 15.1f, 33.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(4.8f, 4.8f, 4.8f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		lamparaPared.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-100.8f, 15.1f, 33.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(4.8f, 4.8f, 4.8f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		lamparaPared.RenderModel();
 
 		//Cuadros
 		model = glm::mat4(1.0);
