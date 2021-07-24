@@ -335,7 +335,7 @@ typedef struct _frame
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 12;			//introducir datos
+int FrameIndex = 40;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
@@ -415,6 +415,7 @@ void animate(void)
 
 int main()
 {
+	float angulo = 0.0f;
 	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
 	mainWindow.Initialise();
@@ -661,6 +662,8 @@ int main()
 	bool banderaCurva = true;
 	bool banderaCarro = false;
 
+
+
 	glm::vec3 posBravo = glm::vec3(40.0f, -2.0f, 0.0f);
 	glm::vec3 desplazamientoBravo = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -795,13 +798,13 @@ int main()
 	KeyFrame[2].movBravo_x = -21.0f;
 	KeyFrame[2].movBravo_y = 0.0f;
 	KeyFrame[2].movBravo_z = 6.0f;
-	KeyFrame[2].giroBravo = 0; //Bien
+	KeyFrame[2].giroBravo = -90; //Bien
 
 
 	KeyFrame[3].movBravo_x = -21.0f;
 	KeyFrame[3].movBravo_y = 0.0f;
 	KeyFrame[3].movBravo_z = -3.0f;
-	KeyFrame[3].giroBravo = 0;
+	KeyFrame[3].giroBravo = -180;
 
 	/*	KeyFrame[4].movBravo_x = 3.0f;
 		KeyFrame[4].movBravo_y = -2.0f;
@@ -810,22 +813,22 @@ int main()
 		KeyFrame[4].movBravo_x = -40.0f;
 		KeyFrame[4].movBravo_y = 0.0f;
 		KeyFrame[4].movBravo_z = -3.0f;
-		KeyFrame[4].giroBravo = 0.0f;
+		KeyFrame[4].giroBravo = -90.0f;
 
 		KeyFrame[5].movBravo_x = -40.0f;
 		KeyFrame[5].movBravo_y = 0.0f;
 		KeyFrame[5].movBravo_z = -7.0f;
-		KeyFrame[5].giroBravo = 0.0f;
+		KeyFrame[5].giroBravo = -180.0f;
 
 		KeyFrame[6].movBravo_x = -35.0f;
 		KeyFrame[6].movBravo_y = 0.0f;
 		KeyFrame[6].movBravo_z = -7.0f;
-		KeyFrame[6].giroBravo = 0.0f;
+		KeyFrame[6].giroBravo = -180.0f;
 
 		KeyFrame[7].movBravo_x = -75.0f;
 		KeyFrame[7].movBravo_y = 0.0f;
 		KeyFrame[7].movBravo_z = -7.0f;
-		KeyFrame[7].giroBravo = 0.0f;
+		KeyFrame[7].giroBravo = -90.0f;
 
 		KeyFrame[8].movBravo_x = -75.0f;
 		KeyFrame[8].movBravo_y = 0.0f;
@@ -835,23 +838,146 @@ int main()
 		KeyFrame[9].movBravo_x = -83.0f;
 		KeyFrame[9].movBravo_y = 0.0f;
 		KeyFrame[9].movBravo_z = 4.0f;
-		KeyFrame[9].giroBravo = 0.0f;
+		KeyFrame[9].giroBravo = -90.0f; //
 
 		KeyFrame[10].movBravo_x = -83.0f;
 		KeyFrame[10].movBravo_y = 0.0f;
-		KeyFrame[10].movBravo_z = 20.0f;
+		KeyFrame[10].movBravo_z = 24.0f;
 		KeyFrame[10].giroBravo = 0.0f;
 
-		KeyFrame[11].movBravo_x = 0.0f;
-		KeyFrame[11].movBravo_y = 5.0f;
-		KeyFrame[11].movBravo_z = 0.0f;
-		KeyFrame[11].giroBravo = 0;
+		KeyFrame[11].movBravo_x = -91.0f;
+		KeyFrame[11].movBravo_y = 0.0f;
+		KeyFrame[11].movBravo_z = 24.0f;
+		KeyFrame[11].giroBravo = -90;
 
-	float giro = 90.0f;
+		KeyFrame[12].movBravo_x = -91.0f;
+		KeyFrame[12].movBravo_y = 0.0f;
+		KeyFrame[12].movBravo_z = 14.0f;
+		KeyFrame[12].giroBravo = -180;
+
+		KeyFrame[13].movBravo_x = -91.0f;
+		KeyFrame[13].movBravo_y = 0.0f;
+		KeyFrame[13].movBravo_z = -18.0f;
+		KeyFrame[13].giroBravo = -90;
+
+		KeyFrame[14].movBravo_x = -175.0f;
+		KeyFrame[14].movBravo_y = 0.0f;
+		KeyFrame[14].movBravo_z = -18.0f;
+		KeyFrame[14].giroBravo = -90;
+		//Entra al cine
+		KeyFrame[15].movBravo_x = -175.0f;
+		KeyFrame[15].movBravo_y = 0.0f;
+		KeyFrame[15].movBravo_z = -8.0f;
+		KeyFrame[15].giroBravo = 0;
+
+		KeyFrame[16].movBravo_x = -160.0f;
+		KeyFrame[16].movBravo_y = 0.0f;
+		KeyFrame[16].movBravo_z = -8.0f;
+		KeyFrame[16].giroBravo = 90; //TOdo cool
+
+		//Empieza a subir las escaleras
+		KeyFrame[17].movBravo_x = -133.0f;
+		KeyFrame[17].movBravo_y = 10.0f;
+		KeyFrame[17].movBravo_z = -8.0f;
+		KeyFrame[17].giroBravo = 90;
+		//Gira para sentarse
+		KeyFrame[18].movBravo_x = -133.0f;
+		KeyFrame[18].movBravo_y = 10.0f;
+		KeyFrame[18].movBravo_z = 14.0f;
+		KeyFrame[18].giroBravo = 0;
+		//Se sienta
+		KeyFrame[19].movBravo_x = -133.0f;
+		KeyFrame[19].movBravo_y = 7.0f;
+		KeyFrame[19].movBravo_z = 14.0f;
+		KeyFrame[19].giroBravo = -90;
+
+		KeyFrame[20].movBravo_x = -133.0f;
+		KeyFrame[20].movBravo_y = 7.0f;
+		KeyFrame[20].movBravo_z = 14.0f;
+		KeyFrame[20].giroBravo = -90;
+
+		KeyFrame[21].movBravo_x = -133.0f;
+		KeyFrame[21].movBravo_y = 7.0f;
+		KeyFrame[21].movBravo_z = 14.0f;
+		KeyFrame[21].giroBravo = -90;
+		//Se levanta
+		KeyFrame[22].movBravo_x = -135.0f;
+		KeyFrame[22].movBravo_y = 10.0f;
+		KeyFrame[22].movBravo_z = 14.0f;
+		KeyFrame[22].giroBravo = -90;
+
+		KeyFrame[23].movBravo_x = -135.0f;
+		KeyFrame[23].movBravo_y = 10.0f;
+		KeyFrame[23].movBravo_z = -8.0f;
+		KeyFrame[23].giroBravo = -180;
+
+		KeyFrame[24].movBravo_x = -160.0f;
+		KeyFrame[24].movBravo_y = 0.0f;
+		KeyFrame[24].movBravo_z = -8.0f;
+		KeyFrame[24].giroBravo = -90;
+		//Aquí baja de las escaleras
+
+		KeyFrame[25].movBravo_x = -175.0f;
+		KeyFrame[25].movBravo_y = 0.0f;
+		KeyFrame[25].movBravo_z = -8.0f;
+		KeyFrame[25].giroBravo = -90;
+
+		//Gira para salir del cine
+		KeyFrame[26].movBravo_x = -175.0f;
+		KeyFrame[26].movBravo_y = 0.0f;
+		KeyFrame[26].movBravo_z = 38.0f;
+		KeyFrame[26].giroBravo = 0;
+
+		//Llega al final del pasillo de emergencia
+		KeyFrame[27].movBravo_x = -91.0f;
+		KeyFrame[27].movBravo_y = 0.0f;
+		KeyFrame[27].movBravo_z = 38.0f;
+		KeyFrame[27].giroBravo = 90;
+
+		KeyFrame[28].movBravo_x = -91.0f;
+		KeyFrame[28].movBravo_y = 0.0f;
+		KeyFrame[28].movBravo_z = 30.0f;
+		KeyFrame[28].giroBravo = 180;
+
+		//Llega antes del sofá
+		KeyFrame[29].movBravo_x = -65.0f;
+		KeyFrame[29].movBravo_y = 0.0f;
+		KeyFrame[29].movBravo_z = 30.0f;
+		KeyFrame[29].giroBravo = 90;
+
+		//
+		KeyFrame[30].movBravo_x = -65.0f;
+		KeyFrame[30].movBravo_y = 0.0f;
+		KeyFrame[30].movBravo_z = 20.0f;
+		KeyFrame[30].giroBravo = 180;
+
+		KeyFrame[31].movBravo_x = -55.0f;
+		KeyFrame[31].movBravo_y = 0.0f;
+		KeyFrame[31].movBravo_z = 20.0f;
+		KeyFrame[31].giroBravo = 90;
+
+		//Izquierda del sofá
+		KeyFrame[32].movBravo_x = -55.0f;
+		KeyFrame[32].movBravo_y = 0.0f;
+		KeyFrame[32].movBravo_z = 10.0f;
+		KeyFrame[32].giroBravo = 180;
+
+		KeyFrame[33].movBravo_x = -5.0f;
+		KeyFrame[33].movBravo_y = 0.0f;
+		KeyFrame[33].movBravo_z = 10.0f;
+		KeyFrame[33].giroBravo = 90;
+
+		KeyFrame[34].movBravo_x = 0.0f;
+		KeyFrame[34].movBravo_y = 5.0f;
+		KeyFrame[34].movBravo_z = 0.0f;
+		KeyFrame[34].giroBravo = 0;
+
+	
 	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
@@ -911,8 +1037,8 @@ int main()
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(posBravo+desplazamientoBravo));
-		model = glm::scale(model, glm::vec3(5.5f, 5.5f, 5.4f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		johnny.RenderModel();
 		
@@ -1015,10 +1141,12 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mostrador.RenderModel();
 
+		angulo += 0.2;
+		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.35f, 0.3f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
+		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 
@@ -1166,7 +1294,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-28.2f, -2.0f, 7.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.06f, 4.05f));
-		model = glm::rotate(model, -180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -180 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		val.RenderModel();
 
@@ -1273,6 +1401,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.0f, -1.0f, -17.3f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 		
