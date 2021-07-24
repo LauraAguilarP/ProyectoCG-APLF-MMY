@@ -482,7 +482,7 @@ int main()
 	// *********** *********************************** C I N E ***********************************
 	//Personajes
 	johnny = Model();
-	johnny.LoadModel("Models/johnny.obj");
+	johnny.LoadModel("Models/johnny2.obj");
 	val = Model();
 	val.LoadModel("Models/val.obj");
 	dexter = Model();
