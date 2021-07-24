@@ -136,6 +136,8 @@ Model basurero;
 Model piso;
 Model pared;
 Model techo;
+Model boleto;
+
 
 
 //Cuadros
@@ -546,7 +548,8 @@ int main()
 	//otros elementos
 	basurero = Model();
 	basurero.LoadModel("Models/basura.obj");
-	
+	boleto = Model();
+	boleto.LoadModel("Models/boleto.obj");
 	piso = Model();
 	piso.LoadModel("Models/piso.obj");
 
@@ -899,7 +902,7 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 		
-		SoundEngine->play2D("audio/breakout.mp3", true);
+		//SoundEngine->play2D("audio/breakout.mp3", true);
 
 		///******************************************************** CINE ********************************
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
@@ -1250,6 +1253,13 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.73f, 2.95f, -14.7f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.4f, 0.9f));
+		model = glm::rotate(model, -80 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		boleto.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.0f, -1.0f, -17.3f));
