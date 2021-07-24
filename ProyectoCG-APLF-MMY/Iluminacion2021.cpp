@@ -120,6 +120,7 @@ Model combo1;
 Model combo2;
 Model combo3;
 Model proyector;
+Model pantallaPrincipal;
 
 Model bocina;
 Model botellaVidrio;
@@ -544,6 +545,8 @@ int main()
 	combo3.LoadModel("Models/combo3.obj");
 	proyector = Model();
 	proyector.LoadModel("Models/proyector.obj");
+	pantallaPrincipal = Model();
+	pantallaPrincipal.LoadModel("Models/pantalla.obj");
 	
 	//otros elementos
 	basurero = Model();
@@ -919,7 +922,13 @@ int main()
 		model = glm::scale(model, glm::vec3(0.8f, 0.8f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cine.RenderModel();
-		
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-142.5f, 12.3f, 3.85f));
+		model = glm::scale(model, glm::vec3(5.0f, 9.5f, 14.3f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pantallaPrincipal.RenderModel();
 		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-71.0f, -1.4f, -17.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
