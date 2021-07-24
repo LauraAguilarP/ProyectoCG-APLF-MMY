@@ -898,6 +898,7 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
+		
 		SoundEngine->play2D("audio/breakout.mp3", true);
 
 		///******************************************************** CINE ********************************
