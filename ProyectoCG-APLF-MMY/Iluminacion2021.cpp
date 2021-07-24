@@ -105,6 +105,8 @@ Model vaso;
 Model bebidas;
 Model coca;
 Model palomitas;
+Model maqPalomitasBase;
+Model maqPalomitasVidrio;
 
 //electronicos
 Model registradora;
@@ -482,7 +484,7 @@ int main()
 	// *********** *********************************** C I N E ***********************************
 	//Personajes
 	johnny = Model();
-	johnny.LoadModel("Models/johnny.obj");
+	johnny.LoadModel("Models/johnny2.obj");
 	val = Model();
 	val.LoadModel("Models/val.obj");
 	dexter = Model();
@@ -520,6 +522,10 @@ int main()
 	palomitas.LoadModel("Models/palomitas.obj");
 	bebidas = Model();
 	bebidas.LoadModel("Models/Blank.obj");
+	maqPalomitasBase = Model();
+	maqPalomitasBase.LoadModel("Models/maqPalomitasBase.obj");
+	maqPalomitasVidrio = Model();
+	maqPalomitasVidrio.LoadModel("Models/maqPalomitasVidrio.obj");
 
 	//Electronicos
 	electronico = Model();
@@ -1223,6 +1229,15 @@ int main()
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		palomitas.RenderModel();
+		
+		//Maquina Palomitas
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 5.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(1.15f, 1.15f, 1.15f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		maqPalomitasBase.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-54.5f, 1.8f,22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1510,6 +1525,17 @@ int main()
 		meshList[3]->RenderMesh();
 		glDisable(GL_BLEND);								//Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
 
+		//Maquina Palomitas Vidrio
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 5.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(1.15f, 1.15f, 1.15f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glEnable(GL_BLEND);									//Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  //Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
+		maqPalomitasVidrio.RenderModel();
+		glDisable(GL_BLEND);
 		//La animación nos sirve para mostrarle al usuario que no está viendo una foto, se pueden ejecutar mediante Triggers por medio de banderas.
 		/*			ANIMACIÓN:
 		COND1: Debe tener 2 tipos de transformaciones.
