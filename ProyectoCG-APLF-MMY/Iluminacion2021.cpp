@@ -107,6 +107,7 @@ Model coca;
 Model palomitas;
 Model maqPalomitasBase;
 Model maqPalomitasVidrio;
+Model palomitaAni;
 
 //electronicos
 Model registradora;
@@ -526,6 +527,8 @@ int main()
 	maqPalomitasBase.LoadModel("Models/maqPalomitasBase.obj");
 	maqPalomitasVidrio = Model();
 	maqPalomitasVidrio.LoadModel("Models/maqPalomitasVidrio.obj");
+	palomitaAni = Model();
+	palomitaAni.LoadModel("Models/palomita.obj");
 
 	//Electronicos
 	electronico = Model();
@@ -656,26 +659,31 @@ int main()
 
 	//Variables para la animación
 	float offset = 0.0f;
-	float posYavion = 0.0f;
-	float posXavion = 0.0f;
-	float posZavion = 0.0f;
-	float anguloAvion = 0.0f;
 
 	float posXcarro = 0.0f;
 	float posYcarro = 0.0f;
 	float posZcarro = 0.0f;
 	bool bandera = false;
 	bool banderaCurva = true;
-	bool banderaCarro = false;
+	//Var para palomita
+	float posXpalomita = 0.0f;
+	float posYpalomita = 0.0f;
+	float posZpalomita = 0.0f;
+	float anguloAvion = 0.0f;
+	bool banderaPalomitaY = true;
+	bool banderaPalomitaZ = true;
+	glm::vec3 posPalomita = glm::vec3(-55.2f, 3.2f, 0.5f);
+	glm::vec3 desplazamientoPalomita = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 desplazamientoPalomita2 = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 desplazamientoPalomita3 = glm::vec3(0.0f, 0.0f, 0.0f);
 
-
-
+	//Variables Jhonny animación
 	glm::vec3 posBravo = glm::vec3(40.0f, -2.0f, 0.0f);
 	glm::vec3 desplazamientoBravo = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	//posición inicial del helicóptero
 	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
-	glm::vec3 desplazamiento = glm:: vec3(0.0f, 0.0f, 0.0f);
+	
 	//Posicion inicial Carro
 	glm::vec3 posKitt = glm::vec3(0.0f, 0.5f, -1.5f);
 	glm::vec3 desplazamientoKitt = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -1239,6 +1247,74 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		maqPalomitasBase.RenderModel();
 
+
+
+		// ***************** Palomita animada ***********
+		offset += 0.15;
+
+		posXpalomita = 1.1 * cos( 3 * offset * toRadians); //Para 1ra palomita
+		posZpalomita = 1.1 * cos( 3 * offset * toRadians ); //Para 2da palomita
+		posYpalomita = 1.1 * sin( 3 * offset * toRadians );
+
+		desplazamientoPalomita = glm::vec3( 0 , posYpalomita, posZpalomita);
+		desplazamientoPalomita2 = glm::vec3(posXpalomita, posYpalomita, 0);
+		desplazamientoPalomita3 = glm::vec3(posXpalomita, posYpalomita, posZpalomita);
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita + desplazamientoPalomita);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Palomita1 espejo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita - desplazamientoPalomita);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Segunda palomita
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita + desplazamientoPalomita2);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Segunda palomita espejeo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita - desplazamientoPalomita2);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Tercera palomita
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita + desplazamientoPalomita3);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Tercera palomita espejo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita - desplazamientoPalomita3);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Fin palomita animada
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-54.5f, 1.8f,22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
@@ -1526,7 +1602,7 @@ int main()
 		glDisable(GL_BLEND);								//Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
 
 		//Maquina Palomitas Vidrio
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-55.2f, 5.5f, 0.5f));
 		model = glm::scale(model, glm::vec3(1.15f, 1.15f, 1.15f));
 		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1535,7 +1611,9 @@ int main()
 		glEnable(GL_BLEND);									//Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  //Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
 		maqPalomitasVidrio.RenderModel();
-		glDisable(GL_BLEND);
+		glDisable(GL_BLEND);*/
+
+
 		//La animación nos sirve para mostrarle al usuario que no está viendo una foto, se pueden ejecutar mediante Triggers por medio de banderas.
 		/*			ANIMACIÓN:
 		COND1: Debe tener 2 tipos de transformaciones.
