@@ -405,7 +405,7 @@ void interpolation(void)
 }
 
 
-void animate(void)
+int animate(void)
 {
 	//Movimiento del objeto // barra espaciadora
 	if (play)
@@ -447,6 +447,7 @@ void animate(void)
 		}
 
 	}
+	return playIndex;
 }
 
 /********************** F I N  K E Y F R A M E S *********/
@@ -668,11 +669,12 @@ int main()
 
 	//Variables para la animación
 	float offset = 0.0f;
+	int indiceFrame = 0;
 
 	float posXcarro = 0.0f;
 	float posYcarro = 0.0f;
 	float posZcarro = 0.0f;
-	bool bandera = false;
+	bool bandera = true;
 	bool banderaCurva = true;
 	//Var para palomita
 	float posXpalomita = 0.0f;
@@ -693,6 +695,15 @@ int main()
 	//Variables Ticket
 	glm::vec3 posTicket = glm::vec3(4.73f, 2.95f, -14.7f);
 	glm::vec3 desplazamientoTicket = glm::vec3(0.0f, 0.0f, 0.0f);
+
+
+	//  ---------------- Variables para el sonido: ----------------------
+	glm::vec3 dinero = glm::vec3(-35.0f, 0.0f, -7.0f);
+	glm::vec3 sonidoPalomitas = glm::vec3(-51.0f, -2.0f, 24.0f);
+	glm::vec3 sonidoPuerta = glm::vec3(-51.0f, -2.0f, 14.0f);
+	glm::vec3 sonidoPuertaEm = glm::vec3(-135.0f, -2.0f, 38.0f);
+	glm::vec3 opening = glm::vec3(-93.0f, 5.0f, 12.0f);
+	glm::vec3 aplauso = glm::vec3(-95.0f, 8.0f, -8.0f);
 
 	//posición inicial del helicóptero
 	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
@@ -882,6 +893,7 @@ int main()
 	KeyFrame[11].movBravo_z = 24.0f;
 	KeyFrame[11].giroBravo = 0.0f;
 
+	//Está frente la dulcería:
 	KeyFrame[12].movBravo_x = -91.0f;
 	KeyFrame[12].movBravo_y = 0.0f;
 	KeyFrame[12].movBravo_z = 24.0f;
@@ -892,6 +904,7 @@ int main()
 	KeyFrame[13].movBravo_z = 24.0f;
 	KeyFrame[13].giroBravo = -90;
 
+	//Se dirige a la puerta
 	KeyFrame[14].movBravo_x = -91.0f;
 	KeyFrame[14].movBravo_y = 0.0f;
 	KeyFrame[14].movBravo_z = 14.0f;
@@ -947,7 +960,7 @@ int main()
 	KeyFrame[24].movBravo_y = 10.0f;
 	KeyFrame[24].movBravo_z = 12.0f;
 	KeyFrame[24].giroBravo = -90;
-
+	//Va a las escaleras
 	KeyFrame[25].movBravo_x = -135.0f;
 	KeyFrame[25].movBravo_y = 10.0f;
 	KeyFrame[25].movBravo_z = -8.0f;
@@ -1030,7 +1043,7 @@ int main()
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
 		inputKeyframes(mainWindow.getsKeys());
-		animate();
+		indiceFrame=animate();
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1072,7 +1085,24 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 		
+		// ********* Condicionales de sonido:
+		//Dinero
+		if (indiceFrame == 6) {
+			if(bandera == true){
+				SoundEngine->play2D("audio/dinero.mp3");
+				
+				printf("Estoy dentro");
+				bandera == false;
+			}
+			
+		}
+		else {
+			bandera == true;
+		}
+		
+		//
 		//SoundEngine->play2D("audio/breakout.mp3", true);
+
 
 		///******************************************************** CINE ********************************
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
