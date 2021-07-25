@@ -819,7 +819,9 @@ int main()
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 
 
-	//KEYFRAMES DECLARADOS INICIALES
+	/********************** F I N  K E Y F R A M E S *********/
+
+		//KEYFRAMES DECLARADOS INICIALES
 
 	KeyFrame[0].movBravo_x = 0.0f;
 	KeyFrame[0].movBravo_y = 0.0f;
@@ -853,7 +855,7 @@ int main()
 	KeyFrame[5].movBravo_z = -7.0f;
 	KeyFrame[5].giroBravo = -180.0f;
 
-	//Está de frente al empleado: Y el ticket comienza a moverse
+	//Está de frente al empleado: Y el ticket comienza a moverse DINERO.MP3
 	KeyFrame[6].movBravo_x = -35.0f;
 	KeyFrame[6].movBravo_y = 0.0f;
 	KeyFrame[6].movBravo_z = -7.0f;
@@ -888,12 +890,13 @@ int main()
 	KeyFrame[10].movBravo_z = 4.0f;
 	KeyFrame[10].giroBravo = -90.0f; //
 
+	//PALOMITAS INICIO
 	KeyFrame[11].movBravo_x = -83.0f;
 	KeyFrame[11].movBravo_y = 0.0f;
 	KeyFrame[11].movBravo_z = 24.0f;
 	KeyFrame[11].giroBravo = 0.0f;
 
-	//Está frente la dulcería:
+	//Está frente la dulcería:  FIN PALOMITAS.MP3
 	KeyFrame[12].movBravo_x = -91.0f;
 	KeyFrame[12].movBravo_y = 0.0f;
 	KeyFrame[12].movBravo_z = 24.0f;
@@ -904,7 +907,7 @@ int main()
 	KeyFrame[13].movBravo_z = 24.0f;
 	KeyFrame[13].giroBravo = -90;
 
-	//Se dirige a la puerta
+	//Se dirige a la puerta, PUERTA.MP3
 	KeyFrame[14].movBravo_x = -91.0f;
 	KeyFrame[14].movBravo_y = 0.0f;
 	KeyFrame[14].movBravo_z = 14.0f;
@@ -930,12 +933,12 @@ int main()
 	KeyFrame[18].movBravo_z = -8.0f;
 	KeyFrame[18].giroBravo = 90; //TOdo cool
 
-	//Empieza a subir las escaleras
+	//Empieza a subir las escaleras 
 	KeyFrame[19].movBravo_x = -133.0f;
 	KeyFrame[19].movBravo_y = 10.0f;
 	KeyFrame[19].movBravo_z = -8.0f;
 	KeyFrame[19].giroBravo = 90;
-	//Gira para sentarse
+	//Gira para sentarse INTO JHONNY --> 26 
 	KeyFrame[20].movBravo_x = -133.0f;
 	KeyFrame[20].movBravo_y = 10.0f;
 	KeyFrame[20].movBravo_z = 12.0f;
@@ -955,77 +958,93 @@ int main()
 	KeyFrame[23].movBravo_y = 7.0f;
 	KeyFrame[23].movBravo_z = 12.0f;
 	KeyFrame[23].giroBravo = -90;
-	//Se levanta
-	KeyFrame[24].movBravo_x = -135.0f;
-	KeyFrame[24].movBravo_y = 10.0f;
+
+	KeyFrame[24].movBravo_x = -133.0f;
+	KeyFrame[24].movBravo_y = 7.0f;
 	KeyFrame[24].movBravo_z = 12.0f;
 	KeyFrame[24].giroBravo = -90;
-	//Va a las escaleras
-	KeyFrame[25].movBravo_x = -135.0f;
-	KeyFrame[25].movBravo_y = 10.0f;
-	KeyFrame[25].movBravo_z = -8.0f;
-	KeyFrame[25].giroBravo = -180;
 
-	KeyFrame[26].movBravo_x = -160.0f;
-	KeyFrame[26].movBravo_y = 0.0f;
-	KeyFrame[26].movBravo_z = -8.0f;
+	KeyFrame[25].movBravo_x = -133.0f;
+	KeyFrame[25].movBravo_y = 7.0f;
+	KeyFrame[25].movBravo_z = 12.0f;
+	KeyFrame[25].giroBravo = -90;
+
+	KeyFrame[26].movBravo_x = -133.0f;
+	KeyFrame[26].movBravo_y = 7.0f;
+	KeyFrame[26].movBravo_z = 12.0f;
 	KeyFrame[26].giroBravo = -90;
+	//Se levanta
+	KeyFrame[27].movBravo_x = -135.0f;
+	KeyFrame[27].movBravo_y = 10.0f;
+	KeyFrame[27].movBravo_z = 12.0f;
+	KeyFrame[27].giroBravo = -90;
+	//Va a las escaleras APLAUSOS.MP3
+	KeyFrame[28].movBravo_x = -135.0f;
+	KeyFrame[28].movBravo_y = 10.0f;
+	KeyFrame[28].movBravo_z = -8.0f;
+	KeyFrame[28].giroBravo = -180;
+
+	KeyFrame[29].movBravo_x = -160.0f;
+	KeyFrame[29].movBravo_y = 0.0f;
+	KeyFrame[29].movBravo_z = -8.0f;
+	KeyFrame[29].giroBravo = -90;
 	//Aquí baja de las escaleras
 
-	KeyFrame[27].movBravo_x = -175.0f;
-	KeyFrame[27].movBravo_y = 0.0f;
-	KeyFrame[27].movBravo_z = -8.0f;
-	KeyFrame[27].giroBravo = -90;
+	// Sale de la sala PUERTA.MP3
+	KeyFrame[30].movBravo_x = -175.0f;
+	KeyFrame[30].movBravo_y = 0.0f;
+	KeyFrame[30].movBravo_z = -8.0f;
+	KeyFrame[30].giroBravo = -90;
 
 	//Gira para salir del cine
-	KeyFrame[28].movBravo_x = -175.0f;
-	KeyFrame[28].movBravo_y = 0.0f;
-	KeyFrame[28].movBravo_z = 38.0f;
-	KeyFrame[28].giroBravo = 0;
+	KeyFrame[31].movBravo_x = -175.0f;
+	KeyFrame[31].movBravo_y = 0.0f;
+	KeyFrame[31].movBravo_z = 38.0f;
+	KeyFrame[31].giroBravo = 0;
 
 	//Llega al final del pasillo de emergencia
-	KeyFrame[29].movBravo_x = -91.0f;
-	KeyFrame[29].movBravo_y = 0.0f;
-	KeyFrame[29].movBravo_z = 38.0f;
-	KeyFrame[29].giroBravo = 90;
+	KeyFrame[32].movBravo_x = -91.0f;
+	KeyFrame[32].movBravo_y = 0.0f;
+	KeyFrame[32].movBravo_z = 38.0f;
+	KeyFrame[32].giroBravo = 90;
 
-	KeyFrame[30].movBravo_x = -91.0f;
-	KeyFrame[30].movBravo_y = 0.0f;
-	KeyFrame[30].movBravo_z = 30.0f;
-	KeyFrame[30].giroBravo = 180;
+	KeyFrame[33].movBravo_x = -91.0f;
+	KeyFrame[33].movBravo_y = 0.0f;
+	KeyFrame[33].movBravo_z = 30.0f;
+	KeyFrame[33].giroBravo = 180;
 
 	//Llega antes del sofá
-	KeyFrame[31].movBravo_x = -65.0f;
-	KeyFrame[31].movBravo_y = 0.0f;
-	KeyFrame[31].movBravo_z = 30.0f;
-	KeyFrame[31].giroBravo = 90;
+	KeyFrame[34].movBravo_x = -65.0f;
+	KeyFrame[34].movBravo_y = 0.0f;
+	KeyFrame[34].movBravo_z = 30.0f;
+	KeyFrame[34].giroBravo = 90;
 
 	//
-	KeyFrame[32].movBravo_x = -65.0f;
-	KeyFrame[32].movBravo_y = 0.0f;
-	KeyFrame[32].movBravo_z = 20.0f;
-	KeyFrame[32].giroBravo = 180;
+	KeyFrame[35].movBravo_x = -65.0f;
+	KeyFrame[35].movBravo_y = 0.0f;
+	KeyFrame[35].movBravo_z = 20.0f;
+	KeyFrame[35].giroBravo = 180;
 
-	KeyFrame[33].movBravo_x = -55.0f;
-	KeyFrame[33].movBravo_y = 0.0f;
-	KeyFrame[33].movBravo_z = 20.0f;
-	KeyFrame[33].giroBravo = 90;
+	KeyFrame[36].movBravo_x = -55.0f;
+	KeyFrame[36].movBravo_y = 0.0f;
+	KeyFrame[36].movBravo_z = 20.0f;
+	KeyFrame[36].giroBravo = 90;
 
 	//Izquierda del sofá
-	KeyFrame[34].movBravo_x = -55.0f;
-	KeyFrame[34].movBravo_y = 0.0f;
-	KeyFrame[34].movBravo_z = 10.0f;
-	KeyFrame[34].giroBravo = 180;
+	KeyFrame[37].movBravo_x = -55.0f;
+	KeyFrame[37].movBravo_y = 0.0f;
+	KeyFrame[37].movBravo_z = 10.0f;
+	KeyFrame[37].giroBravo = 180;
 
-	KeyFrame[35].movBravo_x = -5.0f;
-	KeyFrame[35].movBravo_y = 0.0f;
-	KeyFrame[35].movBravo_z = 10.0f;
-	KeyFrame[35].giroBravo = 90;
+	KeyFrame[38].movBravo_x = -5.0f;
+	KeyFrame[38].movBravo_y = 0.0f;
+	KeyFrame[38].movBravo_z = 10.0f;
+	KeyFrame[38].giroBravo = 90;
 
-	KeyFrame[36].movBravo_x = 0.0f;
-	KeyFrame[36].movBravo_y = 5.0f;
-	KeyFrame[36].movBravo_z = 0.0f;
-	KeyFrame[36].giroBravo = 0;
+	KeyFrame[39].movBravo_x = 0.0f;
+	KeyFrame[39].movBravo_y = 5.0f;
+	KeyFrame[39].movBravo_z = 0.0f;
+	KeyFrame[39].giroBravo = 0;
 	
 	
 	////Loop mientras no se cierra la ventana
@@ -1095,7 +1114,7 @@ int main()
 			}
 			
 		}
-		else if (indiceFrame == 12) {
+		else if ( 11 <= indiceFrame && indiceFrame <= 12) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/palomitas.mp3");
 				printf("Estoy dentro");
@@ -1109,21 +1128,21 @@ int main()
 				bandera = false;
 			}
 		}
-		else if (indiceFrame == 21 || indiceFrame == 22 || indiceFrame == 23) {
+		else if (20<= indiceFrame  && indiceFrame <= 26) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/opening.mp3");
 				printf("Estoy dentro");
 				bandera = false;
 			}
 		}
-		else if (indiceFrame == 26) {
+		else if (indiceFrame == 28) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/aplauso.mp3");
 				printf("Estoy dentro");
 				bandera = false;
 			}
 		}
-		else if (indiceFrame == 28) {
+		else if (indiceFrame == 30) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/puerta.mp3");
 				printf("Estoy dentro");
