@@ -683,7 +683,7 @@ int main()
 	float anguloAvion = 0.0f;
 	bool banderaPalomitaY = true;
 	bool banderaPalomitaZ = true;
-	glm::vec3 posPalomita = glm::vec3(-55.2f, 3.2f, 0.5f);
+	glm::vec3 posPalomita = glm::vec3(-55.2f, 4.1f, 0.5f);
 	glm::vec3 desplazamientoPalomita = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 desplazamientoPalomita2 = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 desplazamientoPalomita3 = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -1350,9 +1350,9 @@ int main()
 		
 		//Maquina Palomitas
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-55.2f, 5.5f, 0.5f));
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 0.5f));
 		model = glm::scale(model, glm::vec3(1.15f, 1.15f, 1.15f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		maqPalomitasBase.RenderModel();
