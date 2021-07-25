@@ -1095,7 +1095,7 @@ int main()
 			}
 			
 		}
-		else if (indiceFrame == 12) {
+		else if ( 11 <= indiceFrame && indiceFrame <= 12) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/palomitas.mp3");
 				printf("Estoy dentro");
@@ -1109,21 +1109,21 @@ int main()
 				bandera = false;
 			}
 		}
-		else if (indiceFrame == 21 || indiceFrame == 22 || indiceFrame == 23) {
+		else if (19<= indiceFrame  && indiceFrame <= 23) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/opening.mp3");
 				printf("Estoy dentro");
 				bandera = false;
 			}
 		}
-		else if (indiceFrame == 26) {
+		else if (indiceFrame == 25) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/aplauso.mp3");
 				printf("Estoy dentro");
 				bandera = false;
 			}
 		}
-		else if (indiceFrame == 28) {
+		else if (indiceFrame == 27) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/puerta.mp3");
 				printf("Estoy dentro");
