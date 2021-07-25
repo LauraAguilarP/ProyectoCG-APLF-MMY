@@ -326,6 +326,9 @@ float posXTicket = 40.0, posYTicket = -2.0, posZTicket = 0;
 float	movTicket_x = 0.0f, movTicket_y = 0.0f, movTicket_z = 0.0f;
 float giroTicket = 0;
 
+float giroPuerta = 0;
+float giroPuertaEm = 0;
+
 #define MAX_FRAMES 100
 int i_max_steps = 90;
 int i_curr_steps = 6;
@@ -350,6 +353,12 @@ typedef struct _frame
 	float movTicket_zInc;		//Variable para IncrementoY
 	float giroTicket;
 	float giroTicketInc;
+
+	float giroPuerta;
+	float giroPuertaInc;
+
+	float giroPuertaEm;
+	float giroPuertaEmInc;
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
@@ -372,6 +381,9 @@ void saveFrame(void) //tecla L
 	KeyFrame[FrameIndex].movTicket_y = movTicket_y;
 	KeyFrame[FrameIndex].movTicket_z = movTicket_z;
 	KeyFrame[FrameIndex].giroTicket;
+
+	KeyFrame[FrameIndex].giroPuerta;
+	KeyFrame[FrameIndex].giroPuertaEm;
 	//no volatil, agregar una forma de escribir a un archivo para guardar los frames
 	FrameIndex++;
 }
@@ -388,6 +400,9 @@ void resetElements(void) //Tecla 0
 	movTicket_y = KeyFrame[0].movTicket_y;
 	movTicket_z = KeyFrame[0].movTicket_z;
 	giroTicket = KeyFrame[0].giroTicket;
+
+	giroPuerta = KeyFrame[0].giroPuerta;
+	giroPuertaEm = KeyFrame[0].giroPuerta;
 }
 
 void interpolation(void)
@@ -401,6 +416,9 @@ void interpolation(void)
 	KeyFrame[playIndex].movTicket_yInc = (KeyFrame[playIndex + 1].movTicket_y - KeyFrame[playIndex].movTicket_y) / i_max_steps;
 	KeyFrame[playIndex].movTicket_zInc = (KeyFrame[playIndex + 1].movTicket_z - KeyFrame[playIndex].movTicket_z) / i_max_steps;
 	KeyFrame[playIndex].giroTicketInc = (KeyFrame[playIndex + 1].giroTicket - KeyFrame[playIndex].giroTicket) / i_max_steps;
+
+	KeyFrame[playIndex].giroPuertaInc = (KeyFrame[playIndex + 1].giroPuerta - KeyFrame[playIndex].giroPuerta) / i_max_steps;
+	KeyFrame[playIndex].giroPuertaEmInc = (KeyFrame[playIndex + 1].giroPuertaEm - KeyFrame[playIndex].giroPuertaEm) / i_max_steps;
 
 }
 
@@ -443,6 +461,9 @@ int animate(void)
 			movTicket_y += KeyFrame[playIndex].movTicket_yInc;
 			movTicket_z += KeyFrame[playIndex].movTicket_zInc;
 			giroTicket += KeyFrame[playIndex].giroTicketInc;
+
+			giroPuerta += KeyFrame[playIndex].giroPuertaInc;
+			giroPuertaEm += KeyFrame[playIndex].giroPuertaEmInc;
 			i_curr_steps++;
 		}
 
@@ -504,6 +525,9 @@ int main()
 	mandy.LoadModel("Models/mandy.obj");
 	eduardo = Model();
 	eduardo.LoadModel("Models/eduardo.fbx");
+	personal = Model();
+	personal.LoadModel("Models/personaje.obj");
+
 	//Muebles 
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
@@ -582,9 +606,6 @@ int main()
 	techo.LoadModel("Models/techo.obj");
 	lamparaPared = Model();
 	lamparaPared.LoadModel("Models/lamparaPared.obj");
-
-	//bocina = Model();
-	//bocina.LoadModel("Models/Speaker.obj");
 	
 	//Cuadros:
 	cuadro1 = Model();
@@ -622,36 +643,17 @@ int main()
 
 	//Puerta para animación:
 	marcoPuerta = Model();
-	marcoPuerta.LoadModel("Models/marcoPuerta.obj");
+	marcoPuerta.LoadModel("Models/marco2.obj");
 	puertaI = Model();
-	puertaI.LoadModel("Models/puertaI.obj");
+	puertaI.LoadModel("Models/puertaIzq.obj");
 	puertaD = Model();
-	puertaD.LoadModel("Models/puertaD.obj");
-	
-
-	
-	
-	//botellaVidrio = Model();
-	//botellaVidrio.LoadModel("Models/botella.fbx");
-	//cuchara = Model();
-	//cuchara.LoadModel("Models/cuchara.obj");
-	//escalera = Model();
-	//escalera.LoadModel("Models/scala.obj");
+	puertaD.LoadModel("Models/puertaDer.obj");
 
 	cuchara = Model();
 	cuchara.LoadModel("Models/cuchara.obj");
 	extintor = Model();
 	extintor.LoadModel("Models/existor.obj");
-
-
-	//Personajes
-	personal = Model();
-	personal.LoadModel("Models/personaje.obj");
-	//lamparaPared = Model();
-	//lamparaPared.LoadModel("Models/lampara.obj");
 	
-	//planta = Model();
-	//planta.LoadModel("Models/flower.fbx");
 	
 	std::vector<std::string> skyboxFaces;
 	//Nuevo SKybox
@@ -671,11 +673,7 @@ int main()
 	float offset = 0.0f;
 	int indiceFrame = 0;
 
-	float posXcarro = 0.0f;
-	float posYcarro = 0.0f;
-	float posZcarro = 0.0f;
 	bool bandera = true;
-	bool banderaCurva = true;
 	//Var para palomita
 	float posXpalomita = 0.0f;
 	float posYpalomita = 0.0f;
@@ -696,21 +694,6 @@ int main()
 	glm::vec3 posTicket = glm::vec3(4.73f, 2.95f, -14.7f);
 	glm::vec3 desplazamientoTicket = glm::vec3(0.0f, 0.0f, 0.0f);
 
-
-	//  ---------------- Variables para el sonido: ----------------------
-	glm::vec3 dinero = glm::vec3(-35.0f, 0.0f, -7.0f);
-	glm::vec3 sonidoPalomitas = glm::vec3(-51.0f, -2.0f, 24.0f);
-	glm::vec3 sonidoPuerta = glm::vec3(-51.0f, -2.0f, 14.0f);
-	glm::vec3 sonidoPuertaEm = glm::vec3(-135.0f, -2.0f, 38.0f);
-	glm::vec3 opening = glm::vec3(-93.0f, 5.0f, 12.0f);
-	glm::vec3 aplauso = glm::vec3(-95.0f, 8.0f, -8.0f);
-
-	//posición inicial del helicóptero
-	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
-	
-	//Posicion inicial Carro
-	glm::vec3 posKitt = glm::vec3(0.0f, 0.5f, -1.5f);
-	glm::vec3 desplazamientoKitt = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
 	
 	//luz direccional, sólo 1 y siempre debe de existir
@@ -912,11 +895,13 @@ int main()
 	KeyFrame[14].movBravo_y = 0.0f;
 	KeyFrame[14].movBravo_z = 14.0f;
 	KeyFrame[14].giroBravo = -180;
+	KeyFrame[14].giroPuerta = 90;
 
 	KeyFrame[15].movBravo_x = -91.0f;
 	KeyFrame[15].movBravo_y = 0.0f;
 	KeyFrame[15].movBravo_z = -18.0f;
 	KeyFrame[15].giroBravo = -90;
+	KeyFrame[15].giroPuerta = 90;
 
 	KeyFrame[16].movBravo_x = -175.0f;
 	KeyFrame[16].movBravo_y = 0.0f;
@@ -1001,12 +986,14 @@ int main()
 	KeyFrame[31].movBravo_y = 0.0f;
 	KeyFrame[31].movBravo_z = 38.0f;
 	KeyFrame[31].giroBravo = 0;
+	KeyFrame[31].giroPuertaEm = 90;
 
 	//Llega al final del pasillo de emergencia
 	KeyFrame[32].movBravo_x = -91.0f;
 	KeyFrame[32].movBravo_y = 0.0f;
 	KeyFrame[32].movBravo_z = 38.0f;
 	KeyFrame[32].giroBravo = 90;
+	KeyFrame[32].giroPuertaEm = 90;
 
 	KeyFrame[33].movBravo_x = -91.0f;
 	KeyFrame[33].movBravo_y = 0.0f;
@@ -1062,7 +1049,7 @@ int main()
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
 		inputKeyframes(mainWindow.getsKeys());
-		indiceFrame=animate();
+		indiceFrame = animate();
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1103,18 +1090,18 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
-		
+
 		// ********* Condicionales de sonido:
 		//Dinero
 		if (indiceFrame == 6) {
-			if(bandera == true){
+			if (bandera == true) {
 				SoundEngine->play2D("audio/dinero.mp3");
 				printf("Estoy dentro");
 				bandera = false;
 			}
-			
+
 		}
-		else if ( 11 <= indiceFrame && indiceFrame <= 12) {
+		else if (11 <= indiceFrame && indiceFrame <= 12) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/palomitas.mp3");
 				printf("Estoy dentro");
@@ -1128,7 +1115,7 @@ int main()
 				bandera = false;
 			}
 		}
-		else if (20<= indiceFrame  && indiceFrame <= 26) {
+		else if (20 <= indiceFrame && indiceFrame <= 26) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/opening.mp3");
 				printf("Estoy dentro");
@@ -1152,7 +1139,7 @@ int main()
 		else {
 			bandera = true;
 		}
-		
+
 		//
 		//SoundEngine->play2D("audio/breakout.mp3", true);
 
@@ -1160,12 +1147,12 @@ int main()
 		///******************************************************** CINE ********************************
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(posBravo+desplazamientoBravo));
+		model = glm::translate(model, glm::vec3(posBravo + desplazamientoBravo));
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
-		model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		johnny.RenderModel();
-		
+
 		//	***********************			Sala de proyección 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, -1.0f, 0.0f));
@@ -1179,13 +1166,29 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pantallaPrincipal.RenderModel();
-		
+
+		//Puerta de entrada CINE
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-71.0f, -1.4f, -17.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.001f, 0.05f, 0.05f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::translate(model, glm::vec3(-71.0f, 1.8f, -18.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.8f, 2.5f, 1.6f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puerta.RenderModel();
+		marcoPuerta.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 0 + giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaD.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -14.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 0 - giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaI.RenderModel();
+		//fin puerta
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1214,6 +1217,29 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		extintor.RenderModel();
+
+		// ---------------- Puerta de EMERGENCIA
+		/*model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-130.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 2.5f, 1.6f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		marcoPuerta.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-134.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 90 +giroPuertaEm  * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaD.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-126.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 90 + giroPuertaEm  * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaI.RenderModel();
+		//fin puerta emergencia */
 
 		//Exitintor
 		model = glm::mat4(1.0);
@@ -1715,14 +1741,7 @@ int main()
 
 		
 		//			Puertas, paredes y lamparas
-		//Puerta
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 55.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puerta.RenderModel();
-		
+
 		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
