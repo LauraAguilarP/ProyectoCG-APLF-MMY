@@ -1090,14 +1090,48 @@ int main()
 		if (indiceFrame == 6) {
 			if(bandera == true){
 				SoundEngine->play2D("audio/dinero.mp3");
-				
 				printf("Estoy dentro");
-				bandera == false;
+				bandera = false;
 			}
 			
 		}
+		else if (indiceFrame == 12) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/palomitas.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 14) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/puerta.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 21 || indiceFrame == 22 || indiceFrame == 23) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/opening.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 26) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/aplauso.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 28) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/puerta.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
 		else {
-			bandera == true;
+			bandera = true;
 		}
 		
 		//
