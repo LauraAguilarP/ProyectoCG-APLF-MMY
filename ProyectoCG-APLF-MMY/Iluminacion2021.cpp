@@ -682,40 +682,91 @@ int main()
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
 		-15.2f, 11.5f, -22.0f, //Poisicion
-		0.2f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
 	pointLights[1] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
 		7.5f, 11.5f, -22.0f, //Poisicion
 		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
 	pointLights[2] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.0f, 1.0f, //Coeficiente ambiental y difuso
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
 		30.2f, 11.5f, -22.0f, //Poisicion
 		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
 	pointLights[3] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.0f, 1.0f, //Coeficiente ambiental y difuso
-		-15.2f, 11.5f, 31.0f, //Poisicion
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-15.2f, 11.5f, 29.0f, //Poisicion
 		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
 	pointLights[4] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.0f, 1.0f, //Coeficiente ambiental y difuso
-		7.5f, 11.5f, 30.0f, //Poisicion
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		7.5f, 11.5f, 29.0f, //Poisicion
 		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
 
 	pointLights[5] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.0f, 1.0f, //Coeficiente ambiental y difuso
-		30.2f, 11.5f, 30.0f, //Poisicion
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		30.2f, 11.5f, 29.0f, //Poisicion
 		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 	pointLightCount++;
+	//luz dulceria
+	pointLights[6] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-69.1f, 9.0f, -1.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+	//sala cine
+	pointLights[7] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-100.2f, 17.0f, -23.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+	pointLights[8] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-130.2f, 17.0f, -23.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+	
+	pointLights[9] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-100.2f, 17.0f, 30.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+	pointLights[10] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-130.2f, 17.0f, 30.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	pointLights[11] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-65.8f, 15.1f, 35.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+	pointLights[12] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-100.8f, 15.1f, 35.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
+	pointLights[13] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-65.8f, 15.1f, 55.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+	pointLights[14] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+		0.5f, 1.0f, //Coeficiente ambiental y difuso
+		-100.8f, 15.1f, 55.0f, //Poisicion
+		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+	pointLightCount++;
+
 
 	
 	unsigned int spotLightCount = 0;
