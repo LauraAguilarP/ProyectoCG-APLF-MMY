@@ -105,6 +105,9 @@ Model vaso;
 Model bebidas;
 Model coca;
 Model palomitas;
+Model maqPalomitasBase;
+Model maqPalomitasVidrio;
+Model palomitaAni;
 
 //electronicos
 Model registradora;
@@ -321,6 +324,14 @@ float posXbravo = 40.0, posYbravo = -2.0, posZbravo = 0;
 float	movBravo_x = 0.0f, movBravo_y = 0.0f, movBravo_z = 0.0f;
 float giroBravo = 0;
 
+//Ticket
+float posXTicket = 40.0, posYTicket = -2.0, posZTicket = 0;
+float	movTicket_x = 0.0f, movTicket_y = 0.0f, movTicket_z = 0.0f;
+float giroTicket = 0;
+
+float giroPuerta = 0;
+float giroPuertaEm = 0;
+
 #define MAX_FRAMES 100
 int i_max_steps = 90;
 int i_curr_steps = 6;
@@ -335,10 +346,26 @@ typedef struct _frame
 	float movBravo_zInc;		//Variable para IncrementoY
 	float giroBravo;
 	float giroBravoInc;
+
+	//Variables para GUARDAR Key Frames
+	float movTicket_x;		//Variable para PosicionX
+	float movTicket_y;		//Variable para PosicionY
+	float movTicket_z;		//Variable para PosicionZ
+	float movTicket_xInc;		//Variable para IncrementoX
+	float movTicket_yInc;		//Variable para IncrementoY
+	float movTicket_zInc;		//Variable para IncrementoY
+	float giroTicket;
+	float giroTicketInc;
+
+	float giroPuerta;
+	float giroPuertaInc;
+
+	float giroPuertaEm;
+	float giroPuertaEmInc;
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 12;			//introducir datos
+int FrameIndex = 40;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
@@ -352,6 +379,14 @@ void saveFrame(void) //tecla L
 	KeyFrame[FrameIndex].movBravo_y = movBravo_y;
 	KeyFrame[FrameIndex].movBravo_z = movBravo_z;
 	KeyFrame[FrameIndex].giroBravo;
+
+	KeyFrame[FrameIndex].movTicket_x = movTicket_x;
+	KeyFrame[FrameIndex].movTicket_y = movTicket_y;
+	KeyFrame[FrameIndex].movTicket_z = movTicket_z;
+	KeyFrame[FrameIndex].giroTicket;
+
+	KeyFrame[FrameIndex].giroPuerta;
+	KeyFrame[FrameIndex].giroPuertaEm;
 	//no volatil, agregar una forma de escribir a un archivo para guardar los frames
 	FrameIndex++;
 }
@@ -363,6 +398,14 @@ void resetElements(void) //Tecla 0
 	movBravo_y = KeyFrame[0].movBravo_y;
 	movBravo_z = KeyFrame[0].movBravo_z;
 	giroBravo = KeyFrame[0].giroBravo;
+
+	movTicket_x = KeyFrame[0].movTicket_x;
+	movTicket_y = KeyFrame[0].movTicket_y;
+	movTicket_z = KeyFrame[0].movTicket_z;
+	giroTicket = KeyFrame[0].giroTicket;
+
+	giroPuerta = KeyFrame[0].giroPuerta;
+	giroPuertaEm = KeyFrame[0].giroPuerta;
 }
 
 void interpolation(void)
@@ -372,10 +415,18 @@ void interpolation(void)
 	KeyFrame[playIndex].movBravo_zInc = (KeyFrame[playIndex + 1].movBravo_z - KeyFrame[playIndex].movBravo_z) / i_max_steps;
 	KeyFrame[playIndex].giroBravoInc = (KeyFrame[playIndex + 1].giroBravo - KeyFrame[playIndex].giroBravo) / i_max_steps;
 
+	KeyFrame[playIndex].movTicket_xInc = (KeyFrame[playIndex + 1].movTicket_x - KeyFrame[playIndex].movTicket_x) / i_max_steps;
+	KeyFrame[playIndex].movTicket_yInc = (KeyFrame[playIndex + 1].movTicket_y - KeyFrame[playIndex].movTicket_y) / i_max_steps;
+	KeyFrame[playIndex].movTicket_zInc = (KeyFrame[playIndex + 1].movTicket_z - KeyFrame[playIndex].movTicket_z) / i_max_steps;
+	KeyFrame[playIndex].giroTicketInc = (KeyFrame[playIndex + 1].giroTicket - KeyFrame[playIndex].giroTicket) / i_max_steps;
+
+	KeyFrame[playIndex].giroPuertaInc = (KeyFrame[playIndex + 1].giroPuerta - KeyFrame[playIndex].giroPuerta) / i_max_steps;
+	KeyFrame[playIndex].giroPuertaEmInc = (KeyFrame[playIndex + 1].giroPuertaEm - KeyFrame[playIndex].giroPuertaEm) / i_max_steps;
+
 }
 
 
-void animate(void)
+int animate(void)
 {
 	//Movimiento del objeto // barra espaciadora
 	if (play)
@@ -408,10 +459,19 @@ void animate(void)
 			movBravo_y += KeyFrame[playIndex].movBravo_yInc;
 			movBravo_z += KeyFrame[playIndex].movBravo_zInc;
 			giroBravo += KeyFrame[playIndex].giroBravoInc;
+
+			movTicket_x += KeyFrame[playIndex].movTicket_xInc;
+			movTicket_y += KeyFrame[playIndex].movTicket_yInc;
+			movTicket_z += KeyFrame[playIndex].movTicket_zInc;
+			giroTicket += KeyFrame[playIndex].giroTicketInc;
+
+			giroPuerta += KeyFrame[playIndex].giroPuertaInc;
+			giroPuertaEm += KeyFrame[playIndex].giroPuertaEmInc;
 			i_curr_steps++;
 		}
 
 	}
+	return playIndex;
 }
 
 /********************** F I N  K E Y F R A M E S *********/
@@ -425,6 +485,7 @@ void apagarLuces(void) {
 }
 int main()
 {
+	float angulo = 0.0f;
 	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
 	mainWindow.Initialise();
@@ -457,32 +518,6 @@ int main()
 	mostradorT = Texture("Textures/mostrador.tga");
 	mostradorT.LoadTextureA();
 
-
-	//====================================
-	
-	//Comida = Texture("Textures/comida.tga");
-	//Comida.LoadTextureA();
-	//Bravo = Texture("Textures/bravo.tga");
-	//Bravo.LoadTextureA();
-	Madera = Texture("Textures/madera.tga");
-	Madera.LoadTextureA();
-	//Metal = Texture("Textures/metal.tga");
-	//Metal.LoadTextureA();
-	//Metales = Texture("Textures/metales.tga");
-	//Metales.LoadTextureA();
-	//Mosaicos = Texture("Textures/mosaicos.tga");
-	//Mosaicos.LoadTextureA();
-	//ReflejoLuces = Texture("Textures/reflejoLuces.tga");
-	//ReflejoLuces.LoadTextureA();
-	//PielesTelas = Texture("Textures/TexturaPieles.tga");
-	//PielesTelas.LoadTextureA();
-	//UtileriaExtra = Texture("Textures/TexturasVarias.tga");
-	//UtileriaExtra.LoadTextureA();
-	//Refri = Texture("Textures/refri.tga");
-	//Refri.LoadTextureA();
-	//popcorn = Texture("Textures/popcorn.tga");
-	//popcorn.LoadTextureA();
-
 	Llanta_M = Model();
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
 	Blackhawk_M = Model();
@@ -491,7 +526,7 @@ int main()
 	// *********** *********************************** C I N E ***********************************
 	//Personajes
 	johnny = Model();
-	johnny.LoadModel("Models/johnny.obj");
+	johnny.LoadModel("Models/johnny2.obj");
 	val = Model();
 	val.LoadModel("Models/val.obj");
 	dexter = Model();
@@ -500,6 +535,9 @@ int main()
 	mandy.LoadModel("Models/mandy.obj");
 	eduardo = Model();
 	eduardo.LoadModel("Models/eduardo.fbx");
+	personal = Model();
+	personal.LoadModel("Models/personaje.obj");
+
 	//Muebles 
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
@@ -529,6 +567,12 @@ int main()
 	palomitas.LoadModel("Models/palomitas.obj");
 	bebidas = Model();
 	bebidas.LoadModel("Models/Blank.obj");
+	maqPalomitasBase = Model();
+	maqPalomitasBase.LoadModel("Models/maqPalomitasBase.obj");
+	maqPalomitasVidrio = Model();
+	maqPalomitasVidrio.LoadModel("Models/maqPalomitasVidrio.obj");
+	palomitaAni = Model();
+	palomitaAni.LoadModel("Models/palomita.obj");
 
 	//Electronicos
 	electronico = Model();
@@ -572,9 +616,6 @@ int main()
 	techo.LoadModel("Models/techo.obj");
 	lamparaPared = Model();
 	lamparaPared.LoadModel("Models/lamparaPared.obj");
-
-	//bocina = Model();
-	//bocina.LoadModel("Models/Speaker.obj");
 	
 	//Cuadros:
 	cuadro1 = Model();
@@ -612,36 +653,17 @@ int main()
 
 	//Puerta para animación:
 	marcoPuerta = Model();
-	marcoPuerta.LoadModel("Models/marcoPuerta.obj");
+	marcoPuerta.LoadModel("Models/marco2.obj");
 	puertaI = Model();
-	puertaI.LoadModel("Models/puertaI.obj");
+	puertaI.LoadModel("Models/puertaIzq.obj");
 	puertaD = Model();
-	puertaD.LoadModel("Models/puertaD.obj");
-	
-
-	
-	
-	//botellaVidrio = Model();
-	//botellaVidrio.LoadModel("Models/botella.fbx");
-	//cuchara = Model();
-	//cuchara.LoadModel("Models/cuchara.obj");
-	//escalera = Model();
-	//escalera.LoadModel("Models/scala.obj");
+	puertaD.LoadModel("Models/puertaDer.obj");
 
 	cuchara = Model();
 	cuchara.LoadModel("Models/cuchara.obj");
 	extintor = Model();
 	extintor.LoadModel("Models/existor.obj");
-
-
-	//Personajes
-	personal = Model();
-	personal.LoadModel("Models/personaje.obj");
-	//lamparaPared = Model();
-	//lamparaPared.LoadModel("Models/lampara.obj");
 	
-	//planta = Model();
-	//planta.LoadModel("Models/flower.fbx");
 	
 	std::vector<std::string> skyboxFaces;
 	//Nuevo SKybox
@@ -659,27 +681,29 @@ int main()
 
 	//Variables para la animación
 	float offset = 0.0f;
-	float posYavion = 0.0f;
-	float posXavion = 0.0f;
-	float posZavion = 0.0f;
+	int indiceFrame = 0;
+
+	bool bandera = true;
+	//Var para palomita
+	float posXpalomita = 0.0f;
+	float posYpalomita = 0.0f;
+	float posZpalomita = 0.0f;
 	float anguloAvion = 0.0f;
+	bool banderaPalomitaY = true;
+	bool banderaPalomitaZ = true;
+	glm::vec3 posPalomita = glm::vec3(-55.2f, 4.1f, 0.5f);
+	glm::vec3 desplazamientoPalomita = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 desplazamientoPalomita2 = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 desplazamientoPalomita3 = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	float posXcarro = 0.0f;
-	float posYcarro = 0.0f;
-	float posZcarro = 0.0f;
-	bool bandera = false;
-	bool banderaCurva = true;
-	bool banderaCarro = false;
-
+	//Variables Jhonny animación
 	glm::vec3 posBravo = glm::vec3(40.0f, -2.0f, 0.0f);
 	glm::vec3 desplazamientoBravo = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	//posición inicial del helicóptero
-	glm::vec3 posblackhawk = glm::vec3(-20.0f, 6.0f, -1.0);
-	glm::vec3 desplazamiento = glm:: vec3(0.0f, 0.0f, 0.0f);
-	//Posicion inicial Carro
-	glm::vec3 posKitt = glm::vec3(0.0f, 0.5f, -1.5f);
-	glm::vec3 desplazamientoKitt = glm::vec3(0.0f, 0.0f, 0.0f);
+	//Variables Ticket
+	glm::vec3 posTicket = glm::vec3(4.73f, 2.95f, -14.7f);
+	glm::vec3 desplazamientoTicket = glm::vec3(0.0f, 0.0f, 0.0f);
+
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
 	
 	//luz direccional, sólo 1 y siempre debe de existir
@@ -725,13 +749,14 @@ int main()
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 
 
-	//KEYFRAMES DECLARADOS INICIALES
+	/********************** F I N  K E Y F R A M E S *********/
+
+		//KEYFRAMES DECLARADOS INICIALES
 
 	KeyFrame[0].movBravo_x = 0.0f;
 	KeyFrame[0].movBravo_y = 0.0f;
 	KeyFrame[0].movBravo_z = 0.0f;
 	KeyFrame[0].giroBravo = 0;
-
 
 	KeyFrame[1].movBravo_x = 0.0f;
 	KeyFrame[1].movBravo_y = 0.0f;
@@ -742,63 +767,224 @@ int main()
 	KeyFrame[2].movBravo_x = -21.0f;
 	KeyFrame[2].movBravo_y = 0.0f;
 	KeyFrame[2].movBravo_z = 6.0f;
-	KeyFrame[2].giroBravo = 0; //Bien
+	KeyFrame[2].giroBravo = -90;
 
-
+	//Llega a los separadores de la taquilla
 	KeyFrame[3].movBravo_x = -21.0f;
 	KeyFrame[3].movBravo_y = 0.0f;
 	KeyFrame[3].movBravo_z = -3.0f;
-	KeyFrame[3].giroBravo = 0;
+	KeyFrame[3].giroBravo = -180;
 
-	/*	KeyFrame[4].movBravo_x = 3.0f;
-		KeyFrame[4].movBravo_y = -2.0f;
-		KeyFrame[4].giroBravo = 45.0f*/;
+	KeyFrame[4].movBravo_x = -40.0f;
+	KeyFrame[4].movBravo_y = 0.0f;
+	KeyFrame[4].movBravo_z = -3.0f;
+	KeyFrame[4].giroBravo = -90.0f;
 
-		KeyFrame[4].movBravo_x = -40.0f;
-		KeyFrame[4].movBravo_y = 0.0f;
-		KeyFrame[4].movBravo_z = -3.0f;
-		KeyFrame[4].giroBravo = 0.0f;
+	KeyFrame[5].movBravo_x = -40.0f;
+	KeyFrame[5].movBravo_y = 0.0f;
+	KeyFrame[5].movBravo_z = -7.0f;
+	KeyFrame[5].giroBravo = -180.0f;
 
-		KeyFrame[5].movBravo_x = -40.0f;
-		KeyFrame[5].movBravo_y = 0.0f;
-		KeyFrame[5].movBravo_z = -7.0f;
-		KeyFrame[5].giroBravo = 0.0f;
+	//Está de frente al empleado: Y el ticket comienza a moverse DINERO.MP3
+	KeyFrame[6].movBravo_x = -35.0f;
+	KeyFrame[6].movBravo_y = 0.0f;
+	KeyFrame[6].movBravo_z = -7.0f;
+	KeyFrame[6].giroBravo = -180.0f;
+	KeyFrame[6].movTicket_x = 0.0f;
+	KeyFrame[6].movTicket_y = 2.0f;
+	KeyFrame[6].movTicket_z = 3.0f;
+	KeyFrame[6].giroTicket = 90;
 
-		KeyFrame[6].movBravo_x = -35.0f;
-		KeyFrame[6].movBravo_y = 0.0f;
-		KeyFrame[6].movBravo_z = -7.0f;
-		KeyFrame[6].giroBravo = 0.0f;
+	KeyFrame[7].movBravo_x = -35.0f;
+	KeyFrame[7].movBravo_y = 0.0f;
+	KeyFrame[7].movBravo_z = -7.0f;
+	KeyFrame[7].giroBravo = -180.0f;
+	KeyFrame[7].movTicket_x = 0.0f;
+	KeyFrame[7].movTicket_y = 2.0f;
+	KeyFrame[7].movTicket_z = 5.0f;
+	KeyFrame[7].giroTicket = 90;
 
-		KeyFrame[7].movBravo_x = -75.0f;
-		KeyFrame[7].movBravo_y = 0.0f;
-		KeyFrame[7].movBravo_z = -7.0f;
-		KeyFrame[7].giroBravo = 0.0f;
+	//Se retira de la taquilla:
+	KeyFrame[8].movBravo_x = -75.0f;
+	KeyFrame[8].movBravo_y = 0.0f;
+	KeyFrame[8].movBravo_z = -7.0f;
+	KeyFrame[8].giroBravo = -90.0f;
 
-		KeyFrame[8].movBravo_x = -75.0f;
-		KeyFrame[8].movBravo_y = 0.0f;
-		KeyFrame[8].movBravo_z = 4.0f;
-		KeyFrame[8].giroBravo = 0.0f;
+	KeyFrame[9].movBravo_x = -75.0f;
+	KeyFrame[9].movBravo_y = 0.0f;
+	KeyFrame[9].movBravo_z = 4.0f;
+	KeyFrame[9].giroBravo = 0.0f;
 
-		KeyFrame[9].movBravo_x = -83.0f;
-		KeyFrame[9].movBravo_y = 0.0f;
-		KeyFrame[9].movBravo_z = 4.0f;
-		KeyFrame[9].giroBravo = 0.0f;
+	KeyFrame[10].movBravo_x = -83.0f;
+	KeyFrame[10].movBravo_y = 0.0f;
+	KeyFrame[10].movBravo_z = 4.0f;
+	KeyFrame[10].giroBravo = -90.0f; //
 
-		KeyFrame[10].movBravo_x = -83.0f;
-		KeyFrame[10].movBravo_y = 0.0f;
-		KeyFrame[10].movBravo_z = 20.0f;
-		KeyFrame[10].giroBravo = 0.0f;
+	//PALOMITAS INICIO
+	KeyFrame[11].movBravo_x = -83.0f;
+	KeyFrame[11].movBravo_y = 0.0f;
+	KeyFrame[11].movBravo_z = 24.0f;
+	KeyFrame[11].giroBravo = 0.0f;
 
-		KeyFrame[11].movBravo_x = 0.0f;
-		KeyFrame[11].movBravo_y = 5.0f;
-		KeyFrame[11].movBravo_z = 0.0f;
-		KeyFrame[11].giroBravo = 0;
+	//Está frente la dulcería:  FIN PALOMITAS.MP3
+	KeyFrame[12].movBravo_x = -91.0f;
+	KeyFrame[12].movBravo_y = 0.0f;
+	KeyFrame[12].movBravo_z = 24.0f;
+	KeyFrame[12].giroBravo = -90;
 
-	float giro = 90.0f;
+	KeyFrame[13].movBravo_x = -91.0f;
+	KeyFrame[13].movBravo_y = 0.0f;
+	KeyFrame[13].movBravo_z = 24.0f;
+	KeyFrame[13].giroBravo = -90;
+
+	//Se dirige a la puerta, PUERTA.MP3
+	KeyFrame[14].movBravo_x = -91.0f;
+	KeyFrame[14].movBravo_y = 0.0f;
+	KeyFrame[14].movBravo_z = 14.0f;
+	KeyFrame[14].giroBravo = -180;
+	KeyFrame[14].giroPuerta = 90;
+
+	KeyFrame[15].movBravo_x = -91.0f;
+	KeyFrame[15].movBravo_y = 0.0f;
+	KeyFrame[15].movBravo_z = -18.0f;
+	KeyFrame[15].giroBravo = -90;
+	KeyFrame[15].giroPuerta = 90;
+
+	KeyFrame[16].movBravo_x = -175.0f;
+	KeyFrame[16].movBravo_y = 0.0f;
+	KeyFrame[16].movBravo_z = -18.0f;
+	KeyFrame[16].giroBravo = -90;
+	//Entra al cine
+	KeyFrame[17].movBravo_x = -175.0f;
+	KeyFrame[17].movBravo_y = 0.0f;
+	KeyFrame[17].movBravo_z = -8.0f;
+	KeyFrame[17].giroBravo = 0;
+
+	KeyFrame[18].movBravo_x = -160.0f;
+	KeyFrame[18].movBravo_y = 0.0f;
+	KeyFrame[18].movBravo_z = -8.0f;
+	KeyFrame[18].giroBravo = 90; //TOdo cool
+
+	//Empieza a subir las escaleras 
+	KeyFrame[19].movBravo_x = -133.0f;
+	KeyFrame[19].movBravo_y = 10.0f;
+	KeyFrame[19].movBravo_z = -8.0f;
+	KeyFrame[19].giroBravo = 90;
+	//Gira para sentarse INTO JHONNY --> 26 
+	KeyFrame[20].movBravo_x = -133.0f;
+	KeyFrame[20].movBravo_y = 10.0f;
+	KeyFrame[20].movBravo_z = 12.0f;
+	KeyFrame[20].giroBravo = 0;
+	//Se sienta
+	KeyFrame[21].movBravo_x = -133.0f;
+	KeyFrame[21].movBravo_y = 7.0f;
+	KeyFrame[21].movBravo_z = 12.0f;
+	KeyFrame[21].giroBravo = -90;
+
+	KeyFrame[22].movBravo_x = -133.0f;
+	KeyFrame[22].movBravo_y = 7.0f;
+	KeyFrame[22].movBravo_z = 12.0f;
+	KeyFrame[22].giroBravo = -90;
+
+	KeyFrame[23].movBravo_x = -133.0f;
+	KeyFrame[23].movBravo_y = 7.0f;
+	KeyFrame[23].movBravo_z = 12.0f;
+	KeyFrame[23].giroBravo = -90;
+
+	KeyFrame[24].movBravo_x = -133.0f;
+	KeyFrame[24].movBravo_y = 7.0f;
+	KeyFrame[24].movBravo_z = 12.0f;
+	KeyFrame[24].giroBravo = -90;
+
+	KeyFrame[25].movBravo_x = -133.0f;
+	KeyFrame[25].movBravo_y = 7.0f;
+	KeyFrame[25].movBravo_z = 12.0f;
+	KeyFrame[25].giroBravo = -90;
+
+	KeyFrame[26].movBravo_x = -133.0f;
+	KeyFrame[26].movBravo_y = 7.0f;
+	KeyFrame[26].movBravo_z = 12.0f;
+	KeyFrame[26].giroBravo = -90;
+	//Se levanta
+	KeyFrame[27].movBravo_x = -135.0f;
+	KeyFrame[27].movBravo_y = 10.0f;
+	KeyFrame[27].movBravo_z = 12.0f;
+	KeyFrame[27].giroBravo = -90;
+	//Va a las escaleras APLAUSOS.MP3
+	KeyFrame[28].movBravo_x = -135.0f;
+	KeyFrame[28].movBravo_y = 10.0f;
+	KeyFrame[28].movBravo_z = -8.0f;
+	KeyFrame[28].giroBravo = -180;
+
+	KeyFrame[29].movBravo_x = -160.0f;
+	KeyFrame[29].movBravo_y = 0.0f;
+	KeyFrame[29].movBravo_z = -8.0f;
+	KeyFrame[29].giroBravo = -90;
+	//Aquí baja de las escaleras
+
+	// Sale de la sala PUERTA.MP3
+	KeyFrame[30].movBravo_x = -175.0f;
+	KeyFrame[30].movBravo_y = 0.0f;
+	KeyFrame[30].movBravo_z = -8.0f;
+	KeyFrame[30].giroBravo = -90;
+
+	//Gira para salir del cine
+	KeyFrame[31].movBravo_x = -175.0f;
+	KeyFrame[31].movBravo_y = 0.0f;
+	KeyFrame[31].movBravo_z = 38.0f;
+	KeyFrame[31].giroBravo = 0;
+	KeyFrame[31].giroPuertaEm = 90;
+
+	//Llega al final del pasillo de emergencia
+	KeyFrame[32].movBravo_x = -91.0f;
+	KeyFrame[32].movBravo_y = 0.0f;
+	KeyFrame[32].movBravo_z = 38.0f;
+	KeyFrame[32].giroBravo = 90;
+	KeyFrame[32].giroPuertaEm = 90;
+
+	KeyFrame[33].movBravo_x = -91.0f;
+	KeyFrame[33].movBravo_y = 0.0f;
+	KeyFrame[33].movBravo_z = 30.0f;
+	KeyFrame[33].giroBravo = 180;
+
+	//Llega antes del sofá
+	KeyFrame[34].movBravo_x = -65.0f;
+	KeyFrame[34].movBravo_y = 0.0f;
+	KeyFrame[34].movBravo_z = 30.0f;
+	KeyFrame[34].giroBravo = 90;
+
+	//
+	KeyFrame[35].movBravo_x = -65.0f;
+	KeyFrame[35].movBravo_y = 0.0f;
+	KeyFrame[35].movBravo_z = 20.0f;
+	KeyFrame[35].giroBravo = 180;
+
+	KeyFrame[36].movBravo_x = -55.0f;
+	KeyFrame[36].movBravo_y = 0.0f;
+	KeyFrame[36].movBravo_z = 20.0f;
+	KeyFrame[36].giroBravo = 90;
+
+	//Izquierda del sofá
+	KeyFrame[37].movBravo_x = -55.0f;
+	KeyFrame[37].movBravo_y = 0.0f;
+	KeyFrame[37].movBravo_z = 10.0f;
+	KeyFrame[37].giroBravo = 180;
+
+	KeyFrame[38].movBravo_x = -5.0f;
+	KeyFrame[38].movBravo_y = 0.0f;
+	KeyFrame[38].movBravo_z = 10.0f;
+	KeyFrame[38].giroBravo = 90;
+
+	KeyFrame[39].movBravo_x = 0.0f;
+	KeyFrame[39].movBravo_y = 5.0f;
+	KeyFrame[39].movBravo_z = 0.0f;
+	KeyFrame[39].giroBravo = 0;
+	
 	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
@@ -811,7 +997,7 @@ int main()
 
 		
 		inputKeyframes(mainWindow.getsKeys());
-		animate();
+		indiceFrame = animate();
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1026,18 +1212,69 @@ int main()
 		//agregar material al plano de piso
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
-		
+
+		// ********* Condicionales de sonido:
+		//Dinero
+		if (indiceFrame == 6) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/dinero.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+
+		}
+		else if (11 <= indiceFrame && indiceFrame <= 12) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/palomitas.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 14) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/puerta.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (20 <= indiceFrame && indiceFrame <= 26) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/opening.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 28) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/aplauso.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else if (indiceFrame == 30) {
+			if (bandera == true) {
+				SoundEngine->play2D("audio/puerta.mp3");
+				printf("Estoy dentro");
+				bandera = false;
+			}
+		}
+		else {
+			bandera = true;
+		}
+
+		//
 		//SoundEngine->play2D("audio/breakout.mp3", true);
+
 
 		///******************************************************** CINE ********************************
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(posBravo+desplazamientoBravo));
-		model = glm::scale(model, glm::vec3(5.5f, 5.5f, 5.4f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::translate(model, glm::vec3(posBravo + desplazamientoBravo));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		johnny.RenderModel();
-		
+
 		//	***********************			Sala de proyección 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, -1.0f, 0.0f));
@@ -1051,13 +1288,29 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pantallaPrincipal.RenderModel();
-		
+
+		//Puerta de entrada CINE
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-71.0f, -1.4f, -17.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.001f, 0.05f, 0.05f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::translate(model, glm::vec3(-71.0f, 1.8f, -18.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.8f, 2.5f, 1.6f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puerta.RenderModel();
+		marcoPuerta.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 0 + giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaD.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -14.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 0 - giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaI.RenderModel();
+		//fin puerta
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1086,6 +1339,29 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		extintor.RenderModel();
+
+		// ---------------- Puerta de EMERGENCIA
+		/*model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-130.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 2.5f, 1.6f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		marcoPuerta.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-134.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 90 +giroPuertaEm  * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaD.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-126.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
+		model = glm::rotate(model, 90 + giroPuertaEm  * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		puertaI.RenderModel();
+		//fin puerta emergencia */
 
 		//Exitintor
 		model = glm::mat4(1.0);
@@ -1137,10 +1413,12 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mostrador.RenderModel();
 
+		angulo += 0.2;
+		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.35f, 0.3f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
+		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 
@@ -1217,6 +1495,83 @@ int main()
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		palomitas.RenderModel();
+		
+		//Maquina Palomitas
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 0.5f));
+		model = glm::scale(model, glm::vec3(1.15f, 1.15f, 1.15f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		maqPalomitasBase.RenderModel();
+
+
+
+		// ***************** Palomita animada ***********
+		offset += 0.15;
+
+		posXpalomita = 1.1 * cos( 3 * offset * toRadians); //Para 1ra palomita
+		posZpalomita = 1.1 * cos( 3 * offset * toRadians ); //Para 2da palomita
+		posYpalomita = 1.1 * sin( 3 * offset * toRadians );
+
+		desplazamientoPalomita = glm::vec3( 0 , posYpalomita, posZpalomita);
+		desplazamientoPalomita2 = glm::vec3(posXpalomita, posYpalomita, 0);
+		desplazamientoPalomita3 = glm::vec3(posXpalomita, posYpalomita, posZpalomita);
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita + desplazamientoPalomita);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Palomita1 espejo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita - desplazamientoPalomita);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Segunda palomita
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita + desplazamientoPalomita2);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Segunda palomita espejeo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita - desplazamientoPalomita2);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Tercera palomita
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita + desplazamientoPalomita3);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		//Tercera palomita espejo
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posPalomita - desplazamientoPalomita3);
+		model = glm::scale(model, glm::vec3(0.1f, 0.10f, 0.10f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		palomitaAni.RenderModel();
+
+		// ******************* Fin palomita animada ****************
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-54.5f, 1.8f,22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1288,7 +1643,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-28.2f, -2.0f, 7.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.06f, 4.05f));
-		model = glm::rotate(model, -180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, -180 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		val.RenderModel();
 
@@ -1385,16 +1740,21 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
 
+		//Ticket
+		desplazamientoTicket = glm::vec3(movTicket_x, movTicket_y, movTicket_z);
+
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(4.73f, 2.95f, -14.7f));
+		model = glm::translate(model, posTicket + desplazamientoTicket);
 		model = glm::scale(model, glm::vec3(0.5f, 0.4f, 0.9f));
-		model = glm::rotate(model, -80 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, -80 + giroTicket * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, giroTicket * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		boleto.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.0f, -1.0f, -17.3f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 		
@@ -1489,53 +1849,27 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		bebidas.RenderModel();
 
-		
-		/*Agave*/
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+		//Maquina Palomitas Vidrio
+		/*model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.2f, 5.5f, 0.5f));
+		model = glm::scale(model, glm::vec3(1.15f, 1.15f, 1.15f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//Blending trasnparencia o traslucidez
 		glEnable(GL_BLEND);									//Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  //Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
-		Tagave.UseTexture();
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		meshList[3]->RenderMesh();
-		glDisable(GL_BLEND);								//Si no habilitamos este blending cuando no tenemos fondo esto se verá negro
-
-		//La animación nos sirve para mostrarle al usuario que no está viendo una foto, se pueden ejecutar mediante Triggers por medio de banderas.
-		/*			ANIMACIÓN:
-		COND1: Debe tener 2 tipos de transformaciones.
-		COND2: Si estoy hablando de 1 bandera o 2 banderas, que solo sea ciclica que no esten condicioonadas por banderas estoy hablando de animación básica.
-		
-		COMPLEJA:
-		COND1: Animación basada en funciones, es decir, tomar una función de algun movimiento fisico real, ejemplo ecuaciones reales como caida libre o tiro parabólico
-		COND2: Debemos considerar almenos 5 casos que se presenten
-		*/ 
-		//pPara que se considere animación básica no debe tener sólo traslación rotacion o escalación, tiene que ser por lo menos una trasformacion de 2 cosas
-		
-		
-
-		/************************OBJETOS************************/
+		maqPalomitasVidrio.RenderModel();
+		glDisable(GL_BLEND);*/
 
 		
-		//Puerta
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(15.5f, 0.5f, 55.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puerta.RenderModel();
+		//			Puertas, paredes y lamparas
 
-		
-		
 		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piso.RenderModel();
-		
 		
 		//Pared
 		model = glm::mat4(1.0);
@@ -1544,6 +1878,7 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
+
 		//Pared2 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(10.12f, 15.1f, 33.2f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1558,12 +1893,14 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la pared
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
+
 		//Pared Entrada
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(59.0f, 16.5f, 3.6f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.55f, 4.6f, 3.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pared.RenderModel();
+
 		//Puerta Principal
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(58.7f, -2.0f, 5.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1571,6 +1908,7 @@ int main()
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puerta.RenderModel();
+
 		//Techo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-41.0f, 35.4f, 2.f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1637,7 +1975,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		lamparaPared.RenderModel();
 
-		//Cuadros
+		// CUADROS
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(10.0f, 5.5f, -25.8f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(3.0f, 3.5f, 0.5f));
@@ -1750,7 +2088,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cuadro16.RenderModel();
 
-		
+
 
 		glUseProgram(0);
 

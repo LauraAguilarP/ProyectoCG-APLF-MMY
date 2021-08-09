@@ -119,11 +119,11 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	/******** DEFINIENDO MOVIMIENTO EN EL EJE X ***********/
 	if (key == GLFW_KEY_Y)
 	{//Cuando se presiona Y incrementa en y
-		theWindow-> muevex += 1.0;
+		theWindow-> muevex += 0.1;
 	}
 	if (key == GLFW_KEY_U)
 	{//Cuando se presiona X decrementa en y
-		theWindow-> muevex -= 1.0;
+		theWindow-> muevex -= 0.1;
 	}
 
 	/******** DEFINIENDO MOVIMIENTO EN EL EJE Y ***********/
