@@ -189,6 +189,9 @@ static double limitFPS = 1.0 / 60.0;
 
 //void my_input(GLFWwindow *window); Para cuando se presione una tecla
 void inputKeyframes(bool* keys);
+void iluminar(bool* luz);
+bool apagador = true;
+float focos = 0;
 
 // Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
@@ -412,7 +415,14 @@ void animate(void)
 }
 
 /********************** F I N  K E Y F R A M E S *********/
+void prenderLuces(void) {
+	shaderList[0].SetPointLights(pointLights, 2);
 
+}
+void apagarLuces(void) {
+	glDisable(GL_LIGHT0);
+	
+}
 int main()
 {
 	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
@@ -643,7 +653,7 @@ int main()
 	skyboxFaces.push_back("Textures/Skybox/sp2_ft.png");
 
 	skybox = Skybox(skyboxFaces);
-
+	glEnable(GL_LIGHTING);
 	Material_brillante = Material(4.0f, 256); //Variable especular y brillo son los argumentos. Brillo muy grande
 	Material_opaco = Material(0.3f, 4); //Radio pequeño y brillo pequeño
 
@@ -679,95 +689,6 @@ int main()
 	
 	//contador de luces puntuales 
 
-	unsigned int pointLightCount = 0;
-	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-15.2f, 11.5f, -22.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[1] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		7.5f, 11.5f, -22.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[2] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		30.2f, 11.5f, -22.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[3] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-15.2f, 11.5f, 29.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[4] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		7.5f, 11.5f, 29.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[5] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		30.2f, 11.5f, 29.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	//luz dulceria
-	pointLights[6] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-69.1f, 9.0f, -1.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	//sala cine
-	pointLights[7] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-100.2f, 17.0f, -23.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	pointLights[8] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-130.2f, 17.0f, -23.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	
-	pointLights[9] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-100.2f, 17.0f, 30.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	pointLights[10] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-130.2f, 17.0f, 30.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[11] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-65.8f, 15.1f, 35.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	pointLights[12] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-100.8f, 15.1f, 35.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-	pointLights[13] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-65.8f, 15.1f, 55.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-	pointLights[14] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
-		0.5f, 1.0f, //Coeficiente ambiental y difuso
-		-100.8f, 15.1f, 55.0f, //Poisicion
-		0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
-	pointLightCount++;
-
-
 	
 	unsigned int spotLightCount = 0;
 	//linterna
@@ -798,32 +719,7 @@ int main()
 
 
 
-	/*/luz de faro
-	spotLights[1] = SpotLight(0.8f, 0.0f, 0.5f, //Aqui va el color
-		1.0f, 2.0f, 
-		-1.5f, -1.5f, -3.7f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
-		-1.0f, -0.0f, 0.0f, //Vector de dirección, en este caso un vector unitario que apunta a donde ve el auto
-		1.0f, 0.0f, 0.0f, 
-		15.0f); //Tamaño del diametro
-	spotLightCount++; 
-
-	//luz de helicóptero
-	spotLights[2] = SpotLight(1.0f, 0.0f, 0.0f, //Aqui va el color
-		1.0f, 2.0f,
-		-74.0f, 3.0f, -20.0f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
-		0.0f, -1.0f, 0.0f, //Vector de dirección, en este caso un vector unitario que apunta a donde ve el auto
-		1.0f, 0.0f, 0.0f,
-		15.0f); //Tamaño del diametro
-	spotLightCount++;
-
-	spotLights[3] = SpotLight(0.0f, 1.0f, 0.0f, //Aqui va el color
-		1.0f, 2.0f,
-		-70.0f, 3.0f, -20.0f, //Vector de posición, aproximadamente donde da origen la luz, este lo coloqué cerca del faro derecho
-		0.0f, -1.0f, 0.0f, //Vector de dirección, en este caso un vector unitario que apunta a donde ve el auto
-		1.0f, 0.0f, 0.0f,
-		15.0f); //Tamaño del diametro
-	spotLightCount++; */
-
+	
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
@@ -907,12 +803,13 @@ int main()
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
-
+		
 		//Recibir eventos del usuario
 		glfwPollEvents();
 		camera.keyControl(mainWindow.getsKeys(), deltaTime);
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
+		
 		inputKeyframes(mainWindow.getsKeys());
 		animate();
 
@@ -940,9 +837,183 @@ int main()
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection()); //Le manda la direccion a donde apunta nuestra camara
 		//spotLights[0].setPos(); Solo recibe un vector para modoficar la posición sin moddificar el cono
 		//información al shader de fuentes de iluminación
+		unsigned int pointLightCount = 0;
+		if (mainWindow.getLuces() == true) {
+			
+			//Declaración de primer luz puntual
+			pointLights[0] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-15.2f, 11.5f, -22.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[1] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				7.5f, 11.5f, -22.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[2] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				30.2f, 11.5f, -22.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[3] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-15.2f, 11.5f, 29.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[4] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				7.5f, 11.5f, 29.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[5] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				30.2f, 11.5f, 29.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+			//luz dulceria
+			pointLights[6] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-69.1f, 9.0f, -1.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+			//sala cine
+			pointLights[7] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.2f, 17.0f, -23.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+			pointLights[8] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-130.2f, 17.0f, -23.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[9] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.2f, 17.0f, 30.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+			pointLights[10] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-130.2f, 17.0f, 30.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[11] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-65.8f, 15.1f, 35.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+			pointLights[12] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.8f, 15.1f, 35.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+			pointLights[13] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-65.8f, 15.1f, 55.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+			pointLights[14] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.8f, 15.1f, 55.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			pointLightCount++;
+
+		}
+		if (mainWindow.getLuces() == false) {
+
+			//Declaración de primer luz puntual
+			pointLights[0] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-15.2f, 11.5f, -22.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[1] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				7.5f, 11.5f, -22.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[2] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				30.2f, 11.5f, -22.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+
+			pointLights[3] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-15.2f, 11.5f, 29.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[4] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				7.5f, 11.5f, 29.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[5] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				30.2f, 11.5f, 29.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+			//luz dulceria
+			pointLights[6] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-69.1f, 9.0f, -1.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			//sala cine
+			pointLights[7] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.2f, 17.0f, -23.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[8] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-130.2f, 17.0f, -23.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[9] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.2f, 17.0f, 30.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[10] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-130.2f, 17.0f, 30.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[11] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-65.8f, 15.1f, 35.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[12] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.8f, 15.1f, 35.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[13] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-65.8f, 15.1f, 55.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+			pointLights[14] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
+				0.5f, 1.0f, //Coeficiente ambiental y difuso
+				-100.8f, 15.1f, 55.0f, //Poisicion
+				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
+
+
+		}
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
+		
 
 		glm::mat4 model(1.0);
 		glm::mat4 modelAux(1.0); //Sirve para poder darle jerarquia
@@ -1679,44 +1750,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cuadro16.RenderModel();
 
-		//Bocina
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.5f, 0.5f, 15.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bocina.RenderModel();*/
-		//BotellaVidrio Omitida de momento por un bug
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-200.5f, 0.0f, -50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		botellaVidrio.RenderModel();
-		//Cuchara
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-5.5f, 0.0f, 0.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(2.0f, 1.5f, 1.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cuchara.RenderModel();*/
-		//Escaleras
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-150.5f, 0.0f, 50.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		escalera.RenderModel();
-		//Extintor
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-120.5f, 0.0f, 0.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		extintor.RenderModel();
 		
-
-		//Tarja
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.5f, 0.0f, 20.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Sink.RenderModel();*/
 
 		glUseProgram(0);
 
@@ -1808,3 +1842,4 @@ void inputKeyframes(bool* keys)
 
 
 }
+
