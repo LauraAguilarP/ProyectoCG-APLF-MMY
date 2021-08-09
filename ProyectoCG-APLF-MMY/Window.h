@@ -14,6 +14,7 @@ public:
 	GLfloat getXChange();
 	GLfloat getYChange();
 	GLfloat getZChange();
+	bool getLuces() { return luces; }
 	GLfloat getmuevex() { return muevex; }
 	GLfloat getmuevey() { return muevey; } //Método GET para mueve Y
 	GLfloat getmuevez() { return muevez; }//Método GET para mueve Z
@@ -33,6 +34,7 @@ private:
 	GLfloat lastY;
 	GLfloat xChange;
 	GLfloat yChange;
+	bool luces;
 	GLfloat muevex; //Variable para muevex
 	GLfloat muevey; //Variable para mueveY
 	GLfloat muevez; //Variable para mueveZ
