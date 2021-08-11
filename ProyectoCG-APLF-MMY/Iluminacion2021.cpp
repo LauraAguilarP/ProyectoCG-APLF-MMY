@@ -85,6 +85,11 @@ Model Blackhawk_M;
 
 // ******* Cine 
 Model johnny;
+Model manoI;
+Model manoD;
+Model piernaI;
+Model piernaD;
+
 Model val;
 Model dexter;
 Model mandy;
@@ -477,6 +482,8 @@ int animate(void)
 
 int main()
 {
+	bool natural = true;
+	float movManos = 0.0f;
 	float angulo = 0.0f;
 	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
@@ -518,7 +525,17 @@ int main()
 	// *********** *********************************** C I N E ***********************************
 	//Personajes
 	johnny = Model();
-	johnny.LoadModel("Models/johnny2.obj");
+	johnny.LoadModel("Models/torso.obj");
+	manoI = Model();
+	manoI.LoadModel("Models/brazoIzq.obj");
+	manoD = Model();
+	manoD.LoadModel("Models/brazo3.obj");
+	piernaI = Model();
+	piernaI.LoadModel("Models/piernaIzq.obj");
+	piernaD = Model();
+	piernaD.LoadModel("Models/piernaDer.obj");
+
+	/*******************/
 	val = Model();
 	val.LoadModel("Models/val.obj");
 	dexter = Model();
@@ -1296,11 +1313,73 @@ int main()
 		desplazamientoBravo = glm::vec3(movBravo_x, movBravo_y, movBravo_z);
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(posBravo + desplazamientoBravo));
+		modelAux = model;
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
 		model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		johnny.RenderModel();
 
+		if (movManos >= 90.0f) {
+			natural = false;
+		}
+		if (movManos <= -90.0f) {
+			natural = true;
+		}
+		/*Mano izquierda*/
+		model = modelAux;
+		model = glm::translate(model, glm::vec3(2.1f, 5.5f, 0.7f));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		if (natural == true) {
+			movManos += 1.0f;
+			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		if (natural == false) {
+			movManos -= 1.0f;
+			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		//model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		manoI.RenderModel();
+		//std::cout << std::fixed << movManos;
+		
+		model = modelAux;
+		model = glm::translate(model, glm::vec3(-2.1f, 5.5f, 0.7f));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		if (natural == true) {
+			movManos += 1.0f;
+			model = glm::rotate(model, movManos  * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		if(natural == false) {
+			movManos -= 1.0f;
+			model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		manoD.RenderModel();
+		
+		///Piernas
+		model = modelAux;
+		model = glm::translate(model, glm::vec3(0.37f, 2.0f, -0.25f));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		if (natural == true) {
+			model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		if (natural == false) {
+			model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piernaI.RenderModel();
+
+		model = modelAux;
+		model = glm::translate(model, glm::vec3(-0.37f, 2.0f, -0.25f));
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		if (natural == true) {
+			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		if (natural == false) {
+			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piernaD.RenderModel();
 		//	***********************			Sala de proyección 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-120.0f, -1.0f, 0.0f));
