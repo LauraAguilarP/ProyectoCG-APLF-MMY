@@ -15,6 +15,11 @@ public:
 	GLfloat getYChange();
 	GLfloat getZChange();
 	bool getLuces() { return luces; }
+	bool getCamara() { return camaraJ; }
+	bool getCamaraExtra() { return camaraExtra; }
+	bool getRegula() { return regulador; }
+	bool getAngulo() { return angulo; }
+	void setAngulo(bool valor) { angulo = valor; }
 	GLfloat getmuevex() { return muevex; }
 	GLfloat getmuevey() { return muevey; } //Método GET para mueve Y
 	GLfloat getmuevez() { return muevez; }//Método GET para mueve Z
@@ -35,6 +40,10 @@ private:
 	GLfloat xChange;
 	GLfloat yChange;
 	bool luces;
+	bool camaraJ;
+	bool camaraExtra;
+	bool regulador;
+	bool angulo;
 	GLfloat muevex; //Variable para muevex
 	GLfloat muevey; //Variable para mueveY
 	GLfloat muevez; //Variable para mueveZ

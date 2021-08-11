@@ -15,6 +15,10 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLf
 
 	update();
 }
+void Camera::setPosDir(glm::vec3 Position, glm::vec3 dir) {
+	position = Position;
+	front = dir;
+}
 
 void Camera::keyControl(bool* keys, GLfloat deltaTime)
 {

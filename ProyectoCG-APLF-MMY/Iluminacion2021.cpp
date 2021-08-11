@@ -55,7 +55,7 @@ std::vector<Shader> shaderList;
 Camera camera;
 //Variable para keyFrames
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
-
+bool angulo = true;
 
 Texture pisoTexture;
 Texture Tagave;
@@ -192,7 +192,6 @@ static double limitFPS = 1.0 / 60.0;
 
 //void my_input(GLFWwindow *window); Para cuando se presione una tecla
 void inputKeyframes(bool* keys);
-void iluminar(bool* luz);
 bool apagador = true;
 float focos = 0;
 
@@ -475,14 +474,7 @@ int animate(void)
 }
 
 /********************** F I N  K E Y F R A M E S *********/
-void prenderLuces(void) {
-	shaderList[0].SetPointLights(pointLights, 2);
 
-}
-void apagarLuces(void) {
-	glDisable(GL_LIGHT0);
-	
-}
 int main()
 {
 	float angulo = 0.0f;
@@ -983,8 +975,40 @@ int main()
 	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
-	{
+	{	
+		if (mainWindow.getRegula() == true) {
+			if (mainWindow.getCamara() == true)
+			{
+				//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
 
+				camera.setPosDir(glm::vec3(40.0f, 8.0f, 1.0f) + desplazamientoBravo, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
+			if (mainWindow.getCamara() == false)
+			{
+				if (mainWindow.getAngulo() == true) {
+					camera.setPosDir(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+					mainWindow.setAngulo(false);
+				}
+
+
+			}
+		}
+		else {
+			if (mainWindow.getCamaraExtra() == true)
+			{
+				//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
+
+				camera.setPosDir(glm::vec3(4.0f, 6.5f, -17.3f), glm::vec3(0.0f, 0.0f, -1.0f));
+			}
+			if (mainWindow.getCamaraExtra() == false)
+			{
+
+				camera.setPosDir(glm::vec3(-75.0f, 26.82f, 5.5f), glm::vec3(-1.0f, .0f, 0.0f));
+				//mainWindow.setAngulo(false);
+
+			}
+		}
+		
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
@@ -1015,7 +1039,7 @@ int main()
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		glUniform3f(uniformEyePosition, camera.getCameraPosition().x , camera.getCameraPosition().y, camera.getCameraPosition().z );
 
 		//luz ligada a la cámara de tipo flash 
 		glm::vec3 lowerLight = camera.getCameraPosition();
@@ -1023,6 +1047,8 @@ int main()
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection()); //Le manda la direccion a donde apunta nuestra camara
 		//spotLights[0].setPos(); Solo recibe un vector para modoficar la posición sin moddificar el cono
 		//información al shader de fuentes de iluminación
+		
+		/*
 		unsigned int pointLightCount = 0;
 		if (mainWindow.getLuces() == true) {
 			
@@ -1195,9 +1221,9 @@ int main()
 				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 
 
-		}
+		}*/
 		shaderList[0].SetDirectionalLight(&mainLight);
-		shaderList[0].SetPointLights(pointLights, pointLightCount);
+		//shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 		
 
