@@ -17,6 +17,9 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	muevey = 2.0f;//Inicializando la variable para el desplazamiento en Y
 	muevez = 2.0f;//Inicializando la variable para el desplazamiento en Z
 	luces = true;
+	camaraJ = true;
+	camaraExtra = true;
+	regulador = true;
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -107,6 +110,33 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
+	/***************DEFINIENDO CAMBIO DE CAMARA*************************/
+	if (key == GLFW_KEY_UP)
+	{//Camara libre
+		theWindow->regulador = true;
+	}
+	if (key == GLFW_KEY_DOWN)
+	{//Camara libre
+		theWindow->regulador = false;
+	}
+	if (key == GLFW_KEY_O)
+	{//Camara libre
+		theWindow->camaraJ = true;
+	}
+	if (key == GLFW_KEY_I)
+	{//Camara Johnny
+		theWindow->camaraJ = false;
+		theWindow->angulo = true;
+	}
+	if (key == GLFW_KEY_6)
+	{//Camara taquilla
+		theWindow->camaraExtra = true;
+	}
+	if (key == GLFW_KEY_7)
+	{//Camara cine
+		theWindow->camaraExtra = false;
+	}
+	/***************Definiendo apagado y encendido de luces******************/
 	if (key == GLFW_KEY_C)
 	{//Cuando se presiona X decrementa en y
 		theWindow->luces = true;
