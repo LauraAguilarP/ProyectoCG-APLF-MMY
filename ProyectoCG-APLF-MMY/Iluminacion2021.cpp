@@ -343,6 +343,9 @@ float posXTicket = 40.0, posYTicket = -2.0, posZTicket = 0;
 float	movTicket_x = 0.0f, movTicket_y = 0.0f, movTicket_z = 0.0f;
 float giroTicket = 0;
 
+float	movDulce_x = 0.0f, movDulce_y = 0.0f, movDulce_z = 0.0f;
+float giroDulce = 0;
+
 float giroPuerta = 0;
 float giroPuertaEm = 0;
 
@@ -398,6 +401,15 @@ typedef struct _frame
 	float giroTicket;
 	float giroTicketInc;
 
+	float movDulce_x;		//Variable para PosicionX
+	float movDulce_y;		//Variable para PosicionY
+	float movDulce_z;		//Variable para PosicionZ
+	float movDulce_xInc;		//Variable para IncrementoX
+	float movDulce_yInc;		//Variable para IncrementoY
+	float movDulce_zInc;		//Variable para IncrementoY
+	float giroDulce;
+	float giroDulceInc;
+
 	float giroPuerta;
 	float giroPuertaInc;
 
@@ -443,6 +455,11 @@ void saveFrame(void) //tecla L
 	KeyFrame[FrameIndex].movTicket_z = movTicket_z;
 	KeyFrame[FrameIndex].giroTicket;
 
+	KeyFrame[FrameIndex].movDulce_x = movDulce_x;
+	KeyFrame[FrameIndex].movDulce_y = movDulce_y;
+	KeyFrame[FrameIndex].movDulce_z = movDulce_z;
+	KeyFrame[FrameIndex].giroDulce;
+
 	KeyFrame[FrameIndex].giroPuerta;
 	KeyFrame[FrameIndex].giroPuertaEm;
 	//no volatil, agregar una forma de escribir a un archivo para guardar los frames
@@ -478,6 +495,11 @@ void resetElements(void) //Tecla 0
 	movTicket_z = KeyFrame[0].movTicket_z;
 	giroTicket = KeyFrame[0].giroTicket;
 
+	movDulce_x = KeyFrame[0].movDulce_x;
+	movDulce_y = KeyFrame[0].movDulce_y;
+	movDulce_z = KeyFrame[0].movDulce_z;
+	giroDulce = KeyFrame[0].giroDulce;
+
 	giroPuerta = KeyFrame[0].giroPuerta;
 	giroPuertaEm = KeyFrame[0].giroPuerta;
 }
@@ -509,6 +531,11 @@ void interpolation(void)
 	KeyFrame[playIndex].movTicket_yInc = (KeyFrame[playIndex + 1].movTicket_y - KeyFrame[playIndex].movTicket_y) / i_max_steps;
 	KeyFrame[playIndex].movTicket_zInc = (KeyFrame[playIndex + 1].movTicket_z - KeyFrame[playIndex].movTicket_z) / i_max_steps;
 	KeyFrame[playIndex].giroTicketInc = (KeyFrame[playIndex + 1].giroTicket - KeyFrame[playIndex].giroTicket) / i_max_steps;
+
+	KeyFrame[playIndex].movDulce_xInc = (KeyFrame[playIndex + 1].movDulce_x - KeyFrame[playIndex].movDulce_x) / i_max_steps;
+	KeyFrame[playIndex].movDulce_yInc = (KeyFrame[playIndex + 1].movDulce_y - KeyFrame[playIndex].movDulce_y) / i_max_steps;
+	KeyFrame[playIndex].movDulce_zInc = (KeyFrame[playIndex + 1].movDulce_z - KeyFrame[playIndex].movDulce_z) / i_max_steps;
+	KeyFrame[playIndex].giroDulceInc = (KeyFrame[playIndex + 1].giroDulce - KeyFrame[playIndex].giroDulce) / i_max_steps;
 
 	KeyFrame[playIndex].giroPuertaInc = (KeyFrame[playIndex + 1].giroPuerta - KeyFrame[playIndex].giroPuerta) / i_max_steps;
 	KeyFrame[playIndex].giroPuertaEmInc = (KeyFrame[playIndex + 1].giroPuertaEm - KeyFrame[playIndex].giroPuertaEm) / i_max_steps;
@@ -570,6 +597,11 @@ int animate(void)
 			movTicket_y += KeyFrame[playIndex].movTicket_yInc;
 			movTicket_z += KeyFrame[playIndex].movTicket_zInc;
 			giroTicket += KeyFrame[playIndex].giroTicketInc;
+
+			movDulce_x += KeyFrame[playIndex].movDulce_xInc;
+			movDulce_y += KeyFrame[playIndex].movDulce_yInc;
+			movDulce_z += KeyFrame[playIndex].movDulce_zInc;
+			giroDulce += KeyFrame[playIndex].giroDulceInc;
 
 			giroPuerta += KeyFrame[playIndex].giroPuertaInc;
 			giroPuertaEm += KeyFrame[playIndex].giroPuertaEmInc;
@@ -652,13 +684,13 @@ int main()
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
 	silla = Model();
-	silla.LoadModel("Models/silla.fbx"); 
+	silla.LoadModel("Models/silla.fbx");
 	mesa = Model();
 	mesa.LoadModel("Models/mesa.obj");
 	mostrador = Model();
 	mostrador.LoadModel("Models/mostrador.obj");
 	puerta = Model();
-	puerta.LoadModel("Models/puerta1.obj"); 
+	puerta.LoadModel("Models/puerta1.obj");
 	sofa = Model();
 	sofa.LoadModel("Models/sofa.obj");
 	desk = Model();
@@ -794,6 +826,7 @@ int main()
 	int indiceFrame = 0;
 
 	bool bandera = true;
+	bool personajesGiro = true;
 	//Var para palomita
 	float posXpalomita = 0.0f;
 	float posYpalomita = 0.0f;
@@ -819,6 +852,10 @@ int main()
 	glm::vec3 posTicket = glm::vec3(4.73f, 2.95f, -14.7f);
 	glm::vec3 desplazamientoTicket = glm::vec3(0.0f, 0.0f, 0.0f);
 
+	//Variables Dulce
+	glm::vec3 posDulce = glm::vec3((-60.2f, -1.0f, 15.0f));
+	glm::vec3 desplazamientoDulce = glm::vec3(0.0f, 0.0f, 0.0f);
+
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
 
 
@@ -843,14 +880,6 @@ int main()
 		15.0f);
 	spotLightCount++;
 
-
-	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f, //Aqui va el color
-		1.0f, 2.0f,
-		-72.0f, 28.2f, 5.3f,
-		-1.0f, -0.3f, 0.0f, //Vector de dirección, 
-		1.0f, 0.0f, 0.0f,
-		18.0f); //Tamaño del diametro
-	spotLightCount++;
 
 
 
@@ -985,7 +1014,7 @@ int main()
 	KeyFrame[6].piernaDer_x = 0.35f;
 	KeyFrame[6].piernaDer_y = 2.0f;
 	KeyFrame[6].piernaDer_z = 0.3f;
-	KeyFrame[6].movTicket_x = 0.0f;
+	KeyFrame[6].movTicket_x = -2.0f;
 	KeyFrame[6].movTicket_y = 2.0f;
 	KeyFrame[6].movTicket_z = 3.0f;
 	KeyFrame[6].giroTicket = 90;
@@ -1006,7 +1035,7 @@ int main()
 	KeyFrame[7].piernaDer_x = 0.35f;
 	KeyFrame[7].piernaDer_y = 2.0f;
 	KeyFrame[7].piernaDer_z = 0.3f;
-	KeyFrame[7].movTicket_x = 0.0f;
+	KeyFrame[7].movTicket_x = -2.0f;
 	KeyFrame[7].movTicket_y = 2.0f;
 	KeyFrame[7].movTicket_z = 5.0f;
 	KeyFrame[7].giroTicket = 90;
@@ -1099,6 +1128,10 @@ int main()
 	KeyFrame[12].piernaDer_x = 0.28f;
 	KeyFrame[12].piernaDer_y = 2.0f;
 	KeyFrame[12].piernaDer_z = -0.37f;
+	KeyFrame[12].movDulce_x = -5.0f;
+	KeyFrame[12].movDulce_y = 0.0f;
+	KeyFrame[12].movDulce_z = -3.0f;
+	KeyFrame[12].giroDulce = -180;
 
 	KeyFrame[13].movBravo_x = -91.0f;
 	KeyFrame[13].movBravo_y = 0.0f;
@@ -1663,9 +1696,9 @@ int main()
 				-1.0f, -0.3f, 0.0f, //Vector de dirección, 
 				1.0f, 0.0f, 0.0f,
 				18.0f); //Tamaño del diametro
-			
+
 		}
-		
+
 		unsigned int pointLightCount = 0;
 		if (mainWindow.getLuces() == true) {
 			mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
@@ -1845,7 +1878,7 @@ int main()
 
 		}
 		shaderList[0].SetDirectionalLight(&mainLight);
-		//shaderList[0].SetPointLights(pointLights, pointLightCount);
+		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
 
@@ -1941,30 +1974,36 @@ int main()
 		desplazamientoMano = glm::vec3(manoIzq_x, manoIzq_y, manoIzq_z);
 		model = modelAux;
 		if (posiciones == true) {
-			model = glm::translate(model, glm::vec3 (2.1f, 5.5f, 0.7f));
+			model = glm::translate(model, glm::vec3(2.1f, 5.5f, 0.7f));
 		}
 		model = glm::translate(model, desplazamientoMano);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
 		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		/*Balanceo de caminata*/
-		if ( 21>indiceFrame || indiceFrame>27) {
+		if(5> indiceFrame || indiceFrame >6){
+			if (12 > indiceFrame || indiceFrame > 13) {
 
-			if (natural == true) {
-				movManos += 1.0f;
-				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-			}
-			if (natural == false) {
-				movManos -= 1.0f;
-				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+
+				if (21 > indiceFrame || indiceFrame > 27) {
+
+					if (natural == true) {
+						movManos += 1.0f;
+						model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+					if (natural == false) {
+						movManos -= 1.0f;
+						model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+				}
+
 			}
 		}
-		
 		//model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		manoI.RenderModel();
 		//std::cout << std::fixed << movManos;
 
-		
+
 		desplazamientoManoDer = glm::vec3(manoDer_x, manoDer_y, manoDer_z);
 		model = modelAux;
 		if (posiciones == true) {
@@ -1974,21 +2013,25 @@ int main()
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
 		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		/*Balanceo de caminata*/
-		if (21 > indiceFrame || indiceFrame > 27) {
-			if (natural == true) {
-				movManos += 1.0f;
-				model = glm::rotate(model, 1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-			}
-			if (natural == false) {
-				movManos -= 1.0f;
-				model = glm::rotate(model, 1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (5 > indiceFrame || indiceFrame > 6) {
+			if (12 > indiceFrame || indiceFrame > 13) {
+				if (21 > indiceFrame || indiceFrame > 27) {
+					if (natural == true) {
+						movManos += 1.0f;
+						model = glm::rotate(model, 1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+					if (natural == false) {
+						movManos -= 1.0f;
+						model = glm::rotate(model, 1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+				}
 			}
 		}
 		//model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		manoD.RenderModel();
 		///Piernas
-		desplazamientoPierna = glm::vec3(piernaIzq_x,piernaIzq_y,piernaIzq_z);
+		desplazamientoPierna = glm::vec3(piernaIzq_x, piernaIzq_y, piernaIzq_z);
 		model = modelAux;
 		if (posiciones == true) {
 			model = glm::translate(model, glm::vec3(0.37f, 2.0f, -0.25f));
@@ -1996,12 +2039,16 @@ int main()
 		model = glm::translate(model, desplazamientoPierna);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
 		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		if (21 > indiceFrame || indiceFrame > 27) {
-			if (natural == true) {
-				model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-			}
-			if (natural == false) {
-				model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (5 > indiceFrame || indiceFrame > 6) {
+			if (12 > indiceFrame || indiceFrame > 13) {
+				if (21 > indiceFrame || indiceFrame > 27) {
+					if (natural == true) {
+						model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+					if (natural == false) {
+						model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+				}
 			}
 		}
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -2015,12 +2062,16 @@ int main()
 		model = glm::translate(model, desplazamientoPiernaDer);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
 		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		if (21 > indiceFrame || indiceFrame > 27) {
-			if (natural == true) {
-				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-			}
-			if (natural == false) {
-				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (5 > indiceFrame || indiceFrame > 6) {
+			if (12 > indiceFrame || indiceFrame > 13) {
+				if (21 > indiceFrame || indiceFrame > 27) {
+					if (natural == true) {
+						model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+					if (natural == false) {
+						model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+					}
+				}
 			}
 		}
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -2041,76 +2092,53 @@ int main()
 
 		//Puerta de entrada CINE
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-71.0f, 1.8f, -18.0f)); 
+		model = glm::translate(model, glm::vec3(-71.0f, 1.8f, -18.0f));
 		model = glm::scale(model, glm::vec3(1.8f, 2.5f, 1.6f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		marcoPuerta.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -22.0f)); 
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -22.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
-		model = glm::rotate(model, 0 + giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::rotate(model, 0 + giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puertaD.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -14.0f)); 
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -14.0f));
 		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
-		model = glm::rotate(model, 0 - giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::rotate(model, 0 - giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puertaI.RenderModel();
 		//fin puerta
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f)); 
+		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.05f, 3.05f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		dexter.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-110.2f, 3.5f, 8.0f)); 
+		model = glm::translate(model, glm::vec3(-110.2f, 3.5f, 8.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.05f, 3.05f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mandy.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-115.2f, 1.5f, 0.0f)); 
+		model = glm::translate(model, glm::vec3(-115.2f, 1.5f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.05f, 2.05f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		eduardo.RenderModel();
 		//Exitintor
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, 30.5f)); 
+		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, 30.5f));
 		model = glm::scale(model, glm::vec3(3.5f, 3.8f, 3.3f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		extintor.RenderModel();
-
-		// ---------------- Puerta de EMERGENCIA
-		/*model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-130.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(1.5f, 2.5f, 1.6f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		marcoPuerta.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-134.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
-		model = glm::rotate(model, 90 +giroPuertaEm  * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puertaD.RenderModel();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-126.0f, 1.8f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
-		model = glm::rotate(model, 90 + giroPuertaEm  * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		puertaI.RenderModel();
-		//fin puerta emergencia */
 
 		//Exitintor
 		model = glm::mat4(1.0);
@@ -2162,12 +2190,13 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mostrador.RenderModel();
 
-		angulo += 0.2;
 
+		desplazamientoDulce = glm::vec3(movDulce_x, movDulce_y, movDulce_z);
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f));
+		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f) + desplazamientoDulce);
+		//(-60.2f, -1.0f, 15.0f)
 		model = glm::scale(model, glm::vec3(0.3f, 0.35f, 0.3f));
-		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
+		model = glm::rotate(model, 90 + giroDulce * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de frente al personal
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 
@@ -2257,7 +2286,7 @@ int main()
 
 
 		// ***************** Palomita animada ***********
-		offset += 0.15;
+		offset += 1.15;
 
 		posXpalomita = 1.1 * cos(3 * offset * toRadians); //Para 1ra palomita
 		posZpalomita = 1.1 * cos(3 * offset * toRadians); //Para 2da palomita
@@ -2389,10 +2418,24 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa.RenderModel();
 
+		if (angulo >= 90) {
+			personajesGiro = false;
+		}
+		if (angulo <= -90) {
+			personajesGiro = true;
+		}
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-28.2f, -2.0f, 7.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.06f, 4.05f));
-		model = glm::rotate(model, -180 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		if (personajesGiro == true) {
+			model = glm::rotate(model, -180 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+			angulo += 1.0;
+		}
+		else {
+			model = glm::rotate(model, -180 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+			angulo -= 1.0;
+		}
+
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		val.RenderModel();
 
@@ -2503,7 +2546,14 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.0f, -1.0f, -17.3f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		if (personajesGiro == true) {
+			model = glm::rotate(model, 0 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		}
+		else {
+			model = glm::rotate(model, 0 + angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		}
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
 
@@ -2866,7 +2916,7 @@ void inputKeyframes(bool* keys)
 				reproduciranimacion++;
 				printf("presiona 0 para habilitar reproducir de nuevo la animacin'\n");
 				habilitaranimacion = 0;
-				
+
 			}
 			else
 			{
