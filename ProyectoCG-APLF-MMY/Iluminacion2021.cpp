@@ -652,13 +652,13 @@ int main()
 	cine = Model();
 	cine.LoadModel("Models/sala.obj");
 	silla = Model();
-	silla.LoadModel("Models/silla.fbx"); //Se actualizó por un objeto texturizado
+	silla.LoadModel("Models/silla.fbx"); 
 	mesa = Model();
 	mesa.LoadModel("Models/mesa.obj");
 	mostrador = Model();
 	mostrador.LoadModel("Models/mostrador.obj");
 	puerta = Model();
-	puerta.LoadModel("Models/puerta1.obj"); //Cuarto tiene un bug
+	puerta.LoadModel("Models/puerta1.obj"); 
 	sofa = Model();
 	sofa.LoadModel("Models/sofa.obj");
 	desk = Model();
@@ -821,12 +821,7 @@ int main()
 
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
 
-	//luz direccional, sólo 1 y siempre debe de existir
-	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
-		0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
-		0.0f, 0.0f, -1.0f); //Vector de direccion
 
-	//contador de luces puntuales 
 
 
 	unsigned int spotLightCount = 0;
@@ -848,6 +843,7 @@ int main()
 		15.0f);
 	spotLightCount++;
 
+
 	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f, //Aqui va el color
 		1.0f, 2.0f,
 		-72.0f, 28.2f, 5.3f,
@@ -855,6 +851,7 @@ int main()
 		1.0f, 0.0f, 0.0f,
 		18.0f); //Tamaño del diametro
 	spotLightCount++;
+
 
 
 
@@ -1582,8 +1579,6 @@ int main()
 		if (mainWindow.getRegula() == true) {
 			if (mainWindow.getCamara() == true)
 			{
-				//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
-
 				camera.setPosDir(glm::vec3(40.0f, 8.0f, 1.0f) + desplazamientoBravo, glm::vec3(1.0f, 0.0f, 0.0f));
 			}
 			if (mainWindow.getCamara() == false)
@@ -1593,22 +1588,17 @@ int main()
 					mainWindow.setAngulo(false);
 				}
 
-
 			}
 		}
 		else {
 			if (mainWindow.getCamaraExtra() == true)
 			{
-				//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
-
 				camera.setPosDir(glm::vec3(4.0f, 6.5f, -17.3f), glm::vec3(0.0f, 0.0f, -1.0f));
 			}
 			if (mainWindow.getCamaraExtra() == false)
 			{
 
 				camera.setPosDir(glm::vec3(-75.0f, 26.82f, 5.5f), glm::vec3(-1.0f, .0f, 0.0f));
-				//mainWindow.setAngulo(false);
-
 			}
 		}
 
@@ -1651,9 +1641,36 @@ int main()
 		//spotLights[0].setPos(); Solo recibe un vector para modoficar la posición sin moddificar el cono
 		//información al shader de fuentes de iluminación
 
-		/*
+		if (mainWindow.getProyectar() == true) {
+			mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
+				0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
+				0.0f, 0.0f, -1.0f); //Vector de direccion
+			spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f, //Aqui va el color
+				1.0f, 2.0f,
+				-72.0f, 28.2f, 5.3f,
+				-1.0f, -0.3f, 0.0f, //Vector de dirección, 
+				1.0f, 0.0f, 0.0f,
+				18.0f); //Tamaño del diametro
+			spotLightCount++;
+		}
+		else {
+			mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
+				0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
+				0.0f, 0.0f, -1.0f); //Vector de direccion
+			spotLights[2] = SpotLight(0.0f, 0.0f, 0.0f, //Aqui va el color
+				1.0f, 2.0f,
+				-72.0f, 28.2f, 5.3f,
+				-1.0f, -0.3f, 0.0f, //Vector de dirección, 
+				1.0f, 0.0f, 0.0f,
+				18.0f); //Tamaño del diametro
+			
+		}
+		
 		unsigned int pointLightCount = 0;
 		if (mainWindow.getLuces() == true) {
+			mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
+				0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
+				0.0f, 0.0f, -1.0f); //Vector de direccion
 
 			//Declaración de primer luz puntual
 			pointLights[0] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
@@ -1744,7 +1761,9 @@ int main()
 
 		}
 		if (mainWindow.getLuces() == false) {
-
+			mainLight = DirectionalLight(0.15f, 0.15f, 0.2f, //Valores de color
+				0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
+				0.0f, 0.0f, -1.0f); //Vector de direccion
 			//Declaración de primer luz puntual
 			pointLights[0] = PointLight(0.0f, 0.0f, 0.0f, //Valores de color
 				0.5f, 1.0f, //Coeficiente ambiental y difuso
@@ -1824,7 +1843,7 @@ int main()
 				0.6f, 0.2f, 0.2f); //Valores de una ecuación de segundo grado que sirven para una atenuación
 
 
-		}*/
+		}
 		shaderList[0].SetDirectionalLight(&mainLight);
 		//shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -2022,50 +2041,49 @@ int main()
 
 		//Puerta de entrada CINE
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-71.0f, 1.8f, -18.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-71.0f, 1.8f, -18.0f)); 
 		model = glm::scale(model, glm::vec3(1.8f, 2.5f, 1.6f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		marcoPuerta.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -22.0f)); 
 		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
-		model = glm::rotate(model, 0 + giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::rotate(model, 0 + giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puertaD.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -14.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-70.5f, 1.8f, -14.0f)); 
 		model = glm::scale(model, glm::vec3(1.5f, 1.8f, 1.5f));
-		model = glm::rotate(model, 0 - giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::rotate(model, 0 - giroPuerta * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		puertaI.RenderModel();
 		//fin puerta
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-100.2f, 6.7f, 4.0f)); 
 		model = glm::scale(model, glm::vec3(3.0f, 3.05f, 3.05f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		dexter.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-110.2f, 3.5f, 8.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-110.2f, 3.5f, 8.0f)); 
 		model = glm::scale(model, glm::vec3(3.0f, 3.05f, 3.05f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mandy.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-115.2f, 1.5f, 0.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-115.2f, 1.5f, 0.0f)); 
 		model = glm::scale(model, glm::vec3(2.0f, 2.05f, 2.05f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); //Coloca de forma correcta la posición de la puerta
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f)); 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		eduardo.RenderModel();
 		//Exitintor
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, 30.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, 30.5f)); 
 		model = glm::scale(model, glm::vec3(3.5f, 3.8f, 3.3f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
