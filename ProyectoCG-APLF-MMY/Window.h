@@ -15,6 +15,7 @@ public:
 	GLfloat getYChange();
 	GLfloat getZChange();
 	bool getLuces() { return luces; }
+	bool getProyectar() { return proyector; }
 	bool getCamara() { return camaraJ; }
 	bool getCamaraExtra() { return camaraExtra; }
 	bool getRegula() { return regulador; }
@@ -40,9 +41,10 @@ private:
 	GLfloat xChange;
 	GLfloat yChange;
 	bool luces;
-	bool camaraJ;
-	bool camaraExtra;
-	bool regulador;
+	bool proyector;
+	bool camaraJ;  // Cámara vista Johnny y cámara libre
+	bool camaraExtra;  //cámara personal y vista cine 
+	bool regulador; //regula que par de cámara se habilita
 	bool angulo;
 	GLfloat muevex; //Variable para muevex
 	GLfloat muevey; //Variable para mueveY

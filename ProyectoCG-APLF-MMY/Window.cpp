@@ -137,6 +137,15 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		theWindow->camaraExtra = false;
 	}
 	/***************Definiendo apagado y encendido de luces******************/
+	if (key == GLFW_KEY_5)
+	{//Cuando se presiona X decrementa en y
+		theWindow->proyector = true;
+	}
+	if (key == GLFW_KEY_4)
+	{//Cuando se presiona X decrementa en y
+		theWindow->proyector = false;
+	}
+
 	if (key == GLFW_KEY_C)
 	{//Cuando se presiona X decrementa en y
 		theWindow->luces = true;
