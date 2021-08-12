@@ -14,6 +14,9 @@ public:
 	GLfloat getXChange();
 	GLfloat getYChange();
 	GLfloat getZChange();
+	bool cancion;
+	bool getCancion() { return cancion; }
+	void setCancion(bool valor) { cancion = valor; }
 	bool getLuces() { return luces; }
 	bool getProyectar() { return proyector; }
 	bool getCamara() { return camaraJ; }

@@ -56,7 +56,7 @@ Camera camera;
 //Variable para keyFrames
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
 bool angulo = true;
-
+bool posiciones = true;
 Texture pisoTexture;
 Texture Tagave;
 Texture salaCine;
@@ -197,6 +197,9 @@ static double limitFPS = 1.0 / 60.0;
 
 //void my_input(GLFWwindow *window); Para cuando se presione una tecla
 void inputKeyframes(bool* keys);
+//Función que permite saber a donde deben rotar los brazos
+int rotacion(float giroBravo);
+
 bool apagador = true;
 float focos = 0;
 
@@ -208,7 +211,7 @@ static const char* fShader = "shaders/shader_light.frag";
 
 
 //cálculo del promedio de las normales para sombreado de Phong
-void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount,
+void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
 	unsigned int vLength, unsigned int normalOffset)
 {
 	for (size_t i = 0; i < indiceCount; i += 3)
@@ -288,21 +291,21 @@ void CreateObjects()
 	};
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 
-	Mesh *obj1 = new Mesh();
+	Mesh* obj1 = new Mesh();
 	obj1->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(obj1);
 
-	Mesh *obj2 = new Mesh();
+	Mesh* obj2 = new Mesh();
 	obj2->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(obj2);
 
-	Mesh *obj3 = new Mesh();
+	Mesh* obj3 = new Mesh();
 	obj3->CreateMesh(floorVertices, floorIndices, 32, 6);
 	meshList.push_back(obj3);
 
 	calcAverageNormals(vegetacionIndices, 12, vegetacionVertices, 64, 8, 5);
 
-	Mesh *obj4 = new Mesh();
+	Mesh* obj4 = new Mesh();
 	obj4->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
 	meshList.push_back(obj4);
 
@@ -313,7 +316,7 @@ void CreateObjects()
 
 void CreateShaders()
 {
-	Shader *shader1 = new Shader();
+	Shader* shader1 = new Shader();
 	shader1->CreateFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
 }
@@ -328,6 +331,13 @@ float posXbravo = 40.0, posYbravo = -2.0, posZbravo = 0;
 float	movBravo_x = 0.0f, movBravo_y = 0.0f, movBravo_z = 0.0f;
 float giroBravo = 0;
 
+//Manos
+float posXManoIzq = 2.1, posYManoIzq = 5.5, posZManoIzq = 0.7;
+float	manoIzq_x = 0.0f, manoIzq_y = 0.0f, manoIzq_z = 0.0f;
+float	manoDer_x = 0.0f, manoDer_y = 0.0f, manoDer_z = 0.0f;
+//Piernas
+float	piernaIzq_x = 0.0f, piernaIzq_y = 0.0f, piernaIzq_z = 0.0f;
+float	piernaDer_x = 0.0f, piernaDer_y = 0.0f, piernaDer_z = 0.0f;
 //Ticket
 float posXTicket = 40.0, posYTicket = -2.0, posZTicket = 0;
 float	movTicket_x = 0.0f, movTicket_y = 0.0f, movTicket_z = 0.0f;
@@ -351,6 +361,33 @@ typedef struct _frame
 	float giroBravo;
 	float giroBravoInc;
 
+	float manoIzq_x;		//Variable para PosicionX
+	float manoIzq_y;		//Variable para PosicionY
+	float manoIzq_z;		//Variable para PosicionZ
+	float manoIzq_xInc;		//Variable para IncrementoX
+	float manoIzq_yInc;		//Variable para IncrementoY
+	float manoIzq_zInc;		//Variable para IncrementoY
+
+	float manoDer_x;		//Variable para PosicionX
+	float manoDer_y;		//Variable para PosicionY
+	float manoDer_z;		//Variable para PosicionZ
+	float manoDer_xInc;		//Variable para IncrementoX
+	float manoDer_yInc;		//Variable para IncrementoY
+	float manoDer_zInc;		//Variable para IncrementoY
+
+	float piernaIzq_x;		//Variable para PosicionX
+	float piernaIzq_y;		//Variable para PosicionY
+	float piernaIzq_z;		//Variable para PosicionZ
+	float piernaIzq_xInc;		//Variable para IncrementoX
+	float piernaIzq_yInc;		//Variable para IncrementoY
+	float piernaIzq_zInc;		//Variable para IncrementoY
+
+	float piernaDer_x;		//Variable para PosicionX
+	float piernaDer_y;		//Variable para PosicionY
+	float piernaDer_z;		//Variable para PosicionZ
+	float piernaDer_xInc;		//Variable para IncrementoX
+	float piernaDer_yInc;		//Variable para IncrementoY
+	float piernaDer_zInc;		//Variable para IncrementoY
 	//Variables para GUARDAR Key Frames
 	float movTicket_x;		//Variable para PosicionX
 	float movTicket_y;		//Variable para PosicionY
@@ -383,6 +420,23 @@ void saveFrame(void) //tecla L
 	KeyFrame[FrameIndex].movBravo_y = movBravo_y;
 	KeyFrame[FrameIndex].movBravo_z = movBravo_z;
 	KeyFrame[FrameIndex].giroBravo;
+	//Manos
+	KeyFrame[FrameIndex].manoIzq_x = manoIzq_x;
+	KeyFrame[FrameIndex].manoIzq_y = manoIzq_y;
+	KeyFrame[FrameIndex].manoIzq_z = manoIzq_z;
+
+	KeyFrame[FrameIndex].manoDer_x = manoDer_x;
+	KeyFrame[FrameIndex].manoDer_y = manoDer_y;
+	KeyFrame[FrameIndex].manoDer_z = manoDer_z;
+
+	//Piernas
+	KeyFrame[FrameIndex].piernaIzq_x = piernaIzq_x;
+	KeyFrame[FrameIndex].piernaIzq_y = piernaIzq_y;
+	KeyFrame[FrameIndex].piernaIzq_z = piernaIzq_z;
+
+	KeyFrame[FrameIndex].piernaDer_x = piernaDer_x;
+	KeyFrame[FrameIndex].piernaDer_y = piernaDer_y;
+	KeyFrame[FrameIndex].piernaDer_z = piernaDer_z;
 
 	KeyFrame[FrameIndex].movTicket_x = movTicket_x;
 	KeyFrame[FrameIndex].movTicket_y = movTicket_y;
@@ -402,6 +456,22 @@ void resetElements(void) //Tecla 0
 	movBravo_y = KeyFrame[0].movBravo_y;
 	movBravo_z = KeyFrame[0].movBravo_z;
 	giroBravo = KeyFrame[0].giroBravo;
+	//Manos
+	manoIzq_x = KeyFrame[0].manoIzq_x;
+	manoIzq_y = KeyFrame[0].manoIzq_y;
+	manoIzq_z = KeyFrame[0].manoIzq_z;
+
+	manoDer_x = KeyFrame[0].manoDer_x;
+	manoDer_y = KeyFrame[0].manoDer_y;
+	manoDer_z = KeyFrame[0].manoDer_z;
+	//Piernas
+	piernaIzq_x = KeyFrame[0].piernaIzq_x;
+	piernaIzq_y = KeyFrame[0].piernaIzq_y;
+	piernaIzq_z = KeyFrame[0].piernaIzq_z;
+
+	piernaDer_x = KeyFrame[0].piernaDer_x;
+	piernaDer_y = KeyFrame[0].piernaDer_y;
+	piernaDer_z = KeyFrame[0].piernaDer_z;
 
 	movTicket_x = KeyFrame[0].movTicket_x;
 	movTicket_y = KeyFrame[0].movTicket_y;
@@ -418,6 +488,22 @@ void interpolation(void)
 	KeyFrame[playIndex].movBravo_yInc = (KeyFrame[playIndex + 1].movBravo_y - KeyFrame[playIndex].movBravo_y) / i_max_steps;
 	KeyFrame[playIndex].movBravo_zInc = (KeyFrame[playIndex + 1].movBravo_z - KeyFrame[playIndex].movBravo_z) / i_max_steps;
 	KeyFrame[playIndex].giroBravoInc = (KeyFrame[playIndex + 1].giroBravo - KeyFrame[playIndex].giroBravo) / i_max_steps;
+	//Manos
+	KeyFrame[playIndex].manoIzq_xInc = (KeyFrame[playIndex + 1].manoIzq_x - KeyFrame[playIndex].manoIzq_x) / i_max_steps;
+	KeyFrame[playIndex].manoIzq_yInc = (KeyFrame[playIndex + 1].manoIzq_y - KeyFrame[playIndex].manoIzq_y) / i_max_steps;
+	KeyFrame[playIndex].manoIzq_zInc = (KeyFrame[playIndex + 1].manoIzq_z - KeyFrame[playIndex].manoIzq_z) / i_max_steps;
+
+	KeyFrame[playIndex].manoDer_xInc = (KeyFrame[playIndex + 1].manoDer_x - KeyFrame[playIndex].manoDer_x) / i_max_steps;
+	KeyFrame[playIndex].manoDer_yInc = (KeyFrame[playIndex + 1].manoDer_y - KeyFrame[playIndex].manoDer_y) / i_max_steps;
+	KeyFrame[playIndex].manoDer_zInc = (KeyFrame[playIndex + 1].manoDer_z - KeyFrame[playIndex].manoDer_z) / i_max_steps;
+	//Piernas
+	KeyFrame[playIndex].piernaIzq_xInc = (KeyFrame[playIndex + 1].piernaIzq_x - KeyFrame[playIndex].piernaIzq_x) / i_max_steps;
+	KeyFrame[playIndex].piernaIzq_yInc = (KeyFrame[playIndex + 1].piernaIzq_y - KeyFrame[playIndex].piernaIzq_y) / i_max_steps;
+	KeyFrame[playIndex].piernaIzq_zInc = (KeyFrame[playIndex + 1].piernaIzq_z - KeyFrame[playIndex].piernaIzq_z) / i_max_steps;
+
+	KeyFrame[playIndex].piernaDer_xInc = (KeyFrame[playIndex + 1].piernaDer_x - KeyFrame[playIndex].piernaDer_x) / i_max_steps;
+	KeyFrame[playIndex].piernaDer_yInc = (KeyFrame[playIndex + 1].piernaDer_y - KeyFrame[playIndex].piernaDer_y) / i_max_steps;
+	KeyFrame[playIndex].piernaDer_zInc = (KeyFrame[playIndex + 1].piernaDer_z - KeyFrame[playIndex].piernaDer_z) / i_max_steps;
 
 	KeyFrame[playIndex].movTicket_xInc = (KeyFrame[playIndex + 1].movTicket_x - KeyFrame[playIndex].movTicket_x) / i_max_steps;
 	KeyFrame[playIndex].movTicket_yInc = (KeyFrame[playIndex + 1].movTicket_y - KeyFrame[playIndex].movTicket_y) / i_max_steps;
@@ -464,6 +550,22 @@ int animate(void)
 			movBravo_z += KeyFrame[playIndex].movBravo_zInc;
 			giroBravo += KeyFrame[playIndex].giroBravoInc;
 
+			manoIzq_x += KeyFrame[playIndex].manoIzq_xInc;
+			manoIzq_y += KeyFrame[playIndex].manoIzq_yInc;
+			manoIzq_z += KeyFrame[playIndex].manoIzq_zInc;
+
+			manoDer_x += KeyFrame[playIndex].manoDer_xInc;
+			manoDer_y += KeyFrame[playIndex].manoDer_yInc;
+			manoDer_z += KeyFrame[playIndex].manoDer_zInc;
+
+			piernaIzq_x += KeyFrame[playIndex].piernaIzq_xInc;
+			piernaIzq_y += KeyFrame[playIndex].piernaIzq_yInc;
+			piernaIzq_z += KeyFrame[playIndex].piernaIzq_zInc;
+
+			piernaDer_x += KeyFrame[playIndex].piernaDer_xInc;
+			piernaDer_y += KeyFrame[playIndex].piernaDer_yInc;
+			piernaDer_z += KeyFrame[playIndex].piernaDer_zInc;
+
 			movTicket_x += KeyFrame[playIndex].movTicket_xInc;
 			movTicket_y += KeyFrame[playIndex].movTicket_yInc;
 			movTicket_z += KeyFrame[playIndex].movTicket_zInc;
@@ -479,18 +581,17 @@ int animate(void)
 }
 
 /********************** F I N  K E Y F R A M E S *********/
-
 int main()
 {
 	bool natural = true;
 	float movManos = 0.0f;
 	float angulo = 0.0f;
-	irrklang::ISoundEngine *SoundEngine = createIrrKlangDevice();
+	irrklang::ISoundEngine* SoundEngine = createIrrKlangDevice();
 	mainWindow = Window(1366, 768); // 1280, 1024 or 1024, 768
 	mainWindow.Initialise();
-	
+
 	CreateObjects();
-	
+
 	CreateShaders();
 	//Se cambió el penultimo valor para que la camara tenga  una velocidad normal
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 1.0f, 0.5f);
@@ -503,7 +604,7 @@ int main()
 	Tagave.LoadTextureA();
 
 	//Texturas cine
-	
+
 	salaCine = Texture("Textures/salaCine.tga");
 	salaCine.LoadTextureA();
 	ma_bebidas = Texture("Textures/bebidas.tga");
@@ -521,7 +622,7 @@ int main()
 	Llanta_M.LoadModel("Models/k_rueda.3ds");
 	Blackhawk_M = Model();
 	Blackhawk_M.LoadModel("Models/uh60.obj");
-	
+
 	// *********** *********************************** C I N E ***********************************
 	//Personajes
 	johnny = Model();
@@ -598,7 +699,7 @@ int main()
 	refrigerador.LoadModel("Models/refri.fbx");
 	lampara = Model();
 	lampara.LoadModel("Models/lampara.obj");
-	pantallaD= Model();
+	pantallaD = Model();
 	pantallaD.LoadModel("Models/pantallaDulceria.obj");
 	combo1 = Model();
 	combo1.LoadModel("Models/combo1.obj");
@@ -610,7 +711,7 @@ int main()
 	proyector.LoadModel("Models/proyector.obj");
 	pantallaPrincipal = Model();
 	pantallaPrincipal.LoadModel("Models/pantalla.obj");
-	
+
 	//otros elementos
 	basurero = Model();
 	basurero.LoadModel("Models/basura.obj");
@@ -625,7 +726,7 @@ int main()
 	techo.LoadModel("Models/techo.obj");
 	lamparaPared = Model();
 	lamparaPared.LoadModel("Models/lamparaPared.obj");
-	
+
 	//Cuadros:
 	cuadro1 = Model();
 	cuadro1.LoadModel("Models/cuadro1.obj");
@@ -672,8 +773,8 @@ int main()
 	cuchara.LoadModel("Models/cuchara.obj");
 	extintor = Model();
 	extintor.LoadModel("Models/existor.obj");
-	
-	
+
+
 	std::vector<std::string> skyboxFaces;
 	//Nuevo SKybox
 	skyboxFaces.push_back("Textures/Skybox/sp2_rt.png");
@@ -709,20 +810,20 @@ int main()
 	glm::vec3 posBravo = glm::vec3(40.0f, -2.0f, 0.0f);
 	glm::vec3 desplazamientoBravo = glm::vec3(0.0f, 0.0f, 0.0f);
 
+	glm::vec3 posMano = glm::vec3(2.1f, 5.5f, 0.7f);
+	glm::vec3 desplazamientoMano = glm::vec3(2.1f, 5.5f, 0.7f);
+	glm::vec3 desplazamientoPierna = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 desplazamientoManoDer = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 desplazamientoPiernaDer = glm::vec3(0.0f, 0.0f, 0.0f);
 	//Variables Ticket
 	glm::vec3 posTicket = glm::vec3(4.73f, 2.95f, -14.7f);
 	glm::vec3 desplazamientoTicket = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	glm::vec3 luces = glm::vec3(5.0f, 5.0f, 5.0f);
-	
-	//luz direccional, sólo 1 y siempre debe de existir
-	/*mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
-		0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
-		0.0f, 0.0f, -1.0f); //Vector de direccion*/
-	
-	//contador de luces puntuales 
 
-	
+
+
+
 	unsigned int spotLightCount = 0;
 	//linterna
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f, //Luz ligada a la camara, en este caso tiene color blanco
@@ -742,11 +843,19 @@ int main()
 		15.0f);
 	spotLightCount++;
 
-	
+
+	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f, //Aqui va el color
+		1.0f, 2.0f,
+		-72.0f, 28.2f, 5.3f,
+		-1.0f, -0.3f, 0.0f, //Vector de dirección, 
+		1.0f, 0.0f, 0.0f,
+		18.0f); //Tamaño del diametro
+	spotLightCount++;
 
 
 
-	
+
+
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
@@ -760,39 +869,122 @@ int main()
 	KeyFrame[0].movBravo_y = 0.0f;
 	KeyFrame[0].movBravo_z = 0.0f;
 	KeyFrame[0].giroBravo = 0;
+	KeyFrame[0].manoIzq_x = 2.1f;
+	KeyFrame[0].manoIzq_y = 5.5f;
+	KeyFrame[0].manoIzq_z = 0.7f;
+	KeyFrame[0].manoDer_x = -2.1f;
+	KeyFrame[0].manoDer_y = 5.5f;
+	KeyFrame[0].manoDer_z = 0.7f;
+	KeyFrame[0].piernaIzq_x = 0.37f;
+	KeyFrame[0].piernaIzq_y = 2.0f;
+	KeyFrame[0].piernaIzq_z = -0.25f;
+	KeyFrame[0].piernaDer_x = -0.37f;
+	KeyFrame[0].piernaDer_y = 2.0f;
+	KeyFrame[0].piernaDer_z = -0.25f;
 
 	KeyFrame[1].movBravo_x = 0.0f;
 	KeyFrame[1].movBravo_y = 0.0f;
 	KeyFrame[1].movBravo_z = 6.0f;
-	KeyFrame[1].giroBravo = 0;
-
+	KeyFrame[1].giroBravo = 0;		//TODO: 0
+	KeyFrame[1].manoIzq_x = 2.1f;
+	KeyFrame[1].manoIzq_y = 5.5f;
+	KeyFrame[1].manoIzq_z = 0.7f;
+	KeyFrame[1].manoDer_x = -2.1f;
+	KeyFrame[1].manoDer_y = 5.5f;
+	KeyFrame[1].manoDer_z = 0.7f;
+	KeyFrame[1].piernaIzq_x = 0.37f;
+	KeyFrame[1].piernaIzq_y = 2.0f;
+	KeyFrame[1].piernaIzq_z = -0.25f;
+	KeyFrame[1].piernaDer_x = -0.37f;
+	KeyFrame[1].piernaDer_y = 2.0f;
+	KeyFrame[1].piernaDer_z = -0.25f;
 
 	KeyFrame[2].movBravo_x = -21.0f;
 	KeyFrame[2].movBravo_y = 0.0f;
 	KeyFrame[2].movBravo_z = 6.0f;
-	KeyFrame[2].giroBravo = -90;
+	KeyFrame[2].giroBravo = -90;	//TODO: -90
+	KeyFrame[2].manoIzq_x = -0.5f;
+	KeyFrame[2].manoIzq_y = 5.5f;
+	KeyFrame[2].manoIzq_z = 1.9f;
+	KeyFrame[2].manoDer_x = -0.5f;
+	KeyFrame[2].manoDer_y = 5.5f;
+	KeyFrame[2].manoDer_z = -1.9f;
+	KeyFrame[2].piernaIzq_x = 0.28f;
+	KeyFrame[2].piernaIzq_y = 2.0f;
+	KeyFrame[2].piernaIzq_z = 0.37f;
+	KeyFrame[2].piernaDer_x = 0.28f;
+	KeyFrame[2].piernaDer_y = 2.0f;
+	KeyFrame[2].piernaDer_z = -0.37f;
 
 	//Llega a los separadores de la taquilla
 	KeyFrame[3].movBravo_x = -21.0f;
 	KeyFrame[3].movBravo_y = 0.0f;
 	KeyFrame[3].movBravo_z = -3.0f;
-	KeyFrame[3].giroBravo = -180;
+	KeyFrame[3].giroBravo = -180;	//TODO: -180
+	KeyFrame[3].manoIzq_x = -2.0f;
+	KeyFrame[3].manoIzq_y = 5.5f;
+	KeyFrame[3].manoIzq_z = -0.7f;
+	KeyFrame[3].manoDer_x = +2.0f;
+	KeyFrame[3].manoDer_y = 5.5f;
+	KeyFrame[3].manoDer_z = -0.7f;
+	KeyFrame[3].piernaIzq_x = -0.35f;
+	KeyFrame[3].piernaIzq_y = 2.0f;
+	KeyFrame[3].piernaIzq_z = 0.3f;
+	KeyFrame[3].piernaDer_x = 0.35f;
+	KeyFrame[3].piernaDer_y = 2.0f;
+	KeyFrame[3].piernaDer_z = 0.3f;
 
 	KeyFrame[4].movBravo_x = -40.0f;
 	KeyFrame[4].movBravo_y = 0.0f;
 	KeyFrame[4].movBravo_z = -3.0f;
 	KeyFrame[4].giroBravo = -90.0f;
+	KeyFrame[4].manoIzq_x = -0.5f;
+	KeyFrame[4].manoIzq_y = 5.5f;
+	KeyFrame[4].manoIzq_z = 1.9f;
+	KeyFrame[4].manoDer_x = -0.5f;
+	KeyFrame[4].manoDer_y = 5.5f;
+	KeyFrame[4].manoDer_z = -1.9f;
+	KeyFrame[4].piernaIzq_x = 0.28f;
+	KeyFrame[4].piernaIzq_y = 2.0f;
+	KeyFrame[4].piernaIzq_z = 0.37f;
+	KeyFrame[4].piernaDer_x = 0.28f;
+	KeyFrame[4].piernaDer_y = 2.0f;
+	KeyFrame[4].piernaDer_z = -0.37f;
 
 	KeyFrame[5].movBravo_x = -40.0f;
 	KeyFrame[5].movBravo_y = 0.0f;
 	KeyFrame[5].movBravo_z = -7.0f;
-	KeyFrame[5].giroBravo = -180.0f;
+	KeyFrame[5].giroBravo = -180.0f; //TODO: 180
+	KeyFrame[5].manoIzq_x = -2.0f;
+	KeyFrame[5].manoIzq_y = 5.5f;
+	KeyFrame[5].manoIzq_z = -0.7f;
+	KeyFrame[5].manoDer_x = +2.0f;
+	KeyFrame[5].manoDer_y = 5.5f;
+	KeyFrame[5].manoDer_z = -0.7f;
+	KeyFrame[5].piernaIzq_x = -0.35f;
+	KeyFrame[5].piernaIzq_y = 2.0f;
+	KeyFrame[5].piernaIzq_z = 0.3f;
+	KeyFrame[5].piernaDer_x = 0.35f;
+	KeyFrame[5].piernaDer_y = 2.0f;
+	KeyFrame[5].piernaDer_z = 0.3f;
 
 	//Está de frente al empleado: Y el ticket comienza a moverse DINERO.MP3
 	KeyFrame[6].movBravo_x = -35.0f;
 	KeyFrame[6].movBravo_y = 0.0f;
 	KeyFrame[6].movBravo_z = -7.0f;
-	KeyFrame[6].giroBravo = -180.0f;
+	KeyFrame[6].giroBravo = -180.0f; //TODO -180
+	KeyFrame[6].manoIzq_x = -2.0f;
+	KeyFrame[6].manoIzq_y = 5.5f;
+	KeyFrame[6].manoIzq_z = -0.7f;
+	KeyFrame[6].manoDer_x = 2.0f;
+	KeyFrame[6].manoDer_y = 5.5f;
+	KeyFrame[6].manoDer_z = -0.7f;
+	KeyFrame[6].piernaIzq_x = -0.35f;
+	KeyFrame[6].piernaIzq_y = 2.0f;
+	KeyFrame[6].piernaIzq_z = 0.3f;
+	KeyFrame[6].piernaDer_x = 0.35f;
+	KeyFrame[6].piernaDer_y = 2.0f;
+	KeyFrame[6].piernaDer_z = 0.3f;
 	KeyFrame[6].movTicket_x = 0.0f;
 	KeyFrame[6].movTicket_y = 2.0f;
 	KeyFrame[6].movTicket_z = 3.0f;
@@ -801,7 +993,19 @@ int main()
 	KeyFrame[7].movBravo_x = -35.0f;
 	KeyFrame[7].movBravo_y = 0.0f;
 	KeyFrame[7].movBravo_z = -7.0f;
-	KeyFrame[7].giroBravo = -180.0f;
+	KeyFrame[7].giroBravo = -180.0f; //TODO -180
+	KeyFrame[7].manoIzq_x = -2.0f;
+	KeyFrame[7].manoIzq_y = 5.5f;
+	KeyFrame[7].manoIzq_z = -0.7f;
+	KeyFrame[7].manoDer_x = 2.0f;
+	KeyFrame[7].manoDer_y = 5.5f;
+	KeyFrame[7].manoDer_z = -0.7f;
+	KeyFrame[7].piernaIzq_x = -0.35f;
+	KeyFrame[7].piernaIzq_y = 2.0f;
+	KeyFrame[7].piernaIzq_z = 0.3f;
+	KeyFrame[7].piernaDer_x = 0.35f;
+	KeyFrame[7].piernaDer_y = 2.0f;
+	KeyFrame[7].piernaDer_z = 0.3f;
 	KeyFrame[7].movTicket_x = 0.0f;
 	KeyFrame[7].movTicket_y = 2.0f;
 	KeyFrame[7].movTicket_z = 5.0f;
@@ -811,182 +1015,567 @@ int main()
 	KeyFrame[8].movBravo_x = -75.0f;
 	KeyFrame[8].movBravo_y = 0.0f;
 	KeyFrame[8].movBravo_z = -7.0f;
-	KeyFrame[8].giroBravo = -90.0f;
+	KeyFrame[8].giroBravo = -90.0f; //TODO -90
+	KeyFrame[8].manoIzq_x = -0.5f;
+	KeyFrame[8].manoIzq_y = 5.5f;
+	KeyFrame[8].manoIzq_z = 1.9f;
+	KeyFrame[8].manoDer_x = -0.5f;
+	KeyFrame[8].manoDer_y = 5.5f;
+	KeyFrame[8].manoDer_z = -1.9f;
+	KeyFrame[8].piernaIzq_x = 0.28f;
+	KeyFrame[8].piernaIzq_y = 2.0f;
+	KeyFrame[8].piernaIzq_z = 0.37f;
+	KeyFrame[8].piernaDer_x = 0.28f;
+	KeyFrame[8].piernaDer_y = 2.0f;
+	KeyFrame[8].piernaDer_z = -0.37f;
 
 	KeyFrame[9].movBravo_x = -75.0f;
 	KeyFrame[9].movBravo_y = 0.0f;
 	KeyFrame[9].movBravo_z = 4.0f;
-	KeyFrame[9].giroBravo = 0.0f;
+	KeyFrame[9].giroBravo = 0.0f; //TODO 0
+	KeyFrame[9].manoIzq_x = 2.1f;
+	KeyFrame[9].manoIzq_y = 5.5f;
+	KeyFrame[9].manoIzq_z = 0.7f;
+	KeyFrame[9].manoDer_x = -2.1f;
+	KeyFrame[9].manoDer_y = 5.5f;
+	KeyFrame[9].manoDer_z = 0.7f;
+	KeyFrame[9].piernaIzq_x = 0.37f;
+	KeyFrame[9].piernaIzq_y = 2.0f;
+	KeyFrame[9].piernaIzq_z = -0.25f;
+	KeyFrame[9].piernaDer_x = -0.37f;
+	KeyFrame[9].piernaDer_y = 2.0f;
+	KeyFrame[9].piernaDer_z = -0.25f;
+
 
 	KeyFrame[10].movBravo_x = -83.0f;
 	KeyFrame[10].movBravo_y = 0.0f;
 	KeyFrame[10].movBravo_z = 4.0f;
-	KeyFrame[10].giroBravo = -90.0f; //
+	KeyFrame[10].giroBravo = -90.0f; //TODO: -90
+	KeyFrame[10].manoIzq_x = -0.5f;
+	KeyFrame[10].manoIzq_y = 5.5f;
+	KeyFrame[10].manoIzq_z = 1.9f;
+	KeyFrame[10].manoDer_x = -0.5f;
+	KeyFrame[10].manoDer_y = 5.5f;
+	KeyFrame[10].manoDer_z = -1.9f;
+	KeyFrame[10].piernaIzq_x = 0.28f;
+	KeyFrame[10].piernaIzq_y = 2.0f;
+	KeyFrame[10].piernaIzq_z = 0.37f;
+	KeyFrame[10].piernaDer_x = 0.28f;
+	KeyFrame[10].piernaDer_y = 2.0f;
+	KeyFrame[10].piernaDer_z = -0.37f;
 
 	//PALOMITAS INICIO
 	KeyFrame[11].movBravo_x = -83.0f;
 	KeyFrame[11].movBravo_y = 0.0f;
 	KeyFrame[11].movBravo_z = 24.0f;
-	KeyFrame[11].giroBravo = 0.0f;
+	KeyFrame[11].giroBravo = 0.0f; //TODO 0
+	KeyFrame[11].manoIzq_x = 2.1f;
+	KeyFrame[11].manoIzq_y = 5.5f;
+	KeyFrame[11].manoIzq_z = 0.7f;
+	KeyFrame[11].manoDer_x = -2.1f;
+	KeyFrame[11].manoDer_y = 5.5f;
+	KeyFrame[11].manoDer_z = 0.7f;
+	KeyFrame[11].piernaIzq_x = 0.37f;
+	KeyFrame[11].piernaIzq_y = 2.0f;
+	KeyFrame[11].piernaIzq_z = -0.25f;
+	KeyFrame[11].piernaDer_x = -0.37f;
+	KeyFrame[11].piernaDer_y = 2.0f;
+	KeyFrame[11].piernaDer_z = -0.25f;
 
 	//Está frente la dulcería:  FIN PALOMITAS.MP3
 	KeyFrame[12].movBravo_x = -91.0f;
 	KeyFrame[12].movBravo_y = 0.0f;
 	KeyFrame[12].movBravo_z = 24.0f;
-	KeyFrame[12].giroBravo = -90;
+	KeyFrame[12].giroBravo = -90; // TODO: -90
+	KeyFrame[12].manoIzq_x = -0.5f;
+	KeyFrame[12].manoIzq_y = 5.5f;
+	KeyFrame[12].manoIzq_z = 1.9f;
+	KeyFrame[12].manoDer_x = -0.5f;
+	KeyFrame[12].manoDer_y = 5.5f;
+	KeyFrame[12].manoDer_z = -1.9f;
+	KeyFrame[12].piernaIzq_x = 0.28f;
+	KeyFrame[12].piernaIzq_y = 2.0f;
+	KeyFrame[12].piernaIzq_z = 0.37f;
+	KeyFrame[12].piernaDer_x = 0.28f;
+	KeyFrame[12].piernaDer_y = 2.0f;
+	KeyFrame[12].piernaDer_z = -0.37f;
 
 	KeyFrame[13].movBravo_x = -91.0f;
 	KeyFrame[13].movBravo_y = 0.0f;
 	KeyFrame[13].movBravo_z = 24.0f;
-	KeyFrame[13].giroBravo = -90;
+	KeyFrame[13].giroBravo = -90; //TODO: -90
+	KeyFrame[13].manoIzq_x = -0.5f;
+	KeyFrame[13].manoIzq_y = 5.5f;
+	KeyFrame[13].manoIzq_z = 1.9f;
+	KeyFrame[13].manoDer_x = -0.5f;
+	KeyFrame[13].manoDer_y = 5.5f;
+	KeyFrame[13].manoDer_z = -1.9f;
+	KeyFrame[13].piernaIzq_x = 0.28f;
+	KeyFrame[13].piernaIzq_y = 2.0f;
+	KeyFrame[13].piernaIzq_z = 0.37f;
+	KeyFrame[13].piernaDer_x = 0.28f;
+	KeyFrame[13].piernaDer_y = 2.0f;
+	KeyFrame[13].piernaDer_z = -0.37f;
 
 	//Se dirige a la puerta, PUERTA.MP3
 	KeyFrame[14].movBravo_x = -91.0f;
 	KeyFrame[14].movBravo_y = 0.0f;
 	KeyFrame[14].movBravo_z = 14.0f;
-	KeyFrame[14].giroBravo = -180;
+	KeyFrame[14].giroBravo = -180;	//TODO: -180
+	KeyFrame[14].manoIzq_x = -2.0f;
+	KeyFrame[14].manoIzq_y = 5.5f;
+	KeyFrame[14].manoIzq_z = -0.7f;
+	KeyFrame[14].manoDer_x = +2.0f;
+	KeyFrame[14].manoDer_y = 5.5f;
+	KeyFrame[14].manoDer_z = -0.7f;
+	KeyFrame[14].piernaIzq_x = -0.35f;
+	KeyFrame[14].piernaIzq_y = 2.0f;
+	KeyFrame[14].piernaIzq_z = 0.3f;
+	KeyFrame[14].piernaDer_x = +0.35f;
+	KeyFrame[14].piernaDer_y = 2.0f;
+	KeyFrame[14].piernaDer_z = 0.3f;
 	KeyFrame[14].giroPuerta = 90;
 
 	KeyFrame[15].movBravo_x = -91.0f;
 	KeyFrame[15].movBravo_y = 0.0f;
 	KeyFrame[15].movBravo_z = -18.0f;
-	KeyFrame[15].giroBravo = -90;
+	KeyFrame[15].giroBravo = -90; //TODO: -90
+	KeyFrame[15].manoIzq_x = -0.5f;
+	KeyFrame[15].manoIzq_y = 5.5f;
+	KeyFrame[15].manoIzq_z = 1.9f;
+	KeyFrame[15].manoDer_x = -0.5f;
+	KeyFrame[15].manoDer_y = 5.5f;
+	KeyFrame[15].manoDer_z = -1.9f;
+	KeyFrame[15].piernaIzq_x = 0.28f;
+	KeyFrame[15].piernaIzq_y = 2.0f;
+	KeyFrame[15].piernaIzq_z = 0.37f;
+	KeyFrame[15].piernaDer_x = 0.28f;
+	KeyFrame[15].piernaDer_y = 2.0f;
+	KeyFrame[15].piernaDer_z = -0.37f;
 	KeyFrame[15].giroPuerta = 90;
 
 	KeyFrame[16].movBravo_x = -175.0f;
 	KeyFrame[16].movBravo_y = 0.0f;
 	KeyFrame[16].movBravo_z = -18.0f;
-	KeyFrame[16].giroBravo = -90;
+	KeyFrame[16].giroBravo = -90;//TODO: -90
+	KeyFrame[16].manoIzq_x = -0.5f;
+	KeyFrame[16].manoIzq_y = 5.5f;
+	KeyFrame[16].manoIzq_z = 1.9f;
+	KeyFrame[16].manoDer_x = -0.5f;
+	KeyFrame[16].manoDer_y = 5.5f;
+	KeyFrame[16].manoDer_z = -1.9f;
+	KeyFrame[16].piernaIzq_x = 0.28f;
+	KeyFrame[16].piernaIzq_y = 2.0f;
+	KeyFrame[16].piernaIzq_z = 0.37f;
+	KeyFrame[16].piernaDer_x = 0.28f;
+	KeyFrame[16].piernaDer_y = 2.0f;
+	KeyFrame[16].piernaDer_z = -0.37f;
 	//Entra al cine
 	KeyFrame[17].movBravo_x = -175.0f;
 	KeyFrame[17].movBravo_y = 0.0f;
 	KeyFrame[17].movBravo_z = -8.0f;
-	KeyFrame[17].giroBravo = 0;
+	KeyFrame[17].giroBravo = 0; //TODO: 0
+	KeyFrame[17].manoIzq_x = 2.1f;
+	KeyFrame[17].manoIzq_y = 5.5f;
+	KeyFrame[17].manoIzq_z = 0.7f;
+	KeyFrame[17].manoDer_x = -2.1f;
+	KeyFrame[17].manoDer_y = 5.5f;
+	KeyFrame[17].manoDer_z = 0.7f;
+	KeyFrame[17].piernaIzq_x = 0.37f;
+	KeyFrame[17].piernaIzq_y = 2.0f;
+	KeyFrame[17].piernaIzq_z = -0.25f;
+	KeyFrame[17].piernaDer_x = -0.37f;
+	KeyFrame[17].piernaDer_y = 2.0f;
+	KeyFrame[17].piernaDer_z = -0.25f;
 
 	KeyFrame[18].movBravo_x = -160.0f;
 	KeyFrame[18].movBravo_y = 0.0f;
 	KeyFrame[18].movBravo_z = -8.0f;
-	KeyFrame[18].giroBravo = 90; //TOdo cool
+	KeyFrame[18].giroBravo = 90; //TODO: 90 Mano:	(0.55f, 5.5f, -1.9f) TODO: Pierna: (-0.25f, 2.0f, -0.37f)
+	KeyFrame[18].manoIzq_x = 0.55f;
+	KeyFrame[18].manoIzq_y = 5.5f;
+	KeyFrame[18].manoIzq_z = -1.9f;
+	KeyFrame[18].manoDer_x = 0.55f;
+	KeyFrame[18].manoDer_y = 5.5f;
+	KeyFrame[18].manoDer_z = +1.9f;
+	KeyFrame[18].piernaIzq_x = -0.25f;
+	KeyFrame[18].piernaIzq_y = 2.0f;
+	KeyFrame[18].piernaIzq_z = -0.37f;
+	KeyFrame[18].piernaDer_x = -0.25f;
+	KeyFrame[18].piernaDer_y = 2.0f;
+	KeyFrame[18].piernaDer_z = +0.37f;
 
 	//Empieza a subir las escaleras 
 	KeyFrame[19].movBravo_x = -133.0f;
 	KeyFrame[19].movBravo_y = 10.0f;
 	KeyFrame[19].movBravo_z = -8.0f;
-	KeyFrame[19].giroBravo = 90;
+	KeyFrame[19].giroBravo = 90;		//TODO: 90
+	KeyFrame[19].manoIzq_x = 0.55f;
+	KeyFrame[19].manoIzq_y = 5.5f;
+	KeyFrame[19].manoIzq_z = -1.9f;
+	KeyFrame[19].manoDer_x = 0.55f;
+	KeyFrame[19].manoDer_y = 5.5f;
+	KeyFrame[19].manoDer_z = +1.9f;
+	KeyFrame[19].piernaIzq_x = -0.25f;
+	KeyFrame[19].piernaIzq_y = 2.0f;
+	KeyFrame[19].piernaIzq_z = -0.37f;
+	KeyFrame[19].piernaDer_x = -0.25f;
+	KeyFrame[19].piernaDer_y = 2.0f;
+	KeyFrame[19].piernaDer_z = +0.37f;
 	//Gira para sentarse INTO JHONNY --> 26 
 	KeyFrame[20].movBravo_x = -133.0f;
 	KeyFrame[20].movBravo_y = 10.0f;
 	KeyFrame[20].movBravo_z = 12.0f;
-	KeyFrame[20].giroBravo = 0;
+	KeyFrame[20].giroBravo = 0;	//TODO: 0
+	KeyFrame[20].manoIzq_x = 2.1f;
+	KeyFrame[20].manoIzq_y = 5.5f;
+	KeyFrame[20].manoIzq_z = 0.7f;
+	KeyFrame[20].manoDer_x = -2.1f;
+	KeyFrame[20].manoDer_y = 5.5f;
+	KeyFrame[20].manoDer_z = 0.7f;
+	KeyFrame[20].piernaIzq_x = 0.37f;
+	KeyFrame[20].piernaIzq_y = 2.0f;
+	KeyFrame[20].piernaIzq_z = -0.25f;
+	KeyFrame[20].piernaDer_x = -0.37f;
+	KeyFrame[20].piernaDer_y = 2.0f;
+	KeyFrame[20].piernaDer_z = -0.25f;
 	//Se sienta
 	KeyFrame[21].movBravo_x = -133.0f;
 	KeyFrame[21].movBravo_y = 7.0f;
 	KeyFrame[21].movBravo_z = 12.0f;
-	KeyFrame[21].giroBravo = -90;
+	KeyFrame[21].giroBravo = -90; //TODO: -90
+	KeyFrame[21].manoIzq_x = -0.5f;
+	KeyFrame[21].manoIzq_y = 5.5f;
+	KeyFrame[21].manoIzq_z = 1.9f;
+	KeyFrame[21].manoDer_x = -0.5f;
+	KeyFrame[21].manoDer_y = 5.5f;
+	KeyFrame[21].manoDer_z = -1.9f;
+	KeyFrame[21].piernaIzq_x = 0.28f;
+	KeyFrame[21].piernaIzq_y = 2.0f;
+	KeyFrame[21].piernaIzq_z = 0.37f;
+	KeyFrame[21].piernaDer_x = 0.28f;
+	KeyFrame[21].piernaDer_y = 2.0f;
+	KeyFrame[21].piernaDer_z = -0.37f;
 
 	KeyFrame[22].movBravo_x = -133.0f;
 	KeyFrame[22].movBravo_y = 7.0f;
 	KeyFrame[22].movBravo_z = 12.0f;
-	KeyFrame[22].giroBravo = -90;
+	KeyFrame[22].giroBravo = -90; //TODO: -90
+	KeyFrame[22].manoIzq_x = -0.5f;
+	KeyFrame[22].manoIzq_y = 5.5f;
+	KeyFrame[22].manoIzq_z = 1.9f;
+	KeyFrame[22].manoDer_x = -0.5f;
+	KeyFrame[22].manoDer_y = 5.5f;
+	KeyFrame[22].manoDer_z = -1.9f;
+	KeyFrame[22].piernaIzq_x = 0.28f;
+	KeyFrame[22].piernaIzq_y = 2.0f;
+	KeyFrame[22].piernaIzq_z = 0.37f;
+	KeyFrame[22].piernaDer_x = 0.28f;
+	KeyFrame[22].piernaDer_y = 2.0f;
+	KeyFrame[22].piernaDer_z = -0.37f;
 
 	KeyFrame[23].movBravo_x = -133.0f;
 	KeyFrame[23].movBravo_y = 7.0f;
 	KeyFrame[23].movBravo_z = 12.0f;
-	KeyFrame[23].giroBravo = -90;
+	KeyFrame[23].giroBravo = -90;//TODO: -90
+	KeyFrame[23].manoIzq_x = -0.5f;
+	KeyFrame[23].manoIzq_y = 5.5f;
+	KeyFrame[23].manoIzq_z = 1.9f;
+	KeyFrame[23].manoDer_x = -0.5f;
+	KeyFrame[23].manoDer_y = 5.5f;
+	KeyFrame[23].manoDer_z = -1.9f;
+	KeyFrame[23].piernaIzq_x = 0.28f;
+	KeyFrame[23].piernaIzq_y = 2.0f;
+	KeyFrame[23].piernaIzq_z = 0.37f;
+	KeyFrame[23].piernaDer_x = 0.28f;
+	KeyFrame[23].piernaDer_y = 2.0f;
+	KeyFrame[23].piernaDer_z = -0.37f;
 
 	KeyFrame[24].movBravo_x = -133.0f;
 	KeyFrame[24].movBravo_y = 7.0f;
 	KeyFrame[24].movBravo_z = 12.0f;
-	KeyFrame[24].giroBravo = -90;
+	KeyFrame[24].giroBravo = -90;//TODO: -90
+	KeyFrame[24].manoIzq_x = -0.5f;
+	KeyFrame[24].manoIzq_y = 5.5f;
+	KeyFrame[24].manoIzq_z = 1.9f;
+	KeyFrame[24].manoDer_x = -0.5f;
+	KeyFrame[24].manoDer_y = 5.5f;
+	KeyFrame[24].manoDer_z = -1.9f;
+	KeyFrame[24].piernaIzq_x = 0.28f;
+	KeyFrame[24].piernaIzq_y = 2.0f;
+	KeyFrame[24].piernaIzq_z = 0.37f;
+	KeyFrame[24].piernaDer_x = 0.28f;
+	KeyFrame[24].piernaDer_y = 2.0f;
+	KeyFrame[24].piernaDer_z = -0.37f;
 
 	KeyFrame[25].movBravo_x = -133.0f;
 	KeyFrame[25].movBravo_y = 7.0f;
 	KeyFrame[25].movBravo_z = 12.0f;
-	KeyFrame[25].giroBravo = -90;
+	KeyFrame[25].giroBravo = -90;//TODO: -90
+	KeyFrame[25].manoIzq_x = -0.5f;
+	KeyFrame[25].manoIzq_y = 5.5f;
+	KeyFrame[25].manoIzq_z = 1.9f;
+	KeyFrame[25].manoDer_x = -0.5f;
+	KeyFrame[25].manoDer_y = 5.5f;
+	KeyFrame[25].manoDer_z = -1.9f;
+	KeyFrame[25].piernaIzq_x = 0.28f;
+	KeyFrame[25].piernaIzq_y = 2.0f;
+	KeyFrame[25].piernaIzq_z = 0.37f;
+	KeyFrame[25].piernaDer_x = 0.28f;
+	KeyFrame[25].piernaDer_y = 2.0f;
+	KeyFrame[25].piernaDer_z = -0.37f;
 
 	KeyFrame[26].movBravo_x = -133.0f;
 	KeyFrame[26].movBravo_y = 7.0f;
 	KeyFrame[26].movBravo_z = 12.0f;
-	KeyFrame[26].giroBravo = -90;
+	KeyFrame[26].giroBravo = -90;//TODO: -90
+	KeyFrame[26].manoIzq_x = -0.5f;
+	KeyFrame[26].manoIzq_y = 5.5f;
+	KeyFrame[26].manoIzq_z = 1.9f;
+	KeyFrame[26].manoDer_x = -0.5f;
+	KeyFrame[26].manoDer_y = 5.5f;
+	KeyFrame[26].manoDer_z = -1.9f;
+	KeyFrame[26].piernaIzq_x = 0.28f;
+	KeyFrame[26].piernaIzq_y = 2.0f;
+	KeyFrame[26].piernaIzq_z = 0.37f;
+	KeyFrame[26].piernaDer_x = 0.28f;
+	KeyFrame[26].piernaDer_y = 2.0f;
+	KeyFrame[26].piernaDer_z = -0.37f;
 	//Se levanta
 	KeyFrame[27].movBravo_x = -135.0f;
 	KeyFrame[27].movBravo_y = 10.0f;
 	KeyFrame[27].movBravo_z = 12.0f;
-	KeyFrame[27].giroBravo = -90;
+	KeyFrame[27].giroBravo = -90;	//TODO: -90
+	KeyFrame[27].manoIzq_x = -0.5f;
+	KeyFrame[27].manoIzq_y = 5.5f;
+	KeyFrame[27].manoIzq_z = 1.9f;
+	KeyFrame[27].manoDer_x = -0.5f;
+	KeyFrame[27].manoDer_y = 5.5f;
+	KeyFrame[27].manoDer_z = -1.9f;
+	KeyFrame[27].piernaIzq_x = 0.28f;
+	KeyFrame[27].piernaIzq_y = 2.0f;
+	KeyFrame[27].piernaIzq_z = 0.37f;
+	KeyFrame[27].piernaDer_x = 0.28f;
+	KeyFrame[27].piernaDer_y = 2.0f;
+	KeyFrame[27].piernaDer_z = -0.37f;
 	//Va a las escaleras APLAUSOS.MP3
 	KeyFrame[28].movBravo_x = -135.0f;
 	KeyFrame[28].movBravo_y = 10.0f;
 	KeyFrame[28].movBravo_z = -8.0f;
-	KeyFrame[28].giroBravo = -180;
+	KeyFrame[28].giroBravo = -180;//TODO: -180
+	KeyFrame[28].manoIzq_x = -2.0f;
+	KeyFrame[28].manoIzq_y = 5.5f;
+	KeyFrame[28].manoIzq_z = -0.7f;
+	KeyFrame[28].manoDer_x = +2.0f;
+	KeyFrame[28].manoDer_y = 5.5f;
+	KeyFrame[28].manoDer_z = -0.7f;
+	KeyFrame[28].piernaIzq_x = -0.35f;
+	KeyFrame[28].piernaIzq_y = 2.0f;
+	KeyFrame[28].piernaIzq_z = 0.3f;
+	KeyFrame[28].piernaDer_x = +0.35f;
+	KeyFrame[28].piernaDer_y = 2.0f;
+	KeyFrame[28].piernaDer_z = 0.3f;
 
 	KeyFrame[29].movBravo_x = -160.0f;
 	KeyFrame[29].movBravo_y = 0.0f;
 	KeyFrame[29].movBravo_z = -8.0f;
-	KeyFrame[29].giroBravo = -90;
+	KeyFrame[29].giroBravo = -90;//TODO: -90
+	KeyFrame[29].manoIzq_x = -0.5f;
+	KeyFrame[29].manoIzq_y = 5.5f;
+	KeyFrame[29].manoIzq_z = 1.9f;
+	KeyFrame[29].manoDer_x = -0.5f;
+	KeyFrame[29].manoDer_y = 5.5f;
+	KeyFrame[29].manoDer_z = -1.9f;
+	KeyFrame[29].piernaIzq_x = 0.28f;
+	KeyFrame[29].piernaIzq_y = 2.0f;
+	KeyFrame[29].piernaIzq_z = 0.37f;
+	KeyFrame[29].piernaDer_x = 0.28f;
+	KeyFrame[29].piernaDer_y = 2.0f;
+	KeyFrame[29].piernaDer_z = -0.37f;
 	//Aquí baja de las escaleras
 
 	// Sale de la sala PUERTA.MP3
 	KeyFrame[30].movBravo_x = -175.0f;
 	KeyFrame[30].movBravo_y = 0.0f;
 	KeyFrame[30].movBravo_z = -8.0f;
-	KeyFrame[30].giroBravo = -90;
+	KeyFrame[30].giroBravo = -90;//TODO:-90
+	KeyFrame[30].manoIzq_x = -0.5f;
+	KeyFrame[30].manoIzq_y = 5.5f;
+	KeyFrame[30].manoIzq_z = 1.9f;
+	KeyFrame[30].manoDer_x = -0.5f;
+	KeyFrame[30].manoDer_y = 5.5f;
+	KeyFrame[30].manoDer_z = -1.9f;
+	KeyFrame[30].piernaIzq_x = 0.28f;
+	KeyFrame[30].piernaIzq_y = 2.0f;
+	KeyFrame[30].piernaIzq_z = 0.37f;
+	KeyFrame[30].piernaDer_x = 0.28f;
+	KeyFrame[30].piernaDer_y = 2.0f;
+	KeyFrame[30].piernaDer_z = -0.37f;
 
 	//Gira para salir del cine
 	KeyFrame[31].movBravo_x = -175.0f;
 	KeyFrame[31].movBravo_y = 0.0f;
 	KeyFrame[31].movBravo_z = 38.0f;
-	KeyFrame[31].giroBravo = 0;
+	KeyFrame[31].giroBravo = 0;		//TODO: 0
+	KeyFrame[31].manoIzq_x = 2.1f;
+	KeyFrame[31].manoIzq_y = 5.5f;
+	KeyFrame[31].manoIzq_z = 0.7f;
+	KeyFrame[31].manoDer_x = -2.1f;
+	KeyFrame[31].manoDer_y = 5.5f;
+	KeyFrame[31].manoDer_z = 0.7f;
+	KeyFrame[31].piernaIzq_x = 0.37f;
+	KeyFrame[31].piernaIzq_y = 2.0f;
+	KeyFrame[31].piernaIzq_z = -0.25f;
+	KeyFrame[31].piernaDer_x = 0.37f;
+	KeyFrame[31].piernaDer_y = 2.0f;
+	KeyFrame[31].piernaDer_z = -0.25f;
 	KeyFrame[31].giroPuertaEm = 90;
 
 	//Llega al final del pasillo de emergencia
 	KeyFrame[32].movBravo_x = -91.0f;
 	KeyFrame[32].movBravo_y = 0.0f;
 	KeyFrame[32].movBravo_z = 38.0f;
-	KeyFrame[32].giroBravo = 90;
+	KeyFrame[32].giroBravo = 90; //TODO: 90
+	KeyFrame[32].manoIzq_x = 0.55f;
+	KeyFrame[32].manoIzq_y = 5.5f;
+	KeyFrame[32].manoIzq_z = -1.9f;
+	KeyFrame[32].manoDer_x = 0.55f;
+	KeyFrame[32].manoDer_y = 5.5f;
+	KeyFrame[32].manoDer_z = +1.9f;
+	KeyFrame[32].piernaIzq_x = -0.25f;
+	KeyFrame[32].piernaIzq_y = 2.0f;
+	KeyFrame[32].piernaIzq_z = -0.37f;
+	KeyFrame[32].piernaDer_x = -0.25f;
+	KeyFrame[32].piernaDer_y = 2.0f;
+	KeyFrame[32].piernaDer_z = +0.37f;
 	KeyFrame[32].giroPuertaEm = 90;
 
 	KeyFrame[33].movBravo_x = -91.0f;
 	KeyFrame[33].movBravo_y = 0.0f;
 	KeyFrame[33].movBravo_z = 30.0f;
-	KeyFrame[33].giroBravo = 180;
+	KeyFrame[33].giroBravo = 180;//TODO: 180
+	KeyFrame[33].manoIzq_x = -2.0f;
+	KeyFrame[33].manoIzq_y = 5.5f;
+	KeyFrame[33].manoIzq_z = -0.7f;
+	KeyFrame[33].manoDer_x = +2.0f;
+	KeyFrame[33].manoDer_y = 5.5f;
+	KeyFrame[33].manoDer_z = -0.7f;
+	KeyFrame[33].piernaIzq_x = -0.35f;
+	KeyFrame[33].piernaIzq_y = 2.0f;
+	KeyFrame[33].piernaIzq_z = 0.3f;
+	KeyFrame[33].piernaDer_x = +0.35f;
+	KeyFrame[33].piernaDer_y = 2.0f;
+	KeyFrame[33].piernaDer_z = 0.3f;
 
 	//Llega antes del sofá
 	KeyFrame[34].movBravo_x = -65.0f;
 	KeyFrame[34].movBravo_y = 0.0f;
 	KeyFrame[34].movBravo_z = 30.0f;
-	KeyFrame[34].giroBravo = 90;
+	KeyFrame[34].giroBravo = 90;	//TODO: 90
+	KeyFrame[34].manoIzq_x = 0.55f;
+	KeyFrame[34].manoIzq_y = 5.5f;
+	KeyFrame[34].manoIzq_z = -1.9f;
+	KeyFrame[34].manoDer_x = 0.55f;
+	KeyFrame[34].manoDer_y = 5.5f;
+	KeyFrame[34].manoDer_z = +1.9f;
+	KeyFrame[34].piernaIzq_x = -0.25f;
+	KeyFrame[34].piernaIzq_y = 2.0f;
+	KeyFrame[34].piernaIzq_z = -0.37f;
+	KeyFrame[34].piernaDer_x = -0.25f;
+	KeyFrame[34].piernaDer_y = 2.0f;
+	KeyFrame[34].piernaDer_z = +0.37f;
 
 	//
 	KeyFrame[35].movBravo_x = -65.0f;
 	KeyFrame[35].movBravo_y = 0.0f;
 	KeyFrame[35].movBravo_z = 20.0f;
-	KeyFrame[35].giroBravo = 180;
+	KeyFrame[35].giroBravo = 180;	//TODO: 180
+	KeyFrame[35].manoIzq_x = -2.0f;
+	KeyFrame[35].manoIzq_y = 5.5f;
+	KeyFrame[35].manoIzq_z = -0.7f;
+	KeyFrame[35].manoDer_x = +2.0f;
+	KeyFrame[35].manoDer_y = 5.5f;
+	KeyFrame[35].manoDer_z = -0.7f;
+	KeyFrame[35].piernaIzq_x = -0.35f;
+	KeyFrame[35].piernaIzq_y = 2.0f;
+	KeyFrame[35].piernaIzq_z = 0.3f;
+	KeyFrame[35].piernaDer_x = +0.35f;
+	KeyFrame[35].piernaDer_y = 2.0f;
+	KeyFrame[35].piernaDer_z = 0.3f;
 
 	KeyFrame[36].movBravo_x = -55.0f;
 	KeyFrame[36].movBravo_y = 0.0f;
 	KeyFrame[36].movBravo_z = 20.0f;
-	KeyFrame[36].giroBravo = 90;
+	KeyFrame[36].giroBravo = 90;//TODO: 90
+	KeyFrame[36].manoIzq_x = 0.55f;
+	KeyFrame[36].manoIzq_y = 5.5f;
+	KeyFrame[36].manoIzq_z = -1.9f;
+	KeyFrame[36].manoDer_x = 0.55f;
+	KeyFrame[36].manoDer_y = 5.5f;
+	KeyFrame[36].manoDer_z = +1.9f;
+	KeyFrame[36].piernaIzq_x = -0.25f;
+	KeyFrame[36].piernaIzq_y = 2.0f;
+	KeyFrame[36].piernaIzq_z = -0.37f;
+	KeyFrame[36].piernaDer_x = -0.25f;
+	KeyFrame[36].piernaDer_y = 2.0f;
+	KeyFrame[36].piernaDer_z = +0.37f;
 
 	//Izquierda del sofá
 	KeyFrame[37].movBravo_x = -55.0f;
 	KeyFrame[37].movBravo_y = 0.0f;
 	KeyFrame[37].movBravo_z = 10.0f;
-	KeyFrame[37].giroBravo = 180;
+	KeyFrame[37].giroBravo = 180;//TODO 180
+	KeyFrame[37].manoIzq_x = -2.0f;
+	KeyFrame[37].manoIzq_y = 5.5f;
+	KeyFrame[37].manoIzq_z = -0.7f;
+	KeyFrame[37].manoDer_x = +2.0f;
+	KeyFrame[37].manoDer_y = 5.5f;
+	KeyFrame[37].manoDer_z = -0.7f;
+	KeyFrame[37].piernaIzq_x = -0.35f;
+	KeyFrame[37].piernaIzq_y = 2.0f;
+	KeyFrame[37].piernaIzq_z = 0.3f;
+	KeyFrame[37].piernaDer_x = +0.35f;
+	KeyFrame[37].piernaDer_y = 2.0f;
+	KeyFrame[37].piernaDer_z = 0.3f;
 
 	KeyFrame[38].movBravo_x = -5.0f;
 	KeyFrame[38].movBravo_y = 0.0f;
 	KeyFrame[38].movBravo_z = 10.0f;
-	KeyFrame[38].giroBravo = 90;
+	KeyFrame[38].giroBravo = 90;//TODO: 90
+	KeyFrame[38].manoIzq_x = 0.55f;
+	KeyFrame[38].manoIzq_y = 5.5f;
+	KeyFrame[38].manoIzq_z = -1.9f;
+	KeyFrame[38].manoDer_x = 0.55f;
+	KeyFrame[38].manoDer_y = 5.5f;
+	KeyFrame[38].manoDer_z = +1.9f;
+	KeyFrame[38].piernaIzq_x = -0.25f;
+	KeyFrame[38].piernaIzq_y = 2.0f;
+	KeyFrame[38].piernaIzq_z = -0.37f;
+	KeyFrame[38].piernaDer_x = -0.25f;
+	KeyFrame[38].piernaDer_y = 2.0f;
+	KeyFrame[38].piernaDer_z = +0.37f;
 
 	KeyFrame[39].movBravo_x = 0.0f;
 	KeyFrame[39].movBravo_y = 5.0f;
 	KeyFrame[39].movBravo_z = 0.0f;
 	KeyFrame[39].giroBravo = 0;
-	
-	
+	KeyFrame[39].manoIzq_x = 2.1f;
+	KeyFrame[39].manoIzq_y = 5.5f;
+	KeyFrame[39].manoIzq_z = 0.7f;
+	KeyFrame[39].manoDer_x = -2.1f;
+	KeyFrame[39].manoDer_y = 5.5f;
+	KeyFrame[39].manoDer_z = 0.7f;
+	KeyFrame[39].piernaIzq_x = 0.37f;
+	KeyFrame[39].piernaIzq_y = 2.0f;
+	KeyFrame[39].piernaIzq_z = -0.25f;
+	KeyFrame[39].piernaDer_x = -0.37f;
+	KeyFrame[39].piernaDer_y = 2.0f;
+	KeyFrame[39].piernaDer_z = -0.25f;
+
+
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
-	{	
+	{
 		if (mainWindow.getRegula() == true) {
 			if (mainWindow.getCamara() == true)
 			{
@@ -1012,18 +1601,18 @@ int main()
 				camera.setPosDir(glm::vec3(-75.0f, 26.82f, 5.5f), glm::vec3(-1.0f, .0f, 0.0f));
 			}
 		}
-		
+
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
-		
+
 		//Recibir eventos del usuario
 		glfwPollEvents();
 		camera.keyControl(mainWindow.getsKeys(), deltaTime);
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
-		
+
 		inputKeyframes(mainWindow.getsKeys());
 		indiceFrame = animate();
 
@@ -1043,7 +1632,7 @@ int main()
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x , camera.getCameraPosition().y, camera.getCameraPosition().z );
+		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
 		//luz ligada a la cámara de tipo flash 
 		glm::vec3 lowerLight = camera.getCameraPosition();
@@ -1051,6 +1640,7 @@ int main()
 		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection()); //Le manda la direccion a donde apunta nuestra camara
 		//spotLights[0].setPos(); Solo recibe un vector para modoficar la posición sin moddificar el cono
 		//información al shader de fuentes de iluminación
+
 		if (mainWindow.getProyectar() == true) {
 			mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
 				0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
@@ -1081,6 +1671,7 @@ int main()
 			mainLight = DirectionalLight(1.0f, 1.0f, 1.0f, //Valores de color
 				0.3f, 0.3f, //coeficiente ambiental, que tan intensa es la luz del la luz ambiental y coeficiente difuso es que tan intenso es el tono.
 				0.0f, 0.0f, -1.0f); //Vector de direccion
+
 			//Declaración de primer luz puntual
 			pointLights[0] = PointLight(1.0f, 1.0f, 0.0f, //Valores de color
 				0.5f, 1.0f, //Coeficiente ambiental y difuso
@@ -1256,7 +1847,7 @@ int main()
 		shaderList[0].SetDirectionalLight(&mainLight);
 		//shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
-		
+
 
 		glm::mat4 model(1.0);
 		glm::mat4 modelAux(1.0); //Sirve para poder darle jerarquia
@@ -1272,6 +1863,13 @@ int main()
 
 		// ********* Condicionales de sonido:
 		//Dinero
+		if (indiceFrame == 1) {
+			if (mainWindow.getCancion() == true) {
+				SoundEngine->play2D("audio/recuerdame.mp3");
+				printf("Estoy dentro");
+				mainWindow.setCancion(false);
+			}
+		}
 		if (indiceFrame == 6) {
 			if (bandera == true) {
 				SoundEngine->play2D("audio/dinero.mp3");
@@ -1340,57 +1938,90 @@ int main()
 			natural = true;
 		}
 		/*Mano izquierda*/
+		desplazamientoMano = glm::vec3(manoIzq_x, manoIzq_y, manoIzq_z);
 		model = modelAux;
-		model = glm::translate(model, glm::vec3(2.1f, 5.5f, 0.7f));
+		if (posiciones == true) {
+			model = glm::translate(model, glm::vec3 (2.1f, 5.5f, 0.7f));
+		}
+		model = glm::translate(model, desplazamientoMano);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
-		if (natural == true) {
-			movManos += 1.0f;
-			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		/*Balanceo de caminata*/
+		if ( 21>indiceFrame || indiceFrame>27) {
+
+			if (natural == true) {
+				movManos += 1.0f;
+				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
+			if (natural == false) {
+				movManos -= 1.0f;
+				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
 		}
-		if (natural == false) {
-			movManos -= 1.0f;
-			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		}
+		
 		//model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		manoI.RenderModel();
 		//std::cout << std::fixed << movManos;
+
 		
+		desplazamientoManoDer = glm::vec3(manoDer_x, manoDer_y, manoDer_z);
 		model = modelAux;
-		model = glm::translate(model, glm::vec3(-2.1f, 5.5f, 0.7f));
+		if (posiciones == true) {
+			model = glm::translate(model, glm::vec3(-2.1f, 5.5f, 0.7f));
+		}
+		model = glm::translate(model, desplazamientoManoDer);
 		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
-		if (natural == true) {
-			movManos += 1.0f;
-			model = glm::rotate(model, movManos  * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		/*Balanceo de caminata*/
+		if (21 > indiceFrame || indiceFrame > 27) {
+			if (natural == true) {
+				movManos += 1.0f;
+				model = glm::rotate(model, 1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
+			if (natural == false) {
+				movManos -= 1.0f;
+				model = glm::rotate(model, 1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
 		}
-		if(natural == false) {
-			movManos -= 1.0f;
-			model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		}
+		//model = glm::rotate(model, 0 + giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		manoD.RenderModel();
-		
 		///Piernas
+		desplazamientoPierna = glm::vec3(piernaIzq_x,piernaIzq_y,piernaIzq_z);
 		model = modelAux;
-		model = glm::translate(model, glm::vec3(0.37f, 2.0f, -0.25f));
-		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
-		if (natural == true) {
-			model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (posiciones == true) {
+			model = glm::translate(model, glm::vec3(0.37f, 2.0f, -0.25f));
 		}
-		if (natural == false) {
-			model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, desplazamientoPierna);
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		if (21 > indiceFrame || indiceFrame > 27) {
+			if (natural == true) {
+				model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
+			if (natural == false) {
+				model = glm::rotate(model, movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
 		}
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaI.RenderModel();
 
+		desplazamientoPiernaDer = glm::vec3(piernaDer_x, piernaDer_y, piernaDer_z);
 		model = modelAux;
-		model = glm::translate(model, glm::vec3(-0.37f, 2.0f, -0.25f));
-		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
-		if (natural == true) {
-			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (posiciones == true) {
+			model = glm::translate(model, glm::vec3(-0.37f, 2.0f, -0.25f));
 		}
-		if (natural == false) {
-			model = glm::rotate(model, -1*movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, desplazamientoPiernaDer);
+		model = glm::scale(model, glm::vec3(4.5f, 4.5f, 4.4f));
+		model = glm::rotate(model, giroBravo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		if (21 > indiceFrame || indiceFrame > 27) {
+			if (natural == true) {
+				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
+			if (natural == false) {
+				model = glm::rotate(model, -1 * movManos * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+			}
 		}
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaD.RenderModel();
@@ -1484,7 +2115,7 @@ int main()
 		//Exitintor
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-140.0f, 3.0f, -23.5f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
-		model = glm::scale(model, glm::vec3(3.5f,3.8f, 3.3f));
+		model = glm::scale(model, glm::vec3(3.5f, 3.8f, 3.3f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		extintor.RenderModel();
@@ -1532,7 +2163,7 @@ int main()
 		mostrador.RenderModel();
 
 		angulo += 0.2;
-		
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-60.2f, -1.0f, 15.0f));
 		model = glm::scale(model, glm::vec3(0.3f, 0.35f, 0.3f));
@@ -1613,7 +2244,7 @@ int main()
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		palomitas.RenderModel();
-		
+
 		//Maquina Palomitas
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 0.5f));
@@ -1628,11 +2259,11 @@ int main()
 		// ***************** Palomita animada ***********
 		offset += 0.15;
 
-		posXpalomita = 1.1 * cos( 3 * offset * toRadians); //Para 1ra palomita
-		posZpalomita = 1.1 * cos( 3 * offset * toRadians ); //Para 2da palomita
-		posYpalomita = 1.1 * sin( 3 * offset * toRadians );
+		posXpalomita = 1.1 * cos(3 * offset * toRadians); //Para 1ra palomita
+		posZpalomita = 1.1 * cos(3 * offset * toRadians); //Para 2da palomita
+		posYpalomita = 1.1 * sin(3 * offset * toRadians);
 
-		desplazamientoPalomita = glm::vec3( 0 , posYpalomita, posZpalomita);
+		desplazamientoPalomita = glm::vec3(0, posYpalomita, posZpalomita);
 		desplazamientoPalomita2 = glm::vec3(posXpalomita, posYpalomita, 0);
 		desplazamientoPalomita3 = glm::vec3(posXpalomita, posYpalomita, posZpalomita);
 
@@ -1692,7 +2323,7 @@ int main()
 		// ******************* Fin palomita animada ****************
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-54.5f, 1.8f,22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
+		model = glm::translate(model, glm::vec3(-54.5f, 1.8f, 22.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		coca.RenderModel();
@@ -1709,7 +2340,7 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
-		
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-55.2f, 2.8f, 20.0f));
 		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
@@ -1718,7 +2349,7 @@ int main()
 		pantallaD.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 14.0f)); 
+		model = glm::translate(model, glm::vec3(-55.2f, 1.8f, 14.0f));
 		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -1850,7 +2481,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		desk.RenderModel();
 
-		
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
 		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
@@ -1875,7 +2506,7 @@ int main()
 		model = glm::rotate(model, angulo * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		personal.RenderModel();
-		
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(11.0f, 3.8f, -11.4f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
@@ -1889,16 +2520,16 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		monitor2.RenderModel();
-		
-			
+
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(4.2f, 2.2f, -14.5f));
 		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 0.9f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		registradora.RenderModel();
-		
-				
+
+
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.5f, 3.7f, -11.3f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
@@ -1911,14 +2542,14 @@ int main()
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		separadores.RenderModel();
-			   	
+
 		// lamparas izquierda		
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-15.2f, 10.0f, 32.9f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
 		model = glm::scale(model, glm::vec3(4.8f, 4.8f, 4.8f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		lamparaPared.RenderModel(); 
+		lamparaPared.RenderModel();
 
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(7.5f, 10.0f, 32.9f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1933,7 +2564,7 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		lamparaPared.RenderModel();
-		
+
 		//lamparas derecha
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-15.2f, 10.0f, -25.9f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -1979,7 +2610,7 @@ int main()
 		maqPalomitasVidrio.RenderModel();
 		glDisable(GL_BLEND);*/
 
-		
+
 		//			Puertas, paredes y lamparas
 
 		//Piso
@@ -1988,7 +2619,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piso.RenderModel();
-		
+
 		//Pared
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-15.0f, 15.1f, -26.0f)); //mainWindow.getMuevex permite mover el objeto en X y getMueveZ en el eje Z
@@ -2221,6 +2852,7 @@ void inputKeyframes(bool* keys)
 {
 	if (keys[GLFW_KEY_SPACE])
 	{
+		posiciones = false;
 		if (reproduciranimacion < 1)
 		{
 			if (play == false && (FrameIndex > 1))
@@ -2234,7 +2866,7 @@ void inputKeyframes(bool* keys)
 				reproduciranimacion++;
 				printf("presiona 0 para habilitar reproducir de nuevo la animacin'\n");
 				habilitaranimacion = 0;
-
+				
 			}
 			else
 			{
@@ -2299,3 +2931,20 @@ void inputKeyframes(bool* keys)
 
 }
 
+int rotacion(float giroBravo) {
+	if (giroBravo == 0) {
+		return 0;
+	}
+	if (giroBravo == -90) {
+		return -1;
+	}
+	if (giroBravo == -180) {
+		return -2;
+	}
+	if (giroBravo == 90) {
+		return 1;
+	}
+	if (giroBravo == 180) {
+		return 2;
+	}
+}
