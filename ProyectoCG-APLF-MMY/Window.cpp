@@ -16,6 +16,7 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	muevex = 2.0f; //Inicializando la variable para el desplazamiento en X
 	muevey = 2.0f;//Inicializando la variable para el desplazamiento en Y
 	muevez = 2.0f;//Inicializando la variable para el desplazamiento en Z
+	cancion = true;
 	luces = true;
 	camaraJ = true;
 	camaraExtra = true;
@@ -175,6 +176,19 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		theWindow->muevez -= 1.0;
 	}
 
+	//Cancion:
+	if (key == GLFW_KEY_R)
+	{//Cuando se presiona X decrementa en x
+		theWindow->muevez -= 1.0;
+	}
+	if (key == GLFW_KEY_T)
+	{//Cuando se presiona X decrementa en x
+		theWindow->cancion =true;
+	}
+	if (key == GLFW_KEY_R)
+	{//Cuando se presiona X decrementa en x
+		theWindow->cancion = false;
+	}
 
 	if (key >= 0 && key < 1024)
 	{
